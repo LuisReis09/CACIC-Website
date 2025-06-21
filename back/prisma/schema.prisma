@@ -14,96 +14,96 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Professor{
-  id                  Int @id @default(autoincrement())
-  nome                String
-  email               String
-  sala                String
-  departamento        String
-  areasDeInteresse    String
-  disciplinas         String
-  linkedin            String
-  imagem              String
-  feedbacks           Feedback[]
-  monitorias          Monitoria[]
-  votantes            Votante[]
+model Professor {
+  id               Int         @id @default(autoincrement())
+  nome             String
+  email            String
+  sala             String
+  departamento     String
+  areasDeInteresse String
+  disciplinas      String
+  linkedin         String
+  imagem           String
+  feedbacks        Feedback[]
+  monitorias       Monitoria[]
+  votantes         Votante[]
 }
 
 // Guarda 1 linha de feedback por professor, reduzindo o custo computacional
-model Feedback{
-  id                   Int @id @default(autoincrement())
-  didatica             Float
-  planejamento         Float
-  avaliacoes           Float
-  cordialidade         Float
-  qtdFeedbacks         Int
-  professorId          Int
-  professor            Professor     @relation(fields: [professorId], references: [id])
+model Feedback {
+  id           Int       @id @default(autoincrement())
+  didatica     Float
+  planejamento Float
+  avaliacoes   Float
+  cordialidade Float
+  qtdFeedbacks Int
+  professorId  Int
+  professor    Professor @relation(fields: [professorId], references: [id])
 }
 
 // Guarda quem ja votou/deu feedback
-model Votante{
-  id                  Int @id @default(autoincrement())
-  cpf                 String
-  professorId         Int
-  professor           Professor      @relation(fields: [professorId], references: [id])
+model Votante {
+  id          Int       @id @default(autoincrement())
+  cpf         String
+  professorId Int
+  professor   Professor @relation(fields: [professorId], references: [id])
 }
 
-model Monitoria{
-  id                  Int @id @default(autoincrement())
-  monitores           String
-  emailMonitor        String
-  disciplina          String
-  linkDiscord         String
-  linkWhatsapp        String
-  professorId         Int
-  professor           Professor    @relation(fields: [professorId], references: [id])
+model Monitoria {
+  id           Int       @id @default(autoincrement())
+  monitores    String
+  emailMonitor String
+  disciplina   String
+  linkDiscord  String
+  linkWhatsapp String
+  professorId  Int
+  professor    Professor @relation(fields: [professorId], references: [id])
 }
 
-model Admin{
-  id                Int @id @default(autoincrement())  
-  login             String
-  senha             String
+model Admin {
+  id    Int    @id @default(autoincrement())
+  login String
+  senha String
 }
 
-model Jogo{
-  id                Int @id @default(autoincrement())
-  nome              String
-  precoPorHora      Float
-  status            StatusJogo
-  alugueis          Aluguel[]
+model Jogo {
+  id           Int        @id @default(autoincrement())
+  nome         String
+  precoPorHora Float
+  status       StatusJogo
+  alugueis     Aluguel[]
 }
 
-enum StatusJogo{
+enum StatusJogo {
   DISPONIVEL
   INDISPONIVEL
   ALUGADO
 }
 
-model Cliente{
-  id              Int @id @default(autoincrement())
-  cpf             String      @unique
-  nome            String
-  email           String      @unique
-  contato         String
-  bloqueado       Boolean
-  motivoBloqueio  String?
-  dataBloqueio    DateTime?
-  alugueis        Aluguel[]
+model Cliente {
+  id             Int       @id @default(autoincrement())
+  cpf            String    @unique
+  nome           String
+  email          String    @unique
+  contato        String
+  bloqueado      Boolean
+  motivoBloqueio String?
+  dataBloqueio   DateTime?
+  alugueis       Aluguel[]
 }
 
-model Aluguel{
-  id              Int       @id @default(autoincrement())
-  jogoId          Int
-  jogo            Jogo      @relation(fields: [jogoId], references: [id])
-  clienteId       Int
-  cliente         Cliente   @relation(fields: [clienteId], references: [id])
-  dataInicio      DateTime
-  dataFim         DateTime
-  status          StatusAluguel     @default(RESERVADO)
+model Aluguel {
+  id         Int           @id @default(autoincrement())
+  jogoId     Int
+  jogo       Jogo          @relation(fields: [jogoId], references: [id])
+  clienteId  Int
+  cliente    Cliente       @relation(fields: [clienteId], references: [id])
+  dataInicio DateTime
+  dataFim    DateTime
+  status     StatusAluguel @default(RESERVADO)
 }
 
-enum StatusAluguel{
+enum StatusAluguel {
   RESERVADO
   INICIADO
   FINALIZADO
