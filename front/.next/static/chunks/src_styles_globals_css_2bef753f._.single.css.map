@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/src/styles/globals.css"],"sourcesContent":["@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');\r\n\r\n:root {\r\n    /* Color var */\r\n    --text-color-1: #fff;\r\n    --text-color-2: #FFC300;\r\n    --text-color-3: #6FFFE9;\r\n    --text-color-4: #ffffff83;\r\n    --background-color-1: #000814;\r\n    --background-color-2: #001D3D;\r\n    --background-color-3: #003566;\r\n    \r\n    --button-color: #003566;\r\n    \r\n    /* Font var */\r\n    --font-family-1: 'Urbanist', sans-serif;\r\n    \r\n    --big-size: 25px;\r\n    --mid-size: 20px;\r\n    --small-size: 10px;\r\n    --text-size: 16px;\r\n}\r\n\r\n*{\r\n    margin: 0;\r\n    padding: 0;\r\n}\r\n\r\nbody {\r\n    background-color: var(--background-color-1);\r\n    color: var(--text-color-1);\r\n    font-family: var(--font-family-1);\r\n}\r\n\r\n.main_container{\r\n    background-color: var(--background-color-2);\r\n    width: 100%;\r\n    height: 85%;\r\n    border-radius: 8px;\r\n}\r\n"],"names":[],"mappings":"AAEA;;;;;;;;;;;;;;;;AAqBA;;;;;AAKA;;;;;;AAMA"}}]
+}

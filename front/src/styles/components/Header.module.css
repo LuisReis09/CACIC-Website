@@ -1,0 +1,67 @@
+.header{
+    display: flex;
+    width: 90%;
+    height: max-content;
+    align-items: center;
+    gap: 20px;
+    margin: 0 auto;
+    /* background-color: var(--background-color-2); */
+}
+
+.header > img{
+    width: 100px;
+    height: auto;
+}
+
+.header_text{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    min-width: 300px;
+    min-height: 150px;
+}
+
+.header_text > h1{
+    font-size: 20px;
+    margin: 0;
+}
+
+.header_text > h2{
+    font-size: 13px;
+    margin: 0;
+    margin-bottom: 10px;
+    font-weight: 0;
+}
+
+.header_university_logos{
+    display: flex;
+    gap: 5px;
+}
+
+.header_university_logos > img{
+    width: 35px;
+    height: auto;
+}
+
+@media (max-width: 700px){
+    .header{
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .header_text{
+        align-items: center;
+        text-align: center;
+    }
+
+    .header_text > h1{
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .header_university_logos{
+        justify-content: center;
+    }
+}

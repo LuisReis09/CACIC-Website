@@ -1,0 +1,41 @@
+/* [project]/src/styles/Index.module.css [client] (css) */
+.Index-module__8dhuLa__intro_container {
+  justify-content: space-evenly;
+  align-items: center;
+  display: flex;
+}
+
+.Index-module__8dhuLa__ca_image {
+  background-color: #fff;
+  min-width: 350px;
+  height: 350px;
+}
+
+.Index-module__8dhuLa__intro_content {
+  flex-direction: column;
+  justify-content: space-between;
+  width: 50%;
+  height: 350px;
+  display: flex;
+}
+
+@media screen and (width <= 1200px) {
+  .Index-module__8dhuLa__intro_container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .Index-module__8dhuLa__ca_image {
+    min-width: 300px;
+    height: 300px;
+  }
+
+  .Index-module__8dhuLa__intro_content {
+    width: 80%;
+    min-height: 300px;
+    margin: 0 auto;
+  }
+}
+
+
+/*# sourceMappingURL=src_styles_Index_module_1ab3d913.css.map*/

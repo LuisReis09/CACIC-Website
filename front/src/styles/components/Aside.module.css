@@ -1,0 +1,15 @@
+.aside_title{
+    font-size: 20px;
+    height: 40px;
+}
+
+.aside_title_span{
+    color: var(--text-color-2);
+}
+
+.aside_content{
+    height: 85%;
+    overflow-y: auto;
+    border-radius: 8px;
+    background-color: var(--background-color-3);
+}

@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 39, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/luis-/Documents/codigos/cacic-website/src/pages/Sobre.tsx"],"sourcesContent":["import React from 'react';\r\nimport { useRouter } from 'next/router';\r\n\r\nconst Sobre: React.FC = () => {\r\n    const router = useRouter();\r\n\r\n    return (\r\n        <>\r\n           Sobre\r\n           {/* <button onClick={() => router.push(\"/Infos\")}>Mudar</button> */}\r\n        </>\r\n    );\r\n\r\n}\r\n\r\nexport default Sobre;"],"names":[],"mappings":";;;;AACA;;;AAEA,MAAM,QAAkB;IACpB,MAAM,SAAS,CAAA,GAAA,uHAAA,CAAA,YAAS,AAAD;IAEvB,qBACI;kBAAE;;AAMV;uCAEe","debugId":null}}]
+}

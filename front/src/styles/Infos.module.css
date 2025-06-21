@@ -1,0 +1,21 @@
+.infos_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.h2{
+    margin: 40px 0px 50px 0px;
+    text-align: center;
+    font-weight: 500;
+
+    font-size: var(--big-size);
+    color: var(--text-color-2);
+}
+
+.topics_container{
+    display: flex;
+    justify-content: space-between;
+    
+    width: 90%;
+}

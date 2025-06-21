@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/src/styles/App.module.css"],"sourcesContent":[".App {\r\n    height: 100vh;\r\n    width: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: space-around;\r\n    justify-content: space-around;\r\n}\r\n\r\n.content{\r\n    display: flex;\r\n    height: calc(100% - 200px); /* Adjust for header height */\r\n    min-height: max-content;\r\n    width: 90%;\r\n    margin: 0 auto;\r\n    justify-content: space-around;\r\n}\r\n\r\n.main_frame{\r\n    width: 75%;\r\n}\r\n\r\n.content > Aside{\r\n    width: 20%;\r\n}\r\n\r\n@media screen and (max-width: 1200px) {\r\n    .content{\r\n        flex-direction: column;\r\n        align-items: center;\r\n    }\r\n    .main_frame{\r\n        width: 100%;\r\n        min-height: max-content;\r\n    }\r\n    .content > Aside{\r\n        width: 100%;\r\n        margin-top: 20px;\r\n        height: 100%;\r\n    }\r\n}"],"names":[],"mappings":"AAAA;;;;;;;;;AASA;;;;;;;;;AASA;;;;AAIA;;;;AAIA;EACI;;;;;EAIA;;;;;EAIA"}}]
+}

@@ -1,0 +1,67 @@
+/* [project]/src/styles/components/Header.module.css [client] (css) */
+.Header-module__RjwBgW__header {
+  align-items: center;
+  gap: 20px;
+  width: 90%;
+  height: max-content;
+  margin: 0 auto;
+  display: flex;
+}
+
+.Header-module__RjwBgW__header > img {
+  width: 100px;
+  height: auto;
+}
+
+.Header-module__RjwBgW__header_text {
+  flex-direction: column;
+  justify-content: center;
+  min-width: 300px;
+  min-height: 150px;
+  display: flex;
+}
+
+.Header-module__RjwBgW__header_text > h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.Header-module__RjwBgW__header_text > h2 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 0;
+}
+
+.Header-module__RjwBgW__header_university_logos {
+  gap: 5px;
+  display: flex;
+}
+
+.Header-module__RjwBgW__header_university_logos > img {
+  width: 35px;
+  height: auto;
+}
+
+@media (width <= 700px) {
+  .Header-module__RjwBgW__header {
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .Header-module__RjwBgW__header_text {
+    text-align: center;
+    align-items: center;
+  }
+
+  .Header-module__RjwBgW__header_text > h1 {
+    margin-bottom: 5px;
+    font-size: 18px;
+  }
+
+  .Header-module__RjwBgW__header_university_logos {
+    justify-content: center;
+  }
+}
+
+/*# sourceMappingURL=src_styles_components_Header_module_css_2bef753f._.single.css.map*/

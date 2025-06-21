@@ -1,0 +1,18 @@
+/* [project]/src/styles/components/Aside.module.css [client] (css) */
+.Aside-module__KYsCYq__aside_title {
+  height: 40px;
+  font-size: 20px;
+}
+
+.Aside-module__KYsCYq__aside_title_span {
+  color: var(--text-color-2);
+}
+
+.Aside-module__KYsCYq__aside_content {
+  background-color: var(--background-color-3);
+  border-radius: 8px;
+  height: 85%;
+  overflow-y: auto;
+}
+
+/*# sourceMappingURL=src_styles_components_Aside_module_css_2bef753f._.single.css.map*/

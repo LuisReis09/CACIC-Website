@@ -1,0 +1,27 @@
+.nav{
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    flex-wrap: wrap;
+    height: 40px;
+}
+
+.nav_link{
+    display: inline-block;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: 0.2s ease-in-out;
+}
+
+.nav_link:hover{
+    transform: scale(1.1);
+    /* font-weight: bold; */
+}
+.nav:has(.nav_link:hover) .nav_link:not(:hover){
+    transform: scale(0.95);
+    opacity: .5;
+}
+
+.current_route{
+    color: var(--text-color-2);
+}

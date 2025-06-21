@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/luis-/Documents/codigos/cacic-website/src/styles/globals.css"],"sourcesContent":[":root {\r\n    /* Color var */\r\n    --text-color-1: #fff;\r\n    --text-color-2: #FFC300;\r\n    --text-color-3: #6FFFE9;\r\n    --text-color-4: #ffffff83;\r\n    --background-color-1: #000814;\r\n    --background-color-2: #001D3D;\r\n    --background-color-3: #003566;\r\n\r\n    --button-color: #003566;\r\n\r\n    /* Font var */\r\n    --font-family-1: 'Poppins', sans-serif;\r\n    \r\n    --big-size: 25px;\r\n    --mid-size: 20px;\r\n    --small-size: 10px;\r\n    --text-size: 16px;\r\n}\r\n\r\nbody {\r\n    background-color: var(--background-color-1);\r\n    color: var(--text-color-1);\r\n}"],"names":[],"mappings":"AAAA;;;;;;;;;;;;;;;;AAqBA","debugId":null}},
+    {"offset": {"line": 24, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/luis-/Documents/codigos/cacic-website/src/styles/App.module.css"],"sourcesContent":["\r\n\r\n.App {\r\n    height: 100vh;\r\n    width: 100%;\r\n}"],"names":[],"mappings":"AAEA","debugId":null}}]
+}
