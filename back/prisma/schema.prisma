@@ -62,7 +62,7 @@ model Monitoria {
 
 model Admin {
   id    Int    @id @default(autoincrement())
-  login String
+  login String @unique
   senha String
 }
 
