@@ -57,6 +57,7 @@ model Monitoria {
   disciplina   String
   linkDiscord  String
   linkWhatsapp String
+  status       String @default("PENDENTE_APROVACAO")
   professorId  Int
   professor    Professor @relation(fields: [professorId], references: [id])
 }
@@ -110,4 +111,13 @@ enum StatusAluguel {
   RESERVADO
   INICIADO
   FINALIZADO
+}
+
+
+model GrupoWhatsapp {
+  id          Int      @id @default(autoincrement())
+  nome        String
+  link        String
+  descricao   String
+  imagem      String
 }

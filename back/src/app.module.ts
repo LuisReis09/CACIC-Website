@@ -10,9 +10,11 @@ import { JogosService } from './jogos/jogos.service';
 import { JogosController } from './jogos/jogos.controller';
 import { JogosModule } from './jogos/jogos.module';
 import { AluguelModule } from './aluguel/aluguel.module';
+import { MonitoriasModule } from './monitorias/monitorias.module';
+import { GruposModule } from './grupos/grupos.module';
 
 @Module({
-  imports: [ProfessoresModule, AuthModule, UsersModule, JogosModule, AluguelModule],
+  imports: [ProfessoresModule, AuthModule, UsersModule, JogosModule, AluguelModule, MonitoriasModule, GruposModule],
   controllers: [AppController, JogosController],
   providers: [
     AppService,

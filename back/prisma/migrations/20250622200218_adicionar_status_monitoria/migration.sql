@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Monitoria" ADD COLUMN     "status" TEXT NOT NULL DEFAULT 'PENDENTE_APROVACAO';

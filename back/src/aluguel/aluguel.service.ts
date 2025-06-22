@@ -3,6 +3,9 @@ import { PrismaService } from 'src/prisma.service';
 import { Cliente, Jogo } from 'src/jogos/jogos.service';
 import { JogosController } from 'src/jogos/jogos.controller';
 import * as nodemailer from 'nodemailer';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 export interface Aluguel {
     jogoId: number;
@@ -14,6 +17,9 @@ export interface Aluguel {
 @Injectable()
 export class AluguelService {
     constructor(private readonly prisma: PrismaService) {}
+
+    private readonly email_cacic = process.env.CACIC_EMAIL;
+    private readonly senha_cacic = process.env.CACIC_APP_PASSWORD;
 
     async requisitarAluguel(
         id_jogo: number,
@@ -106,6 +112,10 @@ export class AluguelService {
                     <div style="margin-top: 20px; background-color: #fff3cd; border: 1px solid #ffeeba; padding: 15px; border-radius: 6px; color: #000">
                         ⏳ Aguarde a aprovação do administrador para confirmar seu aluguel.
                     </div>
+
+                    <p style="margin-top: 20px; font-size: 15px; color: #333;">
+                        <strong>Importante:</strong> Para confirmar a reserva, por favor, apresente o comprovante do pagamento via PIX ao retirar o jogo na sala do Centro Acadêmico.
+                    </p>
 
                     <p style="margin-top: 30px; font-size: 14px; color: #999;">
                     Este é um e-mail automático, não responda.
@@ -200,6 +210,10 @@ export class AluguelService {
                     <div style="margin-top: 20px; background-color: #d1ecf1; border: 1px solid #bee5eb; padding: 15px; border-radius: 6px; color: #0c5460;">
                         📍 Compareça na sala do CA no horário de início do aluguel para utilizar seu jogo!
                     </div>
+
+                    <p style="margin-top: 20px; font-size: 15px; color: #333;">
+                        <strong>Importante:</strong> Para confirmar a reserva, por favor, apresente o comprovante do pagamento via PIX ao retirar o jogo na sala do Centro Acadêmico.
+                    </p>
 
                     <p style="margin-top: 30px; font-size: 14px; color: #999;">
                         Este é um e-mail automático, não responda.
@@ -328,13 +342,13 @@ export class AluguelService {
         const transporter = nodemailer.createTransport({
             service: 'gmail', // ou outro serviço SMTP
             auth: {
-                user: 'oneno9336@gmail.com',
-                pass: 'erdp klpi tykr fvif'
+                user: this.email_cacic,
+                pass: this.senha_cacic
             }
         });
 
         const mailOptions = {
-            from: 'oneno9336@gmail.com',
+            from: this.email_cacic,
             to: email,
             subject: assunto,
             html: mensagem,
