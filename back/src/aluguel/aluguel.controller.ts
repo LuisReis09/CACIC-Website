@@ -76,4 +76,15 @@ export class AluguelController {
         // Desbloqueia um cliente pelo ID
         return this.aluguelService.desbloquearCliente(id_cliente);
     }
+
+    @Public()
+    @Get("/testarEmail/:destino/:assunto/:mensagem")
+    async testarEmail(
+        @Param('destino') destino: string,
+        @Param('assunto') assunto: string,
+        @Param('mensagem') mensagem: string
+    ) {
+        // Testa o envio de e-mail
+        return this.aluguelService.enviar_email(destino, assunto, mensagem);
+    }
 }

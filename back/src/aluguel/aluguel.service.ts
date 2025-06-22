@@ -92,10 +92,25 @@ export class AluguelService {
         this.enviar_email(
             cliente.email,
             'Aluguel de Jogo',
-            `Seu pedido de aluguel foi realizado com sucesso. Jogo: ${aluguel.jogo.nome}
-            \n\nData/Hora de Início: ${aluguel.dataInicio}
-            \nData/Hora de Fim: ${aluguel.dataFim}
-            \n\nStatus: PENDENTE DE APROVACAO. Aguarde a aprovação do administrador.
+            `
+                <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+                    <h2 style="color: #000;">✅ Pedido de Aluguel Realizado com Sucesso!</h2>
+
+                    <p style="font-size: 16px; color: #555;">
+                    <strong>🎮 Jogo:</strong> <span style="color: #222;">${aluguel.jogo.nome}</span><br>
+                    <strong>📅 Data/Hora de Início:</strong> ${aluguel.dataInicio}<br>
+                    <strong>📅 Data/Hora de Fim:</strong> ${aluguel.dataFim}<br>
+                    <strong>🔖 Status:</strong> <b style="color: #FF3000;">PENDENTE DE APROVAÇÃO</b>
+                    </p>
+
+                    <div style="margin-top: 20px; background-color: #fff3cd; border: 1px solid #ffeeba; padding: 15px; border-radius: 6px; color: #000">
+                        ⏳ Aguarde a aprovação do administrador para confirmar seu aluguel.
+                    </div>
+
+                    <p style="margin-top: 30px; font-size: 14px; color: #999;">
+                    Este é um e-mail automático, não responda.
+                    </p>
+                </div>
             `
         );
 
@@ -171,10 +186,25 @@ export class AluguelService {
         this.enviar_email(
             aluguel.cliente.email,
             'Aprovação de Aluguel',
-            `Oba! Seu pedido de aluguel foi aprovado com sucesso. Jogo: ${aluguel.jogo.nome}
-            \n\nData/Hora de Início: ${aluguel.dataInicio}
-            \nData/Hora de Fim: ${aluguel.dataFim}
-            \n\nStatus: RESERVADO. Compareça na sala do CA no horário de início do aluguel!.
+            `
+                <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+                    <h2 style="color: #000;">🎉 Oba! Seu pedido de Aluguel foi <span style="color: #28a745;">Aprovado</span> com Sucesso!</h2>
+
+                    <p style="font-size: 16px; color: #555;">
+                        <strong>🎮 Jogo:</strong> <span style="color: #222;">${aluguel.jogo.nome}</span><br>
+                        <strong>📅 Data/Hora de Início:</strong> ${aluguel.dataInicio}<br>
+                        <strong>📅 Data/Hora de Fim:</strong> ${aluguel.dataFim}<br>
+                        <strong>🔖 Status:</strong> <b style="color: #28a745;">RESERVADO</b>
+                    </p>
+
+                    <div style="margin-top: 20px; background-color: #d1ecf1; border: 1px solid #bee5eb; padding: 15px; border-radius: 6px; color: #0c5460;">
+                        📍 Compareça na sala do CA no horário de início do aluguel para utilizar seu jogo!
+                    </div>
+
+                    <p style="margin-top: 30px; font-size: 14px; color: #999;">
+                        Este é um e-mail automático, não responda.
+                    </p>
+                </div>
             `
         );
 
@@ -209,11 +239,26 @@ export class AluguelService {
         this.enviar_email(
             aluguel.cliente.email,
             'Início de Aluguel',
-            `Seu aluguel foi iniciado com sucesso. Jogo: ${atualizarJogo.nome}
-            \n\nData/Hora de Início: ${aluguel.dataInicio}
-            \nData/Hora de Fim: ${aluguel.dataFim}
-            \n\nStatus: INICIADO. Aproveite o jogo!
-            \nLembre-se de devolver o jogo no horário combinado para evitar multas e bloqueios.
+            `
+                <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+                    <h2 style="color: #000;">🚀 Seu Aluguel foi <span style="color: #007bff;">Iniciado</span> com Sucesso!</h2>
+
+                    <p style="font-size: 16px; color: #555;">
+                        <strong>🎮 Jogo:</strong> <span style="color: #222;">${atualizarJogo.nome}</span><br>
+                        <strong>📅 Data/Hora de Início:</strong> ${aluguel.dataInicio}<br>
+                        <strong>📅 Data/Hora de Fim:</strong> ${aluguel.dataFim}<br>
+                        <strong>🔖 Status:</strong> <b style="color: #007bff;">INICIADO</b>
+                    </p>
+
+                    <div style="margin-top: 20px; background-color: #cce5ff; border: 1px solid #b8daff; padding: 15px; border-radius: 6px; color: #004085;">
+                        🎮 Aproveite seu jogo!<br>
+                        ⏰ <strong>Lembre-se:</strong> devolva o jogo no horário combinado para evitar multas e bloqueios.
+                    </div>
+
+                    <p style="margin-top: 30px; font-size: 14px; color: #999;">
+                        Este é um e-mail automático, não responda.
+                    </p>
+                </div>
         `,);
 
         return {
@@ -249,11 +294,26 @@ export class AluguelService {
         this.enviar_email(
             aluguel.cliente.email,
             'Finalização de Aluguel',
-            `Seu aluguel foi finalizado com sucesso. Jogo: ${atualizarJogo.nome}
-            \n\nData/Hora de Início: ${aluguel.dataInicio}
-            \nData/Hora de Fim: ${aluguel.dataFim}
-            \n\nStatus: FINALIZADO. Obrigado por jogar!
-            \nCaso tenha alguma dúvida ou sugestão, entre em contato conosco.
+            `
+                <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+                    <h2 style="color: #000;">🏁 Seu Aluguel foi <span style="color: #6c757d;">Finalizado</span> com Sucesso!</h2>
+
+                    <p style="font-size: 16px; color: #555;">
+                        <strong>🎮 Jogo:</strong> <span style="color: #222;">${atualizarJogo.nome}</span><br>
+                        <strong>📅 Data/Hora de Início:</strong> ${aluguel.dataInicio}<br>
+                        <strong>📅 Data/Hora de Fim:</strong> ${aluguel.dataFim}<br>
+                        <strong>🔖 Status:</strong> <b style="color: #6c757d;">FINALIZADO</b>
+                    </p>
+
+                    <div style="margin-top: 20px; background-color: #e2e3e5; border: 1px solid #d6d8db; padding: 15px; border-radius: 6px; color: #383d41;">
+                        ✅ Obrigado por jogar!<br>
+                        💬 Caso tenha alguma dúvida ou sugestão, entre em contato conosco.
+                    </div>
+
+                    <p style="margin-top: 30px; font-size: 14px; color: #999;">
+                        Este é um e-mail automático, não responda.
+                    </p>
+                </div>
         `);
 
         return {
@@ -268,16 +328,16 @@ export class AluguelService {
         const transporter = nodemailer.createTransport({
             service: 'gmail', // ou outro serviço SMTP
             auth: {
-                user: 'contatocacicufpb@gmail.com',
-                pass: '@Pravda2021'
+                user: 'oneno9336@gmail.com',
+                pass: 'erdp klpi tykr fvif'
             }
         });
 
         const mailOptions = {
-            from: 'contatocacicufpb@gmail.com',
+            from: 'oneno9336@gmail.com',
             to: email,
             subject: assunto,
-            text: mensagem,
+            html: mensagem,
         };
 
         try {
@@ -363,19 +423,49 @@ export class AluguelService {
             };
         }
 
+        // Monta tabela de jogos
+        const tabelaJogos = `
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2; text-align: left;">🎮 Jogo</th>
+                        <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2; text-align: left;">💰 Preço por Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${jogosDisponiveisFiltrados.map(jogo => `
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 8px;">${jogo.nome}</td>
+                            <td style="border: 1px solid #ddd; padding: 8px;">R$ ${jogo.precoPorHora.toFixed(2)}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+
         for (const cliente of clientes) {
             const mensagem = `
-                Olá ${cliente.nome},
+                <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+                    <h2 style="color: #000;">🎯 Jogos Disponíveis nas Próximas 2 Horas</h2>
 
-                Estes são os jogos disponíveis para as próximas 2 horas:
+                    <p style="font-size: 16px; color: #555;">
+                        Olá ${cliente.nome},<br><br>
+                        Confira abaixo os jogos disponíveis:
+                    </p>
 
-                ${jogosDisponiveisFiltrados.map(j => `- ${j.nome}`).join('\n')}
+                    ${tabelaJogos}
 
-                Aproveite para fazer sua reserva agora!
+                    <div style="margin-top: 20px; background-color: #d1ecf1; border: 1px solid #bee5eb; padding: 15px; border-radius: 6px; color: #0c5460;">
+                        ⚡ Aproveite para fazer sua reserva agora antes que alguém alugue!
+                    </div>
+
+                    <p style="margin-top: 30px; font-size: 14px; color: #999;">
+                        Este é um e-mail automático, não responda.
+                    </p>
+                </div>
             `;
 
-            // Dispara o e-mail de forma assíncrona
-            await this.enviar_email(cliente.email, 'Jogos Disponíveis', mensagem)
+            await this.enviar_email(cliente.email, '🎮 Jogos Disponíveis nas próximas 2 horas!', mensagem)
                 .catch(err => console.error(`Erro ao enviar e-mail para ${cliente.email}:`, err));
         }
 
@@ -405,12 +495,25 @@ export class AluguelService {
         this.enviar_email(
             cliente.email,
             'Bloqueio de Conta',
-            `Sua conta foi bloqueada por motivo de: ${motivo}
-            \nData do Bloqueio: ${cliente.dataBloqueio}
-            \nVocê não poderá alugar jogos até que a situação seja resolvida.
-            \nPor favor, não tente realizar novos aluguéis até então.
-            \n\nSe você acredita que isso foi um erro, entre em contato conosco para mais
-            \nPara mais informações, entre em contato conosco.
+            `
+                <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+                    <h2 style="color: #000;">🚫 Sua Conta foi <span style="color: #dc3545;">Bloqueada</span></h2>
+
+                    <p style="font-size: 16px; color: #555;">
+                        <strong>🛑 Motivo:</strong> <span style="color: #222;">${motivo}</span><br>
+                        <strong>📅 Data do Bloqueio:</strong> ${cliente.dataBloqueio}<br><br>
+                        ❌ <b style="color: #dc3545;">Você não poderá alugar jogos até que a situação seja resolvida.</b><br>
+                        🚫 Por favor, <b>não tente realizar novos aluguéis</b> até que o bloqueio seja removido.
+                    </p>
+
+                    <div style="margin-top: 20px; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; border-radius: 6px; color: #721c24;">
+                        ⚠️ Se você acredita que isso foi um erro, ou deseja resolver sua situação, <b>entre em contato conosco</b> para mais informações.
+                    </div>
+
+                    <p style="margin-top: 30px; font-size: 14px; color: #999;">
+                        Este é um e-mail automático, não responda.
+                    </p>
+                </div>
             `
         );
 
@@ -441,9 +544,23 @@ export class AluguelService {
         this.enviar_email(
             cliente.email,
             'Desbloqueio de Conta',
-            `Sua conta foi desbloqueada com sucesso.
-            \nVocê já pode alugar jogos novamente.
-            \n\nObrigado por sua compreensão e paciência.
+            `
+                <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+                    <h2 style="color: #000;">🔓 Sua Conta foi <span style="color: #28a745;">Desbloqueada</span> com Sucesso!</h2>
+
+                    <p style="font-size: 16px; color: #555;">
+                        ✅ Você já pode <b>alugar jogos novamente</b> normalmente.<br><br>
+                        🙌 Obrigado por sua compreensão e paciência.
+                    </p>
+
+                    <div style="margin-top: 20px; background-color: #d4edda; border: 1px solid #c3e6cb; padding: 15px; border-radius: 6px; color: #155724;">
+                        🎉 Aproveite os jogos disponíveis e boas partidas!
+                    </div>
+
+                    <p style="margin-top: 30px; font-size: 14px; color: #999;">
+                        Este é um e-mail automático, não responda.
+                    </p>
+                </div>
             `
         );
 
