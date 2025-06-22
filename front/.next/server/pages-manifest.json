@@ -2,9 +2,11 @@
   "/": "pages/index.js",
   "/Contato": "pages/Contato.js",
   "/Infos": "pages/Infos.js",
+  "/Jogos": "pages/Jogos.js",
   "/Sobre": "pages/Sobre.js",
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
+  "/infos/Monitorias": "pages/infos/Monitorias.js",
   "/infos/Professores": "pages/infos/Professores.js"
 }

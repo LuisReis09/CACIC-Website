@@ -471,14 +471,41 @@ __turbopack_context__.s({
     "default": (()=>__TURBOPACK__default__export__)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/jsx-dev-runtime.js [client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/react/index.js [client] (ecmascript)");
+(()=>{
+    const e = new Error("Cannot find module 'monitorias/MonitoriaList'");
+    e.code = 'MODULE_NOT_FOUND';
+    throw e;
+})();
+(()=>{
+    const e = new Error("Cannot find module 'monitorias/InscreverMonitoria'");
+    e.code = 'MODULE_NOT_FOUND';
+    throw e;
+})();
+;
+var _s = __turbopack_context__.k.signature();
+;
+;
 ;
 const Monitorias = ()=>{
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {}, void 0, false, {
+    _s();
+    const [na_lista, setScreen] = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$index$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"].useState(true);
+    if (na_lista) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(MonitoriaList, {
+        setScreen: setScreen
+    }, void 0, false, {
         fileName: "[project]/src/pages/infos/Monitorias.tsx",
-        lineNumber: 5,
-        columnNumber: 9
+        lineNumber: 14,
+        columnNumber: 16
+    }, this);
+    else return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(InscreverMonitoria, {
+        setScreen: setScreen
+    }, void 0, false, {
+        fileName: "[project]/src/pages/infos/Monitorias.tsx",
+        lineNumber: 16,
+        columnNumber: 16
     }, this);
 };
+_s(Monitorias, "4tfBaQ4JfrzynInUviiE88tF8qE=");
 _c = Monitorias;
 const __TURBOPACK__default__export__ = Monitorias;
 var _c;

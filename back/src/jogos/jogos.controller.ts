@@ -1,17 +1,20 @@
 import { Controller } from '@nestjs/common';
 import { JogosService, Jogo, Cliente } from './jogos.service';
 import { Get, Post, Param, Delete, Body, Patch } from '@nestjs/common';
+import { Public } from '../auth/decorators/public.decorator';
 
 
 @Controller('jogos')
 export class JogosController {
     constructor(private readonly jogosService: JogosService) {}
 
+    @Public()
     @Get("/listar")
     async listarJogos() {
         return this.jogosService.listar();
     }
 
+    @Public()
     @Get("/consultar/:id")
     async consultarJogo(@Param('id') id: number) {
         return this.jogosService.consultar(Number(id));
@@ -32,19 +35,20 @@ export class JogosController {
         return this.jogosService.deletar(Number(id));
     }
 
+    @Public()
     @Get("/buscar/:nome")
     async buscarJogoPorNome(@Param('nome') nome: string) {
         return this.jogosService.buscarPorNome(nome);
     }
 
-    @Post("/alugar/:id")
-    async alugarJogo(
-        @Param('id') id: number,
-        @Body('cliente') cliente: Cliente, 
-        @Body('horarios') horarios: {horaInicio: Date, horaFim: Date}
-    ){
-        return this.jogosService.alugar(Number(id), cliente, horarios.horaInicio, horarios.horaFim);
+    @Get("/indisponibilizar/:id")
+    async indisponibilizarJogo(@Param('id') id: number) {
+        return this.jogosService.indisponibilizar(Number(id));
     }
 
+    @Get("/disponibilizar/:id")
+    async disponibilizarJogo(@Param('id') id: number) {
+        return this.jogosService.disponibilizar(Number(id));
+    }
 
 }

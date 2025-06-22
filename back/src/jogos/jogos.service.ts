@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
+import * as QRCode from 'qrcode';
 
 export enum StatusJogo {
   DISPONIVEL = 'DISPONIVEL',
@@ -92,76 +93,26 @@ export class JogosService {
         });
     }
 
-    async alugar(
-      id: number,
-      cliente: Cliente,
-      dataInicio: Date,
-      dataFim: Date,
-    ): Promise<any> {
-      // Verifica se o cliente existe
-      let clienteExistente = await this.prisma.cliente.findUnique({
-        where: { cpf: cliente.cpf },
-      });
-
-      if (!clienteExistente) {
-        clienteExistente = await this.prisma.cliente.create({
-          data: {
-            cpf: cliente.cpf,
-            nome: cliente.nome,
-            email: cliente.email,
-            contato: cliente.contato,
-            bloqueado: false,
-            motivoBloqueio: null,
-            dataBloqueio: null,
-          },
+    async indisponibilizar(id: number) {
+        return this.prisma.jogo.update({
+            where: {
+                id: id
+            },
+            data: {
+                status: StatusJogo.INDISPONIVEL
+            }
         });
-      } else if (clienteExistente.bloqueado) {
-        return {
-          success: false,
-          message: `Cliente bloqueado: ${clienteExistente.motivoBloqueio}`,
-        };
-      }
-
-      const inicio = dataInicio;
-      const fim = dataFim;
-
-      // 🔥 Verifica se o jogo já está alugado nesse período
-      const alugueisConflitantes = await this.prisma.aluguel.findMany({
-        where: {
-          jogoId: id,
-          AND: [
-            { dataInicio: { lt: fim } },
-            { dataFim: { gt: inicio } },
-          ],
-        },
-      });
-
-      if (alugueisConflitantes.length > 0) {
-        return {
-          success: false,
-          message: 'Jogo já está alugado neste período.',
-          conflitos: alugueisConflitantes.map((a) => ({
-            de: a.dataInicio,
-            ate: a.dataFim,
-          })),
-        };
-      }
-
-      // 🔥 Cria o aluguel
-      const novoAluguel = await this.prisma.aluguel.create({
-        data: {
-          jogoId: id,
-          dataInicio: inicio,
-          dataFim: fim,
-          status: StatusAluguel.RESERVADO,
-          clienteId: clienteExistente.id,
-        },
-      });
-
-      return {
-        success: true,
-        message: 'Aluguel criado com sucesso.',
-        aluguel: novoAluguel,
-      };
     }
+
+    async disponibilizar(id: number) {
+        return this.prisma.jogo.update({
+            where: {
+                id: id
+            },
+            data: {
+                status: StatusJogo.DISPONIVEL
+            }
+        });
+    }
+
 }

@@ -95,7 +95,7 @@ const Header = ()=>{
         className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$styles$2f$components$2f$Header$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].header,
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("img", {
-                src: "assets/logo.svg",
+                src: "/assets/logo.svg",
                 alt: "logo do Centro Acadêmico de Ciência da Computação - UFPB",
                 onClick: ()=>router.push("/"),
                 style: {
@@ -129,7 +129,7 @@ const Header = ()=>{
                         className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$styles$2f$components$2f$Header$2e$module$2e$css__$5b$ssr$5d$__$28$css__module$29$__["default"].header_university_logos,
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("img", {
-                                src: "assets/ufpb_logo.svg",
+                                src: "/assets/ufpb_logo.svg",
                                 alt: "university_logo",
                                 style: {
                                     cursor: 'pointer'
@@ -141,7 +141,7 @@ const Header = ()=>{
                                 columnNumber: 21
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$externals$5d2f$react$2f$jsx$2d$dev$2d$runtime__$5b$external$5d$__$28$react$2f$jsx$2d$dev$2d$runtime$2c$__cjs$29$__["jsxDEV"])("img", {
-                                src: "assets/ci_logo.svg",
+                                src: "/assets/ci_logo.svg",
                                 alt: "center_logo",
                                 style: {
                                     cursor: 'pointer'

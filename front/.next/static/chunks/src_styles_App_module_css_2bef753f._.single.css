@@ -26,12 +26,20 @@
 }
 
 @media screen and (width <= 1200px) {
+  .App-module__hLHISa__App {
+    gap: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
   .App-module__hLHISa__content {
     flex-direction: column;
     align-items: center;
+    gap: 40px;
   }
 
   .App-module__hLHISa__main_frame {
+    gap: 20px;
     width: 100%;
     min-height: max-content;
   }

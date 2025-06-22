@@ -2,7 +2,7 @@
 CREATE TYPE "StatusJogo" AS ENUM ('DISPONIVEL', 'INDISPONIVEL', 'ALUGADO');
 
 -- CreateEnum
-CREATE TYPE "StatusAluguel" AS ENUM ('RESERVADO', 'INICIADO', 'FINALIZADO');
+CREATE TYPE "StatusAluguel" AS ENUM ('PENDENTE_APROVACAO', 'RESERVADO', 'INICIADO', 'FINALIZADO');
 
 -- CreateTable
 CREATE TABLE "Professor" (
@@ -12,8 +12,10 @@ CREATE TABLE "Professor" (
     "sala" TEXT NOT NULL,
     "departamento" TEXT NOT NULL,
     "areasDeInteresse" TEXT NOT NULL,
+    "laboratorios" TEXT NOT NULL,
     "disciplinas" TEXT NOT NULL,
     "linkedin" TEXT NOT NULL,
+    "imagem" TEXT NOT NULL,
 
     CONSTRAINT "Professor_pkey" PRIMARY KEY ("id")
 );
@@ -67,6 +69,7 @@ CREATE TABLE "Jogo" (
     "id" SERIAL NOT NULL,
     "nome" TEXT NOT NULL,
     "precoPorHora" DOUBLE PRECISION NOT NULL,
+    "imagem" TEXT NOT NULL,
     "status" "StatusJogo" NOT NULL,
 
     CONSTRAINT "Jogo_pkey" PRIMARY KEY ("id")
@@ -93,10 +96,13 @@ CREATE TABLE "Aluguel" (
     "clienteId" INTEGER NOT NULL,
     "dataInicio" TIMESTAMP(3) NOT NULL,
     "dataFim" TIMESTAMP(3) NOT NULL,
-    "status" "StatusAluguel" NOT NULL DEFAULT 'RESERVADO',
+    "status" "StatusAluguel" NOT NULL DEFAULT 'PENDENTE_APROVACAO',
 
     CONSTRAINT "Aluguel_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Admin_login_key" ON "Admin"("login");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Cliente_cpf_key" ON "Cliente"("cpf");

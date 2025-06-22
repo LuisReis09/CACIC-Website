@@ -9,9 +9,10 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { JogosService } from './jogos/jogos.service';
 import { JogosController } from './jogos/jogos.controller';
 import { JogosModule } from './jogos/jogos.module';
+import { AluguelModule } from './aluguel/aluguel.module';
 
 @Module({
-  imports: [ProfessoresModule, AuthModule, UsersModule, JogosModule],
+  imports: [ProfessoresModule, AuthModule, UsersModule, JogosModule, AluguelModule],
   controllers: [AppController, JogosController],
   providers: [
     AppService,

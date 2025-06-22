@@ -102,10 +102,11 @@ model Aluguel {
   cliente    Cliente       @relation(fields: [clienteId], references: [id])
   dataInicio DateTime
   dataFim    DateTime
-  status     StatusAluguel @default(RESERVADO)
+  status     StatusAluguel @default(PENDENTE_APROVACAO)
 }
 
 enum StatusAluguel {
+  PENDENTE_APROVACAO
   RESERVADO
   INICIADO
   FINALIZADO

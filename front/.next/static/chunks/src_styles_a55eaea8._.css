@@ -95,6 +95,22 @@
   color: var(--text-color-2);
 }
 
+@media screen and (width <= 1200px) {
+  .Nav-module__P5vZPW__nav {
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .Nav-module__P5vZPW__nav_link {
+    font-size: 14px;
+  }
+
+  .Nav-module__P5vZPW__current_route {
+    font-weight: bold;
+  }
+}
+
 
 /* [project]/src/styles/components/Aside.module.css [client] (css) */
 .Aside-module__KYsCYq__aside_title {
@@ -203,12 +219,20 @@ body {
 }
 
 @media screen and (width <= 1200px) {
+  .App-module__hLHISa__App {
+    gap: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
   .App-module__hLHISa__content {
     flex-direction: column;
     align-items: center;
+    gap: 40px;
   }
 
   .App-module__hLHISa__main_frame {
+    gap: 20px;
     width: 100%;
     min-height: max-content;
   }

@@ -28,4 +28,20 @@
   color: var(--text-color-2);
 }
 
+@media screen and (width <= 1200px) {
+  .Nav-module__P5vZPW__nav {
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .Nav-module__P5vZPW__nav_link {
+    font-size: 14px;
+  }
+
+  .Nav-module__P5vZPW__current_route {
+    font-weight: bold;
+  }
+}
+
 /*# sourceMappingURL=src_styles_components_Nav_module_css_2bef753f._.single.css.map*/

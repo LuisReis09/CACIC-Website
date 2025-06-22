@@ -20,7 +20,7 @@ const MonitoriaList: React.FC<MonitoriaListProps> = ({setScreen}) => {
 
             </div>
 
-            <p onClick={() => setScreen(false)}>Cadastrar Monitoria</p>
+            <p onClick={() => setScreen(false)} style={{cursor: "pointer"}}>Cadastrar Monitoria</p>
         </div>
     );
 }

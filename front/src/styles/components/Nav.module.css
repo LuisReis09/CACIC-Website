@@ -26,3 +26,18 @@
 .current_route{
     color: var(--text-color-2);
 }
+
+@media screen and (max-width: 1200px) {
+    .nav{
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    .nav_link{
+        font-size: 14px;
+    }
+    .current_route{
+        font-weight: bold;
+    }
+    
+}

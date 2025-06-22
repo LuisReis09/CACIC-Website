@@ -4,8 +4,8 @@ import React from 'react';
 import styles from '../../styles/infos/Monitorias.module.css';
 
 // Component Imports
-import MonitoriaList from 'monitorias/MonitoriaList';
-import InscreverMonitoria from 'monitorias/InscreverMonitoria';
+import MonitoriaList from './monitorias/MonitoriaList';
+import InscreverMonitoria from './monitorias/InscreverMonitoria';
 
 const Monitorias: React.FC = () => {
     const [na_lista, setScreen] = React.useState<boolean>(true);

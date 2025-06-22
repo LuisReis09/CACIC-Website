@@ -25,13 +25,20 @@
 }
 
 @media screen and (max-width: 1200px) {
+    .App {
+        margin-top: 15px;
+        margin-bottom: 15px;
+        gap: 20px;
+    }
     .content{
         flex-direction: column;
         align-items: center;
+        gap: 40px;
     }
     .main_frame{
         width: 100%;
         min-height: max-content;
+        gap: 20px;
     }
     .content > Aside{
         width: 100%;
