@@ -12,6 +12,45 @@ export class ProfessoresController {
     return this.professoresService.listar();
   }
 
+  @Get('/colunas')
+  async obterColunas() {
+    return [
+      { column: 'id', type: 'number' },
+      { column: 'nome', type: 'string', maxLength: 200 },
+      { column: 'email', type: 'string', maxLength: 200 },
+      { column: 'sala', type: 'string', maxLength: 30 },
+      { column: 'departamento', type: 'string', maxLength: 500},
+      { column: 'areasDeInteresse', type: 'string', maxLength: 500 },
+      { column: 'laboratorios', type: 'string', maxLength: 500 },
+      { column: 'disciplinas', type: 'string', maxLength: 500 },
+      { column: 'imagem', type: 'string'}
+    ];
+  }
+
+  @Get('/colunasFeedbacks')
+  async obterColunasFeedbacks() {
+    return [
+      { column: 'id', type: 'number' },
+      { column: 'professorId', type: 'number' },
+      { column: 'qtdFeedbacks', type: 'number' },
+      { column: 'didatica', type: 'number' },
+      { column: 'avaliacoes', type: 'number' },
+      { column: 'planejamento', type: 'number' },
+      { column: 'cordialidade', type: 'number' }
+    ];
+  }
+
+
+  @Get('/colunasVotantes')
+  async obterColunasVotantes() {
+    return [
+      { column: 'id', type: 'number' },
+      { column: 'cpf', type: 'string', maxLength: 20 },
+      { column: 'professorId', type: 'string', maxLength: 150 },
+
+    ];
+  }
+
   @Get('/consultar/:id')
   async consultar(@Param('id') id: number){
     return await this.professoresService.consultar(id);

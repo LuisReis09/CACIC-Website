@@ -14,6 +14,21 @@ export class MonitoriasController {
     }
 
     @Public()
+    @Get("/colunas")
+    async obterColunas() {
+        return [
+            { column: 'id', type: 'number' },
+            { column: 'monitores', type: 'string'},
+            { column: 'emailMonitor', type: 'string'},
+            { column: 'disciplina', type: 'string' },
+            { column: 'linkDiscord', type: 'string' },
+            { column: 'linkWhatsapp', type: 'string' },
+            { column: 'status', type: 'enum', options: ['PENDENTE_APROVACAO', 'APROVADA'] },
+            { column: 'professorID', type: 'number' }
+        ]
+    }
+
+    @Public()
     @Get("/listarAprovadas")
     async listarMonitoriasAprovadas() {
         return this.monitoriasService.listarAprovadas();

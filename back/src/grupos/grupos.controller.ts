@@ -11,6 +11,17 @@ export class GruposController {
         return this.gruposService.listar();
     }
 
+    @Get("/colunas")
+    async obterColunas() {
+        return [
+            { column: 'id', type: 'number' },
+            { column: 'nome', type: 'string', maxLength: 150 },
+            { column: 'link', type: 'string', maxLength: 200 },
+            { column: 'descricao', type: 'string', maxLength: 500 },
+            { column: 'imagem', type: 'string' }
+        ];
+    }
+
     @Post("/cadastrar")
     async cadastrar(@Body() grupo: { nome: string; link: string; descricao: string; imagem: string }) {
         return this.gruposService.cadastrar(grupo);

@@ -15,6 +15,18 @@ export class JogosController {
     }
 
     @Public()
+    @Get("/colunas")
+    async listarColunas() {
+        return [
+            { column: 'id', type: 'number' },
+            { column: 'nome', type: 'string', maxLength: 150 },
+            { column: 'precoPorHora', type: 'number' },
+            { column: 'imagem', type: 'string' },
+            { column: 'status', type: 'enum', options: ['DISPONIVEL', 'INDISPONIVEL', 'ALUGADO'] }
+        ]
+    }
+
+    @Public()
     @Get("/consultar/:id")
     async consultarJogo(@Param('id') id: number) {
         return this.jogosService.consultar(Number(id));

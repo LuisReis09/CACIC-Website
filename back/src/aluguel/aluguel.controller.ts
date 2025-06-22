@@ -19,6 +19,34 @@ export class AluguelController {
         return this.aluguelService.requisitarAluguel(id_jogo, cliente, horaInicio, horaFim);
     }
 
+    @Public()
+    @Get("/colunas")
+    async obterColunas() {
+        return [
+            { column: 'id', type: 'number'},
+            { column: 'jogoId', type:'number'},
+            { column: 'clienteId', type: 'number' },
+            { column: 'horaInicio', type: 'date' },
+            { column: 'horaFim', type: 'date' },
+            { column: 'status', type: 'enum', options: ['PENDENTE_APROVACAO', 'RESERVADO', 'INICIADO', 'FINALIZADO'] }
+        ];
+    }
+
+    @Public()
+    @Get("/colunasCliente")
+    async obterColunasCliente() {
+        return [
+            { column: 'id', type: 'number' },
+            { column: 'cpf', type: 'string', maxLength: 15 },
+            { column: 'nome', type: 'string', maxLength: 150 },
+            { column: 'email', type: 'string', maxLength: 150 },
+            { column: 'contato', type: 'string', maxLength: 20 },
+            { column: 'bloqueado', type: 'boolean', nullable: true, default: false },
+            { column: 'motivoBloqueio', type: 'string', maxLength: 500, nullable: true, default: '' },
+            { column: 'dataBloqueio', type: 'date', nullable: true, default: null }
+        ];
+    }
+
     @Get("/listar")
     async listarAlugueis() {
         return this.aluguelService.listar();
