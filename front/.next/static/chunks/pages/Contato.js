@@ -1,9 +1,0 @@
-__turbopack_load_page_chunks__("/Contato", [
-  "static/chunks/node_modules_next_dist_4f3d469a._.js",
-  "static/chunks/node_modules_react-dom_82bb97c6._.js",
-  "static/chunks/node_modules_2a5cf4bb._.js",
-  "static/chunks/[root-of-the-server]__d7b2cdad._.js",
-  "static/chunks/src_styles_Contato_module_dad94735.css",
-  "static/chunks/src_pages_Contato_5771e187._.js",
-  "static/chunks/src_pages_Contato_bd71efe8._.js"
-])

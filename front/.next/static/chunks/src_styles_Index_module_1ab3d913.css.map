@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/luis-/Documents/CACIC-Website/front/src/styles/Index.module.css"],"sourcesContent":[".intro_container{\r\n    display: flex;\r\n    justify-content: space-evenly;\r\n    align-items: center;\r\n}\r\n\r\n.ca_image{\r\n    min-width: 350px;\r\n    height: 350px;\r\n    background-color: white;\r\n}\r\n\r\n.intro_content{\r\n    display: flex;\r\n    flex-direction: column;\r\n    justify-content: space-between;\r\n    height: 350px;\r\n    width: 50%;\r\n}\r\n\r\n@media screen and (max-width: 1200px) {\r\n    .intro_container{\r\n        flex-direction: column;\r\n        align-items: center;\r\n    }\r\n    .ca_image{\r\n        min-width: 300px;\r\n        height: 300px;\r\n    }\r\n    .intro_content{\r\n        width: 80%;\r\n        margin: 0 auto;\r\n        min-height: 300px;\r\n    }\r\n}"],"names":[],"mappings":"AAAA;;;;;;AAMA;;;;;;AAMA;;;;;;;;AAQA;EACI;;;;;EAIA;;;;;EAIA","debugId":null}}]
-}
