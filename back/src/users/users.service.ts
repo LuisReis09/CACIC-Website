@@ -6,11 +6,12 @@ export type User = any;
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {
+  }
 
   async findOne(login: string) {
     return this.prisma.admin.findUnique({
-      where: { login },
+      where: { login: login },
     });
   }
 

@@ -30,14 +30,4 @@ export class AuthController {
   getProfile(@Request() req) {
     return req.user;
   }
-  @Public()
-  @Post('register')
-  @ApiBody({ type: RegisterDto })
-  @ApiResponse({
-    status: 201,
-    example: { message: 'Admin registered successfully', admin: { id: 1, login: 'admin' } },
-  })
-  async register(@Body() registerDto: any) {
-    return this.authService.register(registerDto);
-  }
 }

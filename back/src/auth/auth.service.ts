@@ -14,7 +14,14 @@ export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) {
+    this.register({
+      login: 'cacic.ci',
+      senha: '@Pravda2021',
+    }).catch((error) => {
+      console.error('Error registering admin');
+    });
+  }
 
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.usersService.findOne(username);
@@ -42,13 +49,14 @@ export class AuthService {
     return { access_token: accessToken };
   }
 
-  async register(registerDto: any): Promise<any> {
+  private async register(registerDto: any): Promise<any> {
     const { login, senha } = registerDto;
 
     // Verifica se o administrador já existe
     const existingAdmin = await this.usersService.findOne(login);
     if (existingAdmin) {
       throw new UnauthorizedException('Login already exists');
+      return;
     }
 
     // Hash da senha

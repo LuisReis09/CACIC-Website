@@ -21,6 +21,7 @@ model Professor {
   sala             String
   departamento     String
   areasDeInteresse String
+  laboratorios     String
   disciplinas      String
   linkedin         String
   imagem           String
@@ -70,6 +71,7 @@ model Jogo {
   id           Int        @id @default(autoincrement())
   nome         String
   precoPorHora Float
+  imagem       String
   status       StatusJogo
   alugueis     Aluguel[]
 }
