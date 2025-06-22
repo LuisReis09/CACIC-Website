@@ -618,17 +618,20 @@ const Nav = ()=>{
     _s();
     const pathname = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$client$5d$__$28$ecmascript$29$__["usePathname"])();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$router$2e$js__$5b$client$5d$__$28$ecmascript$29$__["useRouter"])();
-    const isActive = (path)=>pathname === path ? `${__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$styles$2f$components$2f$Nav$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].nav_link} ${__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$styles$2f$components$2f$Nav$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].current_route}` : __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$styles$2f$components$2f$Nav$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].nav_link;
+    const isActive = (path)=>{
+        if (pathname.toLowerCase().includes(path.toLowerCase())) return `${__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$styles$2f$components$2f$Nav$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].nav_link} ${__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$styles$2f$components$2f$Nav$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].current_route}`;
+        else return `${__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$styles$2f$components$2f$Nav$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].nav_link}`;
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
         className: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$styles$2f$components$2f$Nav$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].nav,
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
                 href: "/",
-                className: isActive("/"),
+                className: pathname == '/' ? `${__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$styles$2f$components$2f$Nav$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].nav_link} ${__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$styles$2f$components$2f$Nav$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].current_route}` : __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$styles$2f$components$2f$Nav$2e$module$2e$css__$5b$client$5d$__$28$css__module$29$__["default"].nav_link,
                 children: "Início"
             }, void 0, false, {
                 fileName: "[project]/src/pages/components/Nav.tsx",
-                lineNumber: 16,
+                lineNumber: 21,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
@@ -637,7 +640,7 @@ const Nav = ()=>{
                 children: "Informações Úteis"
             }, void 0, false, {
                 fileName: "[project]/src/pages/components/Nav.tsx",
-                lineNumber: 17,
+                lineNumber: 22,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
@@ -646,7 +649,16 @@ const Nav = ()=>{
                 children: "Sobre Nós"
             }, void 0, false, {
                 fileName: "[project]/src/pages/components/Nav.tsx",
-                lineNumber: 18,
+                lineNumber: 23,
+                columnNumber: 13
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
+                href: "/Contato",
+                className: isActive("/Contato"),
+                children: "Contato"
+            }, void 0, false, {
+                fileName: "[project]/src/pages/components/Nav.tsx",
+                lineNumber: 24,
                 columnNumber: 13
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$link$2e$js__$5b$client$5d$__$28$ecmascript$29$__["default"], {
@@ -655,13 +667,13 @@ const Nav = ()=>{
                 children: "Jogos"
             }, void 0, false, {
                 fileName: "[project]/src/pages/components/Nav.tsx",
-                lineNumber: 19,
+                lineNumber: 25,
                 columnNumber: 13
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/pages/components/Nav.tsx",
-        lineNumber: 15,
+        lineNumber: 20,
         columnNumber: 9
     }, this);
 };

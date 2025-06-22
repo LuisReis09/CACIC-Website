@@ -1,0 +1,39 @@
+.topic_card_box{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: space-between;
+    width: 180px;
+    height: 250px;
+
+    border-radius: 20px;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    box-shadow: -4px 4px 8px rgba(1, 0, 32, 0.6);
+
+    cursor: pointer;
+}
+
+.topic_name{
+    margin: 20px;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.topic_arrow_circle{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 10px;
+    width: 35px;
+    height: 35px;
+
+    border-radius: 50%;
+
+    background-color: var(--background-color-2);
+    box-shadow: inset -4 4 8px rgba(1, 0, 32, 0.6);
+}

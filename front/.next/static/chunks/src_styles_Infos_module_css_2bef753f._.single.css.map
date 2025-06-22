@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/src/styles/Infos.module.css"],"sourcesContent":[".infos_container {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}\n\n.h2{\n    margin: 40px 0px 50px 0px;\n    text-align: center;\n    font-weight: 500;\n\n    font-size: var(--big-size);\n    color: var(--text-color-2);\n}\n\n.topics_container{\n    display: flex;\n    justify-content: space-around;\n\n    width: 90%;\n}\n\n.topic_card{\n    transition: 0.2s ease-in-out; \n}\n\n.topics_container:has(.topic_card:hover) .topic_card:not(:hover) {\n    filter: grayscale(70%);\n}\n.topic_card:hover{\n    transform: scale(1.05);\n}"],"names":[],"mappings":"AAAA;;;;;;AAMA;;;;;;;;AASA;;;;;;AAOA;;;;AAIA;;;;AAGA"}}]
+}

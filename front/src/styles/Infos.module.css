@@ -15,7 +15,18 @@
 
 .topics_container{
     display: flex;
-    justify-content: space-between;
-    
+    justify-content: space-around;
+
     width: 90%;
+}
+
+.topic_card{
+    transition: 0.2s ease-in-out; 
+}
+
+.topics_container:has(.topic_card:hover) .topic_card:not(:hover) {
+    filter: grayscale(70%);
+}
+.topic_card:hover{
+    transform: scale(1.05);
 }

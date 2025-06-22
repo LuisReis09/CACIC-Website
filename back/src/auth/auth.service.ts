@@ -19,7 +19,7 @@ export class AuthService {
       login: 'cacic.ci',
       senha: '@Pravda2021',
     }).catch((error) => {
-      console.error('Error registering admin');
+      ;
     });
   }
 

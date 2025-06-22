@@ -2,5 +2,5 @@
   "version": 3,
   "sources": [],
   "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/src/styles/components/Aside.module.css"],"sourcesContent":[".aside_title{\r\n    font-size: 20px;\r\n    height: 40px;\r\n}\r\n\r\n.aside_title_span{\r\n    color: var(--text-color-2);\r\n}\r\n\r\n.aside_content{\r\n    height: 85%;\r\n    overflow-y: auto;\r\n    border-radius: 8px;\r\n    background-color: var(--background-color-3);\r\n}"],"names":[],"mappings":"AAAA;;;;;AAKA;;;;AAIA"}}]
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/src/styles/components/Aside.module.css"],"sourcesContent":[".aside_title{\n    font-size: 20px;\n    height: 40px;\n}\n\n.aside_title_span{\n    color: var(--text-color-2);\n}\n\n.aside_content{\n    height: 85%;\n    overflow-y: auto;\n    border-radius: 8px;\n    background-color: var(--background-color-3);\n}"],"names":[],"mappings":"AAAA;;;;;AAKA;;;;AAIA"}}]
 }

@@ -7,19 +7,18 @@ interface TopicCardProps{
     topico: string;
     onClick: Function;
     download?: boolean;
+    className?: string;
     img: string
 }
 
-const TopicCard: React.FC<TopicCardProps> = ({topico, onClick, download, img}) => {
+const TopicCard: React.FC<TopicCardProps> = ({topico, onClick, img, className}) => {
     const symbol = (if_download: any) => if_download ? "fa fa-download" : "fa fa-arrow-right";
 
     return (
-        <div className={styles.topic_card_box} onClick={() => onClick()}
-            style={{backgroundImage: `url(assets/topics/${img})`}}>
+        <div className={styles.topic_card_box + " " + className} onClick={() => onClick()}
+            style={{backgroundImage: `url(/topics/${img})`}}>
 
-            <div className={styles.topic_arrow_circle} >
-                <i className={symbol(download) + ' ' + styles.topic_arrow}></i>
-            </div>
+            <div className={styles.topic_arrow_circle} ></div>
 
             <p className={styles.topic_name}>{topico}</p>
         </div>

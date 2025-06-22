@@ -8,6 +8,7 @@
 }
 
 .Nav-module__P5vZPW__nav_link {
+  font-size: var(--mid-size);
   color: var(--text-color);
   text-decoration: none;
   transition: all .2s ease-in-out;
@@ -15,12 +16,12 @@
 }
 
 .Nav-module__P5vZPW__nav_link:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 .Nav-module__P5vZPW__nav:has(.Nav-module__P5vZPW__nav_link:hover) .Nav-module__P5vZPW__nav_link:not(:hover) {
-  opacity: .5;
-  transform: scale(.95);
+  opacity: .7;
+  transform: scale(.98);
 }
 
 .Nav-module__P5vZPW__current_route {

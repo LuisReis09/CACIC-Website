@@ -1,8 +1,8 @@
 import React from 'react';
 
 // Components Imports
-import ProfessorList from './ProfessorList';
-import ProfessorScreen from './ProfessorScreen';
+import ProfessorList from './professores/ProfessorList';
+import ProfessorScreen from './professores/ProfessorScreen';
 
 const Professores = () => {
     const [screen, setScreen] = React.useState<string>("lista");

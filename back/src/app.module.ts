@@ -6,16 +6,20 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { JogosService } from './jogos/jogos.service';
+import { JogosController } from './jogos/jogos.controller';
+import { JogosModule } from './jogos/jogos.module';
 
 @Module({
-  imports: [ProfessoresModule, AuthModule, UsersModule],
-  controllers: [AppController],
+  imports: [ProfessoresModule, AuthModule, UsersModule, JogosModule],
+  controllers: [AppController, JogosController],
   providers: [
     AppService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
+    JogosService,
   ],
 })
 export class AppModule {}
