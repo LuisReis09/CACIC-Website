@@ -62,6 +62,7 @@ export class MonitoriasController {
         return this.monitoriasService.deletar(id_monitoria);
     }
 
+    @Public()
     @Post("/SAC")
     async enviarEmailSAC(@Body() emailData: { email: string, assunto: string, mensagem: string }) {
         return this.monitoriasService.SAC(emailData.email, emailData.assunto, emailData.mensagem);

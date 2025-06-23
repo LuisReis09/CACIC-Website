@@ -1,0 +1,86 @@
+.admin_span_highlight {
+    color: var(--text-color-2);
+    font-weight: bold;
+}
+
+.admin_login_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 500px;
+    width: 100%;
+}
+
+.admin_login_inputs{
+    height: 35%;
+    min-height: max-content;
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.admin_login_input_container{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin_login_input_container > label{
+    width: 25%;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.admin_login_input_container > input{
+    width: 70%;
+    height: 40px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    padding-left: 10px;
+    font-size: 15px;
+    color: var(--text-color-1);
+    background-color: var(--background-color-1);
+}
+
+.admin_login_button{
+    padding: 10px 30px;
+    background-color: #003566;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.4s ease;
+}
+
+.admin_login_button:hover{
+    background-color: #004576;
+    scale: 1.1;
+}
+
+@media screen and (max-width: 1200px) {
+    .admin_login_inputs {
+        width: 80%;
+        gap: 40px;
+    }
+    .admin_login_input_container{
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    .admin_login_input_container > label {
+        width: 100%;
+        text-align: center;
+    }
+    .admin_login_input_container > input {
+        width: 90%;
+    }
+    
+}
