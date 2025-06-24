@@ -3,6 +3,9 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
 import * as bcrypt from 'bcrypt';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 interface JwtPayload {
   username: string;
@@ -16,8 +19,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {
     this.register({
-      login: 'cacic.ci',
-      senha: '@Pravda2021',
+      login: process.env.ADMIN_LOGIN,
+      senha: process.env.ADMIN_PASSWORD,
     }).catch((error) => {
       ;
     });

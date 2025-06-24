@@ -115,4 +115,22 @@ export class AluguelController {
         // Testa o envio de e-mail
         return this.aluguelService.enviar_email(destino, assunto, mensagem);
     }
+
+    @Get("/desativarServicoJogos")
+    async desativarServicoJogos() {
+        // Desativa o serviço de jogos
+        return this.aluguelService.desativarServicoJogosAgora();
+    }
+
+    @Get("/agendarDesativacaoServicoJogos/:hora")
+    async agendarDesativacaoServicoJogos(@Param('hora') hora: string) {
+        // Agenda a desativação do serviço de jogos para uma hora específica
+        return this.aluguelService.agendarDesativacaoServicoJogos(hora);
+    }
+
+    @Get("/ativarServicoJogos")
+    async ativarServicoJogos() {
+        // Ativa o serviço de jogos
+        return this.aluguelService.ativarServicoJogosAgora();
+    }
 }

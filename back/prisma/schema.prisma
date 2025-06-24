@@ -66,6 +66,7 @@ model Admin {
   id    Int    @id @default(autoincrement())
   login String @unique
   senha String
+  servicoJogosAtivo Boolean @default(false)
 }
 
 model Jogo {

@@ -32,8 +32,8 @@ const Login: React.FC = () => {
             if (data.access_token) {
                 // Armazena o token no contexto
                 setToken(data.access_token);
-                // Muda a tela para 'select'
-                setScreen('select');
+                // Muda a tela para 'listar'
+                setScreen('listar');
             }else{
                 // Se não, exibe uma mensagem de erro
                 alert('Login ou senha incorretos. Tente novamente.');

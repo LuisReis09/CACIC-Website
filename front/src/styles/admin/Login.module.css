@@ -9,13 +9,15 @@
     align-items: center;
     justify-content: space-around;
     height: 500px;
-    width: 100%;
+    width: 40%;
+    background-color: #001D3D;
+    box-shadow: -5px 5px 0px rgba(111, 255, 253, 0.5);
 }
 
 .admin_login_inputs{
     height: 35%;
     min-height: max-content;
-    width: 45%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -47,6 +49,11 @@
     background-color: var(--background-color-1);
 }
 
+.admin_login_input_container > input:focus{
+    border: 2px solid var(--text-color-2);
+    box-shadow: 0 0 3px var(--text-color-2);
+}
+
 .admin_login_button{
     padding: 10px 30px;
     background-color: #003566;
@@ -66,8 +73,12 @@
 }
 
 @media screen and (max-width: 1200px) {
-    .admin_login_inputs {
+    .admin_login_container {
         width: 80%;
+    }
+
+    .admin_login_inputs {
+        width: 100%;
         gap: 40px;
     }
     .admin_login_input_container{

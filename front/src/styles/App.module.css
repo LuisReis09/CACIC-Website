@@ -39,10 +39,8 @@
 }
 
 .admin_App > div{
-    width: 75%;
     padding: 20px;
     min-height: max-content;
-    background-color: #001D3D;
     margin-bottom: 20px;
     border-radius: 15px;
 }

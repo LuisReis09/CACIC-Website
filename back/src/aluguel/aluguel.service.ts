@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Cliente, Jogo } from 'src/jogos/jogos.service';
 import { JogosController } from 'src/jogos/jogos.controller';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { Logger } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import * as dotenv from 'dotenv';
 
@@ -20,6 +22,9 @@ export class AluguelService {
 
     private readonly email_cacic = process.env.CACIC_EMAIL;
     private readonly senha_cacic = process.env.CACIC_APP_PASSWORD;
+    private readonly logger = new Logger(AluguelService.name);
+
+    private hora_desativacao: string = '17:00:00'; // 17h
 
     async requisitarAluguel(
         id_jogo: number,
@@ -583,5 +588,77 @@ export class AluguelService {
             message: 'Cliente desbloqueado com sucesso.',
             cliente: cliente,
         };
+    }
+
+    @Cron('0 0 8 * * 1-5')
+    async ativarServicoJogos(): Promise<void> {
+        return this.prisma.admin.update({
+            where: { id: 1 }, // Só existe um admin
+            data: { servicoJogosAtivo: true },
+        }).then(() => {
+            console.log('Serviço de Jogos ativado com sucesso.');
+        }).catch((error) => {
+            console.error('Erro ao ativar o serviço de Jogos:', error);
+        });
+    }
+
+    async ativarServicoJogosAgora(): Promise<any> {
+        return this.prisma.admin.update({
+            where: { id: 1 }, // Só existe um admin
+            data: { servicoJogosAtivo: true },
+        }).then(() => {
+            return { success: true, message: 'Serviço de Jogos ativado com sucesso.' };
+        }).catch((error) => {
+            return { success: false, message: 'Erro ao ativar o serviço de Jogos.', error };
+        });
+    }
+
+    @Cron('0 17 * * * *')
+    async redefinirVariavel(): Promise<void> {
+        this.hora_desativacao = '17:00:00';
+    }
+
+    @Cron(CronExpression.EVERY_HOUR)
+    async desativarServicoJogos(): Promise<void> {
+        const agora = new Date();
+        const horaAtual = agora.getHours();
+
+        const horaDesativar = parseInt(this.hora_desativacao.split(':')[0]);
+
+        if (horaAtual === horaDesativar) {
+            await this.prisma.admin.updateMany({
+                data: { servicoJogosAtivo: false },
+            });
+        }
+    }
+
+    async agendarDesativacaoServicoJogos(hora: string): Promise<void> {
+        this.hora_desativacao = hora;
+    }
+
+    async desativarServicoJogosAgora(): Promise<any> {
+        await this.prisma.admin.updateMany({
+            data: { servicoJogosAtivo: false },
+        });
+    }
+
+    @Cron('0 0 12 * * 5')
+    async desativarServicoJogosSexta(): Promise<void> {
+        const hoje = new Date();
+        if (hoje.getDay() === 5) {
+            await this.prisma.admin.updateMany({
+                data: { servicoJogosAtivo: false },
+            });
+            this.logger.log('Serviço de Jogos desativado às 12h na sexta-feira.');
+        }
+    }
+
+    async verificarServicoJogosAtivo(): Promise<boolean> {
+        const admin = await this.prisma.admin.findUnique({
+            where: { id: 1 }, // Só existe um admin
+            select: { servicoJogosAtivo: true },
+        });
+
+        return admin ? admin.servicoJogosAtivo : false;
     }
 }
