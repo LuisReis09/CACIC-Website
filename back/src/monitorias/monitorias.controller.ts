@@ -13,7 +13,6 @@ export class MonitoriasController {
         return this.monitoriasService.listar();
     }
 
-    @Public()
     @Get("/colunas")
     async obterColunas() {
         return [

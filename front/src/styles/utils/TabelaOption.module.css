@@ -1,0 +1,11 @@
+.tabelaSelect{
+    padding: 10px 25px;
+    background-color: #001228;
+    border: none;
+    outline: none;
+    border-radius: 5px; 
+    color: var(--text-color-1);
+    font-weight: bold;
+    width: fit-content;
+    font-size: 20px;
+}

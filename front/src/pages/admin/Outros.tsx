@@ -7,10 +7,7 @@ const Outros: React.FC = () => {
             <Nav />
 
             <div>
-                <div>
-                    <button >Desligar Serviço de Jogos</button>
-
-                </div>
+                
             </div>
         </div>
     );

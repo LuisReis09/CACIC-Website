@@ -19,7 +19,6 @@ export class AluguelController {
         return this.aluguelService.requisitarAluguel(id_jogo, cliente, horaInicio, horaFim);
     }
 
-    @Public()
     @Get("/colunas")
     async obterColunas() {
         return [
@@ -32,8 +31,7 @@ export class AluguelController {
         ];
     }
 
-    @Public()
-    @Get("/colunasCliente")
+    @Get("/clientes/colunas")
     async obterColunasCliente() {
         return [
             { column: 'id', type: 'number' },

@@ -12,6 +12,11 @@ export class ProfessoresController {
     return this.professoresService.listar();
   }
 
+  @Get('/feedbacks/listar')
+  async listarFeedbacks() {
+    return this.professoresService.listarFeedbacks();
+  }
+
   @Get('/colunas')
   async obterColunas() {
     return [
@@ -27,7 +32,7 @@ export class ProfessoresController {
     ];
   }
 
-  @Get('/colunasFeedbacks')
+  @Get('/feedbacks/colunas')
   async obterColunasFeedbacks() {
     return [
       { column: 'id', type: 'number' },
@@ -41,7 +46,7 @@ export class ProfessoresController {
   }
 
 
-  @Get('/colunasVotantes')
+  @Get('/votantes/colunas')
   async obterColunasVotantes() {
     return [
       { column: 'id', type: 'number' },
@@ -56,7 +61,7 @@ export class ProfessoresController {
     return await this.professoresService.consultar(id);
   }
 
-  @Post('/inserir')
+  @Post('/cadastrar')
   async inserir(@Body() professor: Professor) {
     return this.professoresService.inserir(professor);
   }

@@ -14,7 +14,6 @@ export class JogosController {
         return this.jogosService.listar();
     }
 
-    @Public()
     @Get("/colunas")
     async listarColunas() {
         return [

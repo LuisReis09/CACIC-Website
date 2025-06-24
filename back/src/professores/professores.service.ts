@@ -31,11 +31,15 @@ export class ProfessoresService {
   constructor(private readonly prisma: PrismaService) {}
 
   async listar() {
-    return this.prisma.professor.findMany({
-      include: {
-        feedbacks: true,
-      },
-    });
+    return this.prisma.professor.findMany({});
+  }
+
+  async listarFeedbacks() {
+    return this.prisma.feedback.findMany({});
+  }
+
+  async listarVotantes() {
+    return this.prisma.votante.findMany({});
   }
 
   async consultar(id: number) {
