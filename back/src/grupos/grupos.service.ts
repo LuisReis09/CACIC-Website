@@ -13,6 +13,14 @@ export class GruposService {
         });
     }
 
+    async consultar(id_grupo: number) {
+        return this.prisma.grupoWhatsapp.findUnique({
+            where: {
+                id: id_grupo,
+            },
+        });
+    }
+
     async cadastrar(grupo: { nome: string; link: string; descricao: string, imagem: string }) {
         return this.prisma.grupoWhatsapp.create({
             data: {

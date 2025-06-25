@@ -45,6 +45,11 @@ export class AluguelController {
         ];
     }
 
+    @Get("/clientes/consultar/:id_cliente")
+    async consultarCliente(@Param('id_cliente') id_cliente: number) {
+        return this.aluguelService.consultarCliente(id_cliente);
+    }
+
     @Get("/listar")
     async listarAlugueis() {
         return this.aluguelService.listar();
@@ -63,6 +68,11 @@ export class AluguelController {
     @Get("/listarAlugados")
     async listarAlugados() {
         return this.aluguelService.listarAlugados();
+    }
+
+    @Get("/consultar/:id")
+    async consultarAluguel(@Param('id') id: number) {
+        return this.aluguelService.consultarAluguel(id);
     }
 
     @Get("/aprovar/:id_aluguel")

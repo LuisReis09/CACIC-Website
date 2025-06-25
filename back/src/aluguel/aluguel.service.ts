@@ -145,6 +145,30 @@ export class AluguelService {
         });
     }
 
+    async consultarAluguel(id_aluguel: number): Promise<any> {
+        const aluguel = await this.prisma.aluguel.findUnique({
+            where: { id: id_aluguel }
+        });
+    }
+
+    async consultarCliente(id_cliente: number): Promise<any> {
+        const cliente = await this.prisma.cliente.findUnique({
+            where: { id: id_cliente },
+        });
+
+        if (!cliente) {
+            return {
+                success: false,
+                message: 'Cliente não encontrado.',
+            };
+        }
+
+        return {
+            success: true,
+            cliente: cliente,
+        };
+    }
+
     async listarPendentes(): Promise<any> {
         return this.prisma.aluguel.findMany({
             where: {

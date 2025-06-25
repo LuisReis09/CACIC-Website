@@ -22,6 +22,11 @@ export class GruposController {
         ];
     }
 
+    @Get("/consultar/:id_grupo")
+    async consultar(@Param('id_grupo') id_grupo: number) {
+        return this.gruposService.consultar(id_grupo);
+    }
+
     @Post("/cadastrar")
     async cadastrar(@Body() grupo: { nome: string; link: string; descricao: string; imagem: string }) {
         return this.gruposService.cadastrar(grupo);
