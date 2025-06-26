@@ -12,8 +12,8 @@ dotenv.config();
 export interface Aluguel {
     jogoId: number;
     clienteId: number;
-    horaInicio: Date;
-    horaFim: Date;
+    horaInicio: number;
+    horaFim: number;
 }
 
 @Injectable()
@@ -30,8 +30,8 @@ export class AluguelService {
     async requisitarAluguel(
         id_jogo: number,
         cliente: Cliente,
-        horaInicio: Date,
-        horaFim: Date
+        horaInicio: number,
+        horaFim: number
     ) : Promise<any> {
         // Verifica se o cliente existe
         let clienteExistente = await this.prisma.cliente.findUnique({
@@ -60,10 +60,10 @@ export class AluguelService {
         const conflitos = await this.prisma.aluguel.findMany({
             where: {
                 jogoId: id_jogo,
-                dataInicio: {
+                horaInicio: {
                     lte: horaFim,
                 },
-                dataFim: {
+                horaFim: {
                     gte: horaInicio,
                 },
             },
@@ -74,8 +74,8 @@ export class AluguelService {
                 success: false,
                 message: 'Jogo já está alugado nesse período.',
                 conflitos: conflitos.map((a) => ({
-                    de: a.dataInicio,
-                    ate: a.dataFim,
+                    de: a.horaInicio,
+                    ate: a.horaFim,
                 })),
             };
         }
@@ -85,8 +85,8 @@ export class AluguelService {
             data: {
                 jogoId: id_jogo,
                 clienteId: clienteExistente.id,
-                dataInicio: horaInicio,
-                dataFim: horaFim,
+                horaInicio: horaInicio,
+                horaFim: horaFim,
             },
             include: {
                 jogo: true,
@@ -110,8 +110,8 @@ export class AluguelService {
 
                     <p style="font-size: 16px; color: #555;">
                     <strong>🎮 Jogo:</strong> <span style="color: #222;">${aluguel.jogo.nome}</span><br>
-                    <strong>📅 Data/Hora de Início:</strong> ${aluguel.dataInicio}<br>
-                    <strong>📅 Data/Hora de Fim:</strong> ${aluguel.dataFim}<br>
+                    <strong>📅 Data/Hora de Início:</strong> ${aluguel.horaInicio}<br>
+                    <strong>📅 Data/Hora de Fim:</strong> ${aluguel.horaFim}<br>
                     <strong>🔖 Status:</strong> <b style="color: #FF3000;">PENDENTE DE APROVAÇÃO</b>
                     </p>
 
@@ -152,7 +152,7 @@ export class AluguelService {
 
     async atualizarAluguel(
         id: number,
-        aluguel: { jogoId?: number; clienteId?: number; dataInicio?: Date; dataFim?: Date; status?: string }
+        aluguel: { jogoId?: number; clienteId?: number; horaInicio?: number; horaFim?: number; status?: string }
     ): Promise<any> {
         const aluguelAtualizado = await this.prisma.aluguel.update({
             where: { id: id },
@@ -175,8 +175,8 @@ export class AluguelService {
                 this.aprovarAluguel(
                     aluguelAtualizado.cliente.email,
                     aluguelAtualizado.jogo.nome,
-                    aluguelAtualizado.dataInicio.toISOString(),
-                    aluguelAtualizado.dataFim.toISOString(),
+                    aluguelAtualizado.horaInicio.toISOString(),
+                    aluguelAtualizado.horaFim.toISOString(),
                     String(aluguelAtualizado.jogo.precoPorHora.toFixed(2))
                 );
                 break;
@@ -184,16 +184,16 @@ export class AluguelService {
                 this.iniciarAluguel(
                     aluguelAtualizado.cliente.email,
                     aluguelAtualizado.jogo.nome,
-                    aluguelAtualizado.dataInicio.toISOString(),
-                    aluguelAtualizado.dataFim.toISOString()
+                    aluguelAtualizado.horaInicio.toISOString(),
+                    aluguelAtualizado.horaFim.toISOString()
                 );
                 break;
             case StatusAluguel.FINALIZADO:
                 this.finalizarAluguel(
                     aluguelAtualizado.cliente.email,
                     aluguelAtualizado.jogo.nome,
-                    aluguelAtualizado.dataInicio.toISOString(),
-                    aluguelAtualizado.dataFim.toISOString()
+                    aluguelAtualizado.horaInicio.toISOString(),
+                    aluguelAtualizado.horaFim.toISOString()
                 );
                 break;
         }
@@ -298,6 +298,7 @@ export class AluguelService {
 
                     <p style="margin-top: 20px; font-size: 15px; color: #333;">
                         <strong>Importante:</strong> Para confirmar a reserva, por favor, apresente o comprovante do pagamento via PIX ao retirar o jogo na sala do Centro Acadêmico.
+                        Para a retirada, apresente-se na sala do CA entre ${Number(hora_inicio)-1}:55 e ${hora_inicio}:05.
                     </p>
 
                     <p style="margin-top: 30px; font-size: 14px; color: #999;">
@@ -330,7 +331,8 @@ export class AluguelService {
 
                     <div style="margin-top: 20px; background-color: #cce5ff; border: 1px solid #b8daff; padding: 15px; border-radius: 6px; color: #004085;">
                         🎮 Aproveite seu jogo!<br>
-                        ⏰ <strong>Lembre-se:</strong> devolva o jogo no horário combinado para evitar multas e bloqueios.
+                        ⏰ <strong>Lembre-se:</strong> devolva o jogo no horário combinado para evitar multas e bloqueios. <br>
+                        Para a devolução, apresente-se na sala do CA entre ${Number(hora_fim)-1}:55 e ${hora_fim}:05.
                     </div>
 
                     <p style="margin-top: 30px; font-size: 14px; color: #999;">
@@ -442,8 +444,8 @@ export class AluguelService {
             where: {
                 status: 'RESERVADO',
                 AND: [
-                    { dataInicio: { lt: daquiDuasHoras } },
-                    { dataFim: { gt: agora } },
+                    { horaInicio: { lt: daquiDuasHoras } },
+                    { horaFim: { gt: agora } },
                 ],
             },
             select: { jogoId: true },
@@ -581,18 +583,6 @@ export class AluguelService {
         );
     }
 
-    @Cron('0 0 8 * * 1-5')
-    async ativarServicoJogos(): Promise<void> {
-        return this.prisma.admin.update({
-            where: { id: 1 }, // Só existe um admin
-            data: { servicoJogosAtivo: true },
-        }).then(() => {
-            console.log('Serviço de Jogos ativado com sucesso.');
-        }).catch((error) => {
-            console.error('Erro ao ativar o serviço de Jogos:', error);
-        });
-    }
-
     async ativarServicoJogosAgora(): Promise<any> {
         return this.prisma.admin.update({
             where: { id: 1 }, // Só existe um admin
@@ -611,7 +601,7 @@ export class AluguelService {
     }
 
     @Cron(CronExpression.EVERY_HOUR)
-    async desativarServicoJogos(): Promise<void> {
+    async verificarServicoJogos(): Promise<void> {
         const agora = new Date();
         const horaAtual = agora.getHours();
 

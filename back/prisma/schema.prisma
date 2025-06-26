@@ -102,8 +102,8 @@ model Aluguel {
   jogo       Jogo          @relation(fields: [jogoId], references: [id])
   clienteId  Int
   cliente    Cliente       @relation(fields: [clienteId], references: [id])
-  dataInicio DateTime
-  dataFim    DateTime
+  horaInicio Int
+  horaFim    Int
   status     StatusAluguel @default(PENDENTE_APROVACAO)
 }
 
