@@ -1,5 +1,8 @@
 import React from 'react';
 
+// Styles Imports
+import styles from '../../../styles/infos/ProfessorScreen.module.css'
+
 interface ProfessorScreenProps{
     setScreen: Function;
     prof: any;

@@ -9,6 +9,7 @@ export enum StatusJogo {
 }
 
 export enum StatusAluguel {
+  PENDENTE_APROVACAO = 'PENDENTE_APROVACAO',
   RESERVADO = 'RESERVADO',
   INICIADO = 'INICIADO',
   FINALIZADO = 'FINALIZADO',
@@ -47,9 +48,6 @@ export class JogosService {
         return this.prisma.jogo.findUnique({
             where: {
                 id: id
-            },
-            include: {
-                alugueis: true,
             }
         });
     }
@@ -82,12 +80,16 @@ export class JogosService {
         });
     }
 
-    async buscarPorNome(nome: string) {
+    async deletarTodos() {
+        return this.prisma.jogo.deleteMany({});
+    }
+
+    async buscar(filtro: string, parametro: string) {
         return this.prisma.jogo.findMany({
             where: {
-                nome: {
-                    contains: nome,
-                    mode: 'insensitive'
+                [filtro]: {
+                    contains: parametro,
+                    mode: 'insensitive' // Ignora maiúsculas/minúsculas
                 }
             }
         });

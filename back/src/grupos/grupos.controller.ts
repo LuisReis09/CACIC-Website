@@ -22,23 +22,34 @@ export class GruposController {
         ];
     }
 
-    @Get("/consultar/:id_grupo")
-    async consultar(@Param('id_grupo') id_grupo: number) {
-        return this.gruposService.consultar(id_grupo);
+    @Get("/consultar/:id")
+    async consultar(@Param('id') id: number) {
+        return this.gruposService.consultar(Number(id));
     }
 
     @Post("/cadastrar")
     async cadastrar(@Body() grupo: { nome: string; link: string; descricao: string; imagem: string }) {
+        console.log("Grupo recebido:", grupo);
         return this.gruposService.cadastrar(grupo);
     }
 
-    @Delete("/deletar/:id_grupo")
-    async deletar(@Param('id_grupo') id_grupo: number) {
-        return this.gruposService.deletar(id_grupo);
+    @Delete("/deletar/:id")
+    async deletar(@Param('id') id: number) {
+        return this.gruposService.deletar(Number(id));
     }
 
-    @Patch("/atualizar/:id_grupo")
-    async atualizar(@Param('id_grupo') id_grupo: number, @Body() grupo: { nome?: string; link?: string; descricao?: string; imagem?: string }) {
-        return this.gruposService.atualizar(id_grupo, grupo);
+    @Delete("/deletar")
+    async deletarTodos() {
+        return this.gruposService.deletarTodos();
+    }
+
+    @Patch("/atualizar/:id")
+    async atualizar(@Param('id') id: number, @Body() grupo: { nome?: string; link?: string; descricao?: string; imagem?: string }) {
+        return this.gruposService.atualizar(id, grupo);
+    }
+
+    @Get("/buscar/:filtro/:parametro")
+    async buscar(@Param('filtro') filtro: string, @Param('parametro') parametro: string) {
+        return this.gruposService.buscar(filtro, parametro);
     }
 }

@@ -32,6 +32,12 @@ export class MonitoriasService {
         });
     }
 
+    async consultar(id_monitoria: number) {
+        return this.prisma.monitoria.findUnique({
+            where: { id: id_monitoria }
+        });
+    }
+
     async listarPendentes(){
         return this.prisma.monitoria.findMany({
             where: {
@@ -68,18 +74,32 @@ export class MonitoriasService {
         });
     }
 
-    async atualizar(id: number, monitoria: Monitoria) {
-        return this.prisma.monitoria.update({
+    async atualizar(id: number, monitoria: Monitoria, motivoRejeicao?: string) {
+        const monit = await this.prisma.monitoria.findUnique({
+            where: { id },
+        });
+
+        const monit_atualizada = await this.prisma.monitoria.update({
             where: { id },
             data: {
-                monitores: monitoria.monitores,
-                emailMonitor: monitoria.emailMonitor,
-                disciplina: monitoria.disciplina,
-                linkDiscord: monitoria.linkDiscord,
-                linkWhatsapp: monitoria.linkWhatsapp,
-                professorId: monitoria.professorId,
+                monitores:      monitoria.monitores,
+                emailMonitor:   monitoria.emailMonitor,
+                disciplina:     monitoria.disciplina,
+                linkDiscord:    monitoria.linkDiscord,
+                linkWhatsapp:   monitoria.linkWhatsapp,
+                professorId:    monitoria.professorId,
+                status:         monitoria.status, // Pode ser 'PENDENTE', 'APROVADA', etc.
             },
         });
+
+        if(monit?.status === 'PENDENTE' && monit_atualizada.status === 'APROVADA'){
+            // Se a monitoria foi aprovada, envia o e-mail de aprovação:
+            this.aprovar(monitoria.emailMonitor);
+            
+        }else if(monit?.status === 'PENDENTE' && monit_atualizada.status === 'REPROVADA'){
+            // Se a monitoria foi reprovada, envia o e-mail de reprovação:
+            this.reprovar(monitoria.emailMonitor, motivoRejeicao || 'Motivo não especificado');
+        }
     }
 
     async deletar(id: number) {
@@ -88,17 +108,15 @@ export class MonitoriasService {
         });
     }
 
-    async aprovar(id: number) {
-        const monitoria = await this.prisma.monitoria.update({
-            where: { id },
-            data: {
-                status: 'APROVADA',
-            },
-        });
+    async deletarTodos() {
+        // Deleta todas as monitorias do banco de dados:
+        return this.prisma.monitoria.deleteMany({});
+    }
 
+    async aprovar(email_monitor: string) {
         // Envia o e-mail de aprovação para o monitor:
         this.enviarEmail(
-            monitoria.emailMonitor,
+            email_monitor,
             'Monitoria Aprovada',
             `
                 <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
@@ -126,19 +144,13 @@ export class MonitoriasService {
                 </div>
             `
         )
-
-        return monitoria;
     }
 
-    async reprovar(id: number, motivo: string) {
-        // Deleta a monitoria do banco de dados:
-        const deletada = await this.prisma.monitoria.delete({
-            where: { id },
-        });
+    async reprovar(email_monitor: string, motivo: string) {
 
         
         this.enviarEmail(
-            deletada.emailMonitor,
+            email_monitor,
             'Monitoria Reprovada',
             `
                 <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
@@ -165,8 +177,6 @@ export class MonitoriasService {
                 </div>
             `
         )
-
-        return deletada;
     }
 
     async enviarEmail(email_monitor: string, assunto: string, mensagem: string) {
@@ -218,5 +228,17 @@ export class MonitoriasService {
         } catch (error) {
             return { success: false, error };
         }
+    }
+
+    async buscar(filtro: string, parametro: string) {
+        // Busca monitorias com base em um filtro e parâmetro:
+        return this.prisma.monitoria.findMany({
+            where: {
+                [filtro]: {
+                    contains: parametro,
+                    mode: 'insensitive', // Ignora maiúsculas/minúsculas
+                },
+            }
+        });
     }
 }

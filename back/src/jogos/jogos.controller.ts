@@ -46,10 +46,15 @@ export class JogosController {
         return this.jogosService.deletar(Number(id));
     }
 
+    @Delete("/deletar")
+    async deletarTodosJogos() {
+        return this.jogosService.deletarTodos();
+    }
+
     @Public()
-    @Get("/buscar/:nome")
-    async buscarJogoPorNome(@Param('nome') nome: string) {
-        return this.jogosService.buscarPorNome(nome);
+    @Get("/buscar/:filtro/:parametro")
+    async buscarJogoPorNome(@Param('filtro') filtro: string, @Param('parametro') parametro: string) {
+        return this.jogosService.buscar(filtro, parametro);
     }
 
     @Get("/indisponibilizar/:id")

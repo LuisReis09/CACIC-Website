@@ -8,10 +8,10 @@ import { useAdminContext } from '@/utils/AdminContext';
 
 
 const Atualizar: React.FC = () => {
-    const [colunas, setColunas] = React.useState<any[]>([]);
+    const [colunas, setColunas] = React.useState<any[] | null>(null);
     const [tabela, setTabela]   = React.useState<string>('professores');
     const [columnRoute, setColumnRoute] = React.useState<string>('/professores');
-    const [id, setId] = React.useState<number>(0);
+    const [id, setId] = React.useState<number>(1);
     const { token } = useAdminContext();
 
 
@@ -31,7 +31,7 @@ const Atualizar: React.FC = () => {
         }
 
         fetch(`http://localhost:4000${columnRoute}/atualizar/${id}`, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
@@ -59,7 +59,10 @@ const Atualizar: React.FC = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             })
-                .then(response => response.json())
+                .then(async response => {
+                    const text = await response.text();
+                    return text ? JSON.parse(text) : null;
+                })
                 .then(data => setColunas(data))
                 .catch(error => console.error('Error fetching columns:', error));
         }
@@ -74,11 +77,18 @@ const Atualizar: React.FC = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             })
-                .then(response => response.json())
+                .then(async response => {
+                    const text = await response.text();
+                    return text ? JSON.parse(text) : null;
+                })
                 .then(data => {
-                    if (data.length > 0) {
-                        const firstRecord = data[0];
-                        setFormData(firstRecord);
+                    console.log(data)
+                    // Retira o campo 'id' do objeto retornado e atualiza o formData
+                    if (data) {
+                        const { id, ...rest } = data;
+                        setFormData(rest);
+                    } else {
+                        setFormData({});
                     }
                 })
                 .catch(error => console.error('Error fetching data:', error));
@@ -95,18 +105,18 @@ const Atualizar: React.FC = () => {
     }, [id, tabela]);
 
     return (
-        <div>
+        <div className={styles.big_container}>
             <Nav />
 
             <div className={styles.container}>
-                <TabelaOption setTabela={setTabela} setColumnRoute={setColumnRoute} toCreate={true} />
+                <TabelaOption setTabela={setTabela} setColumnRoute={setColumnRoute} toCreate={false} />
                 <div className={styles.id_container}>
                     <label className={styles.label_id}>ID:</label>
                     <input type="number" value={id} onChange={(e) => setId(Number(e.target.value))} className={styles.input_id} placeholder="ID do registro..." />
                 </div>
 
                 <div className={styles.form_container}>
-                    {colunas
+                    {colunas && colunas
                     .filter((coluna: any) => coluna.column != "id")
                     .map((coluna: any) => (
                         
@@ -114,16 +124,28 @@ const Atualizar: React.FC = () => {
                             <label className={styles.label_cell}>{coluna.column}</label>
 
                             {coluna.type === 'string' ? (
-                                <input type="text" onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell} placeholder={"Informe o(a) " + coluna.column}/>
+                                <input 
+                                    type="text" 
+                                    onChange={(e) => handleChange(coluna.column, e.target.value)} 
+                                    className={styles.input_cell} 
+                                    placeholder={"Informe o(a) " + coluna.column}
+                                    value={formData[coluna.column] || ''}
+                                />
                             ) : coluna.type === 'number' ? (
-                                <input type="number" onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell} placeholder={"Informe o(a) " + coluna.column}/>
+                                <input 
+                                    type="number" 
+                                    onChange={(e) => handleChange(coluna.column, e.target.value)} 
+                                    className={styles.input_cell} 
+                                    placeholder={"Informe o(a) " + coluna.column}
+                                    value={formData[coluna.column] || ''}
+                                />
                             ) : coluna.type === 'boolean' ? (
-                                <select onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell}>
+                                <select onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell} value={formData[coluna.column] || ''}>
                                     <option value="true">Sim</option>
                                     <option value="false">Não</option>
                                 </select>
                             ) : coluna.type === 'enum' ? (
-                                <select onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell}>
+                                <select onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell} value={formData[coluna.column] || ''}>
                                     {coluna.options.map((value: string) => (
                                         <option key={value} value={value}>
                                             {value}
@@ -131,13 +153,18 @@ const Atualizar: React.FC = () => {
                                     ))}
                                 </select>
                             ) : coluna.type === 'date' ? (
-                                <input type="datetime-local" onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell}/>
+                                <input 
+                                    type="time" 
+                                    onChange={(e) => handleChange(coluna.column, e.target.value)} 
+                                    className={styles.input_cell}
+                                    value={formData[coluna.column] || ''}
+                                />
                             ) : null}
                         </div>
                     ))}
                 </div>
 
-                <button className={styles.criar_button} onClick={handleUpdate}>Criar</button>
+                <button className={styles.criar_button} onClick={handleUpdate}>Atualizar</button>
             </div>
         </div>
     );

@@ -40,6 +40,10 @@ export class GruposService {
         });
     }
 
+    async deletarTodos() {
+        return this.prisma.grupoWhatsapp.deleteMany({});
+    }
+
     async atualizar(id_grupo: number, grupo: { nome?: string; link?: string; descricao?: string; imagem?: string }) {
         return this.prisma.grupoWhatsapp.update({
             where: {
@@ -47,6 +51,17 @@ export class GruposService {
             },
             data: {
                 ...grupo,
+            },
+        });
+    }
+
+    async buscar(filtro: string, parametro: string) {
+        return this.prisma.grupoWhatsapp.findMany({
+            where: {
+                [filtro]: {
+                    contains: parametro,
+                    mode: 'insensitive',
+                },
             },
         });
     }

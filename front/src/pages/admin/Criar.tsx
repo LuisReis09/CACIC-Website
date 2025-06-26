@@ -52,12 +52,7 @@ const Criar: React.FC = () => {
         })
             .then(response => response.json())
             .then(data => {
-                if (data.success) {
-                    alert('Registro criado com sucesso!');
-                    setFormData({});
-                } else {
-                    alert('Erro ao criar registro: ' + data.message);
-                }
+                alert('Cadastro realizado com sucesso!');
             })
             .catch(error => {
                 alert('Perdeu acesso ao servidor. Tente relogar.');
@@ -83,7 +78,7 @@ const Criar: React.FC = () => {
                 <TabelaOption setTabela={setTabela} setColumnRoute={setColumnRoute} toCreate={true} />
 
                 <div className={styles.form_container}>
-                    {colunas
+                    {colunas && colunas
                     .filter((coluna: any) => coluna.column != "id")
                     .map((coluna: any) => (
                         

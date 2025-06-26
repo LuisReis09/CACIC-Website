@@ -17,6 +17,11 @@ export class ProfessoresController {
     return this.professoresService.listarFeedbacks();
   }
 
+  @Get('/votantes/listar')
+  async listarVotantes() {
+    return this.professoresService.listarVotantes();
+  }
+
   @Get('/colunas')
   async obterColunas() {
     return [
@@ -58,7 +63,17 @@ export class ProfessoresController {
 
   @Get('/consultar/:id')
   async consultar(@Param('id') id: number){
-    return await this.professoresService.consultar(id);
+    return await this.professoresService.consultar(Number(id));
+  }
+
+  @Get('/feedbacks/consultar/:id')
+  async consultarFeedbacks(@Param('id') id: number) {
+    return this.professoresService.consultarFeedback(Number(id));
+  }
+
+  @Get('/votantes/consultar/:id')
+  async consultarVotantes(@Param('id') id: number) {
+    return this.professoresService.consultarVotante(Number(id));
   }
 
   @Post('/cadastrar')
@@ -66,9 +81,40 @@ export class ProfessoresController {
     return this.professoresService.inserir(professor);
   }
 
+  @Post('/feedbacks/cadastrar')
+  async inserirFeedback(@Body() feedback: Feedback) {
+    return this.professoresService.avaliar(feedback);
+  }
+
   @Delete('/deletar/:id')
   async deletar(@Param('id') id: number) {
     return this.professoresService.deletar(Number(id));
+  }
+
+  @Delete('/deletar')
+  async deletarTodos() {
+    return this.professoresService.deletarTodos();
+  }
+
+
+  @Delete('/feedbacks/deletar/:id')
+  async deletarFeedbacks(@Param('id') id: number) {
+    return this.professoresService.deletarFeedbacks(Number(id));
+  }
+
+  @Delete('/feedbacks/deletar')
+  async deletarTodosFeedbacks() {
+    return this.professoresService.deletarTodosFeedbacks();
+  }
+
+  @Delete('/votantes/deletar/:id')
+  async deletarVotantes(@Param('id') id: number) {
+    return this.professoresService.deletarVotantes(Number(id));
+  }
+
+  @Delete('/votantes/deletar')
+  async deletarTodosVotantes() {
+    return this.professoresService.deletarTodosVotantes();
   }
 
   @Patch('/atualizar/:id')
@@ -76,19 +122,30 @@ export class ProfessoresController {
     return this.professoresService.atualizar(Number(id), professor);
   }
 
-  @Post('/avaliar')
-  async avaliar(@Body() feedback: Feedback) {
-    return this.professoresService.avaliar(feedback);
+  @Patch('/feedbacks/atualizar/:id')
+  async atualizarFeedbacks(@Param('id') id: number, @Body() feedback:
+    Feedback) {
+    return this.professoresService.atualizarFeedback(Number(id), feedback);
   }
 
-  @Get('/deletarFeedbacks/:id')
-  async deletarFeedbacks(@Param('id') id: number) {
-    return this.professoresService.deletarFeedbacks(Number(id));
+  @Patch('/votantes/atualizar/:id')
+  async atualizarVotantes(@Param('id') id: number, @Body() votante: { cpf?: string; professorId?: number }) {
+    return this.professoresService.atualizarVotante(Number(id), votante);
   }
 
-  @Get('/deletarTodosFeedbacks')
-  async deletarTodosFeedbacks() {
-    return this.professoresService.deletarTodosFeedbacks();
+  @Get('/buscar/:filtro/:parametro')
+  async buscar(@Param('filtro') filtro: string, @Param('parametro') parametro: string) {
+    return this.professoresService.buscar(filtro, parametro);
+  }
+
+  @Get('/feedbacks/buscar/:filtro/:parametro')
+  async buscarFeedbacks(@Param('filtro') filtro: string, @Param('parametro') parametro: string) {
+    return this.professoresService.buscarFeedbacks(filtro, parametro);
+  }
+
+  @Get('/votantes/buscar/:filtro/:parametro')
+  async buscarVotantes(@Param('filtro') filtro: string, @Param('parametro') parametro: string) {
+    return this.professoresService.buscarVotantes(filtro, parametro);
   }
 
 }

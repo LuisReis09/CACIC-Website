@@ -16,7 +16,7 @@ export class AluguelController {
         @Body('horaInicio') horaInicio: Date,
         @Body('horaFim') horaFim: Date
     ) {
-        return this.aluguelService.requisitarAluguel(id_jogo, cliente, horaInicio, horaFim);
+        return this.aluguelService.requisitarAluguel(Number(id_jogo), cliente, horaInicio, horaFim);
     }
 
     @Get("/colunas")
@@ -44,10 +44,31 @@ export class AluguelController {
             { column: 'dataBloqueio', type: 'date', nullable: true, default: null }
         ];
     }
+    
+    @Get("/consultar/:id")
+    async consultarAluguel(@Param('id') id: number) {
+        return this.aluguelService.consultarAluguel(Number(id));
+    }
 
     @Get("/clientes/consultar/:id_cliente")
     async consultarCliente(@Param('id_cliente') id_cliente: number) {
-        return this.aluguelService.consultarCliente(id_cliente);
+        return this.aluguelService.consultarCliente(Number(id_cliente));
+    }
+    
+    @Patch("/atualizar/:id")
+    async atualizarAluguel(
+        @Param('id') id: number,
+        @Body() aluguel: { jogoId?: number; clienteId?: number; horaInicio?: Date; horaFim?: Date; status?: string }
+    ) {
+        return this.aluguelService.atualizarAluguel(Number(id), aluguel);
+    }
+
+    @Patch("/clientes/atualizar/:id_cliente")
+    async atualizarCliente(
+        @Param('id_cliente') id_cliente: number,
+        @Body() cliente: { cpf?: string; nome?: string; email?: string; contato?: string; bloqueado?: boolean; motivoBloqueio?: string; dataBloqueio?: Date }
+    ) {
+        return this.aluguelService.atualizarCliente(Number(id_cliente), cliente);
     }
 
     @Get("/listar")
@@ -55,62 +76,38 @@ export class AluguelController {
         return this.aluguelService.listar();
     }
 
-    @Get("/listarPendentes")
-    async listarPendentes() {
-        return this.aluguelService.listarPendentes();
+    @Get("/clientes/listar")
+    async listarClientes() {
+        return this.aluguelService.listarClientes();
     }
 
-    @Get("/listarReservados")
-    async listarReservados() {
-        return this.aluguelService.listarReservados();
-    }
-
-    @Get("/listarAlugados")
-    async listarAlugados() {
-        return this.aluguelService.listarAlugados();
-    }
-
-    @Get("/consultar/:id")
-    async consultarAluguel(@Param('id') id: number) {
-        return this.aluguelService.consultarAluguel(id);
-    }
-
-    @Get("/aprovar/:id_aluguel")
-    async aprovarAluguel(@Param('id_aluguel') id_aluguel: number) {
-        return this.aluguelService.aprovarAluguel(id_aluguel);
-    }
-
-    @Get("/iniciar/:id_aluguel")
-    async iniciarAluguel(@Param('id_aluguel') id_aluguel: number) {
-        return this.aluguelService.iniciarAluguel(id_aluguel);
-    }
-
-    @Get("/finalizar/:id_aluguel")
-    async finalizarAluguel(@Param('id_aluguel') id_aluguel: number) {
-        return this.aluguelService.finalizarAluguel(id_aluguel);
+    @Delete("/deletar")
+    async removerTodosAlugueis() {
+        // Remove todos os aluguéis
+        return this.aluguelService.removerTodosAlugueis();
     }
 
     @Delete("/deletar/:id_aluguel")
     async removerAluguel(@Param('id_aluguel') id_aluguel: number) {
-        return this.aluguelService.removerAluguel(id_aluguel);
+        return this.aluguelService.removerAluguel(Number(id_aluguel));
     }
+
+    @Delete("/clientes/deletar")
+    async removerTodosClientes() {
+        // Remove todos os clientes
+        return this.aluguelService.removerTodosClientes();
+    }
+
+    @Delete("/clientes/deletar/:id_cliente")
+    async removerCliente(@Param('id_cliente') id_cliente: number) {
+        return this.aluguelService.removerCliente(Number(id_cliente));
+    }
+
 
     @Get("/enviarEmailJogos")
     async enviarEmailJogos() {
         // Envia e-mails a todos os clientes anunciando os jogos disponíveis
         return this.aluguelService.enviarEmailJogos();
-    }
-
-    @Post("/bloquearCliente")
-    async bloquearCliente(@Body('block') block: {clienteId: number, motivo: string}) {
-        // Bloqueia um cliente pelo ID e motivo
-        return this.aluguelService.bloquearCliente(block.clienteId, block.motivo);
-    }
-
-    @Get("/desbloquearCliente/:id_cliente")
-    async desbloquearCliente(@Param('id_cliente') id_cliente: number) {
-        // Desbloqueia um cliente pelo ID
-        return this.aluguelService.desbloquearCliente(id_cliente);
     }
 
     @Public()
@@ -136,9 +133,34 @@ export class AluguelController {
         return this.aluguelService.agendarDesativacaoServicoJogos(hora);
     }
 
+    @Get("/agendarAtivacaoServicoJogos/:hora")
+    async agendarAtivacaoServicoJogos(@Param('hora') hora: string)
+    {
+        // Agenda a ativação do serviço de jogos para uma hora específica
+        return this.aluguelService.agendarAtivacaoServicoJogos(hora);
+    }
+
     @Get("/ativarServicoJogos")
     async ativarServicoJogos() {
         // Ativa o serviço de jogos
         return this.aluguelService.ativarServicoJogosAgora();
+    }
+
+    @Get("/buscar/:filtro/:parametro")
+    async buscarAlugueis(
+        @Param('filtro') filtro: string,
+        @Param('parametro') parametro: string
+    ) {
+        // Busca aluguéis com base em um filtro e parâmetro
+        return this.aluguelService.buscarAlugueis(filtro, parametro);
+    }
+
+    @Get("/clientes/buscar/:filtro/:parametro")
+    async buscarClientes(
+        @Param('filtro') filtro: string,
+        @Param('parametro') parametro: string
+    ) {
+        // Busca clientes com base em um filtro e parâmetro
+        return this.aluguelService.buscarClientes(filtro, parametro);
     }
 }

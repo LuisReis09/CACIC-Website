@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { Cliente, Jogo } from 'src/jogos/jogos.service';
+import { Cliente, Jogo, StatusAluguel } from 'src/jogos/jogos.service';
 import { JogosController } from 'src/jogos/jogos.controller';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { Logger } from '@nestjs/common';
@@ -25,6 +25,7 @@ export class AluguelService {
     private readonly logger = new Logger(AluguelService.name);
 
     private hora_desativacao: string = '17:00:00'; // 17h
+    private hora_ativacao: string = '08:00:00'; // 8h
 
     async requisitarAluguel(
         id_jogo: number,
@@ -115,11 +116,11 @@ export class AluguelService {
                     </p>
 
                     <div style="margin-top: 20px; background-color: #fff3cd; border: 1px solid #ffeeba; padding: 15px; border-radius: 6px; color: #000">
-                        ⏳ Aguarde a aprovação do administrador para confirmar seu aluguel.
+                        ⏳ Aguarde a aprovação do administrador para confirmar seu aluguel, estamos analisando a disponibilidade dos membros do Centro Acadêmico.
                     </div>
 
                     <p style="margin-top: 20px; font-size: 15px; color: #333;">
-                        <strong>Importante:</strong> Para confirmar a reserva, por favor, apresente o comprovante do pagamento via PIX ao retirar o jogo na sala do Centro Acadêmico.
+                        <strong>Importante:</strong> Caso a reserva seja aprovada, você receberá o Qr Code para pagamento via PIX, que deve ser apresentado na sala do Centro Acadêmico no horário de início do aluguel.
                     </p>
 
                     <p style="margin-top: 30px; font-size: 14px; color: #999;">
@@ -143,6 +144,113 @@ export class AluguelService {
                 cliente: true,
             },
         });
+    }
+
+    async listarClientes(): Promise<any> {
+        return this.prisma.cliente.findMany({});
+    }
+
+    async atualizarAluguel(
+        id: number,
+        aluguel: { jogoId?: number; clienteId?: number; dataInicio?: Date; dataFim?: Date; status?: string }
+    ): Promise<any> {
+        const aluguelAtualizado = await this.prisma.aluguel.update({
+            where: { id: id },
+            data: aluguel as any,
+            include: {
+                jogo: true,
+                cliente: true,
+            },
+        });
+
+        if (!aluguelAtualizado) {
+            return {
+                success: false,
+                message: 'Aluguel não encontrado.',
+            };
+        }
+
+        switch (aluguelAtualizado.status) {
+            case StatusAluguel.RESERVADO:
+                this.aprovarAluguel(
+                    aluguelAtualizado.cliente.email,
+                    aluguelAtualizado.jogo.nome,
+                    aluguelAtualizado.dataInicio.toISOString(),
+                    aluguelAtualizado.dataFim.toISOString(),
+                    String(aluguelAtualizado.jogo.precoPorHora.toFixed(2))
+                );
+                break;
+            case StatusAluguel.INICIADO:
+                this.iniciarAluguel(
+                    aluguelAtualizado.cliente.email,
+                    aluguelAtualizado.jogo.nome,
+                    aluguelAtualizado.dataInicio.toISOString(),
+                    aluguelAtualizado.dataFim.toISOString()
+                );
+                break;
+            case StatusAluguel.FINALIZADO:
+                this.finalizarAluguel(
+                    aluguelAtualizado.cliente.email,
+                    aluguelAtualizado.jogo.nome,
+                    aluguelAtualizado.dataInicio.toISOString(),
+                    aluguelAtualizado.dataFim.toISOString()
+                );
+                break;
+        }
+
+        return {
+            success: true,
+            message: 'Aluguel atualizado com sucesso.',
+            aluguel: aluguelAtualizado,
+        };
+    }
+
+    async atualizarCliente(
+        id: number,
+        cliente: { cpf?: string; nome?: string; email?: string; contato?: string; bloqueado?: boolean; motivoBloqueio?: string; dataBloqueio?: Date }
+    ): Promise<any> {
+        const Cliente = await this.prisma.cliente.findFirst({
+            where: { id: id },
+        });
+
+        if (!Cliente) {
+            return {
+                success: false,
+                message: 'Cliente não encontrado.',
+            };
+        }
+
+        const clienteAtualizado = await this.prisma.cliente.update({
+            where: { id: id },
+            data: cliente as any,
+        });
+
+        // Verifica se o cliente foi bloqueado ou desbloqueado
+        if(Cliente.bloqueado && !cliente.bloqueado) {
+            this.desbloquearCliente(clienteAtualizado.email);
+        }
+        if(!Cliente.bloqueado && cliente.bloqueado && cliente.motivoBloqueio && cliente.dataBloqueio) {
+            this.bloquearCliente(clienteAtualizado.email, cliente.motivoBloqueio, cliente.dataBloqueio.toISOString());
+        }
+    }
+
+    async removerCliente(id: number): Promise<any> {
+        const cliente = await this.prisma.cliente.delete({
+            where: { id: id },
+        });
+
+        if (!cliente) {
+            return {
+                success: false,
+                message: 'Cliente não encontrado.',
+            };
+        }
+
+        return {
+            success: true,
+            message: 'Cliente removido com sucesso.',
+            cliente: cliente,
+        };
     }
 
     async consultarAluguel(id_aluguel: number): Promise<any> {
@@ -169,70 +277,18 @@ export class AluguelService {
         };
     }
 
-    async listarPendentes(): Promise<any> {
-        return this.prisma.aluguel.findMany({
-            where: {
-                status: 'PENDENTE_APROVACAO',
-            },
-            include: {
-                jogo: true,
-                cliente: true,
-            },
-        });
-    }
-
-    async listarReservados(): Promise<any> {
-        return this.prisma.aluguel.findMany({
-            where: {
-                status: 'RESERVADO',
-            },
-            include: {
-                jogo: true,
-                cliente: true,
-            },
-        });
-    }
-
-    async listarAlugados(): Promise<any> {
-        return this.prisma.aluguel.findMany({
-            where: {
-                status: 'INICIADO',
-            },
-            include: {
-                jogo: true,
-                cliente: true,
-            },
-        });
-    }
-
-    async aprovarAluguel(id_aluguel: number): Promise<any> {
-        const aluguel = await this.prisma.aluguel.update({
-            where: { id: id_aluguel },
-            data: { status: 'RESERVADO' },
-            include: {
-                jogo: true,
-                cliente: true,
-            },
-        });
-
-        if (!aluguel) {
-            return {
-                success: false,
-                message: 'Aluguel não encontrado.',
-            };
-        }
-
+    async aprovarAluguel(email_cliente: string, nome_jogo: string, hora_inicio: string, hora_fim: string, preco_aluguel: string): Promise<any> {
         this.enviar_email(
-            aluguel.cliente.email,
+            email_cliente,
             'Aprovação de Aluguel',
             `
                 <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
                     <h2 style="color: #000;">🎉 Oba! Seu pedido de Aluguel foi <span style="color: #28a745;">Aprovado</span> com Sucesso!</h2>
 
                     <p style="font-size: 16px; color: #555;">
-                        <strong>🎮 Jogo:</strong> <span style="color: #222;">${aluguel.jogo.nome}</span><br>
-                        <strong>📅 Data/Hora de Início:</strong> ${aluguel.dataInicio}<br>
-                        <strong>📅 Data/Hora de Fim:</strong> ${aluguel.dataFim}<br>
+                        <strong>🎮 Jogo:</strong> <span style="color: #222;"> ${nome_jogo}</span><br>
+                        <strong>📅 Data/Hora de Início:</strong> ${hora_inicio} <br>
+                        <strong>📅 Data/Hora de Fim:</strong> ${hora_fim}<br>
                         <strong>🔖 Status:</strong> <b style="color: #28a745;">RESERVADO</b>
                     </p>
 
@@ -250,46 +306,25 @@ export class AluguelService {
                 </div>
             `
         );
-
-        return {
-            success: true,
-            message: 'Aluguel aprovado com sucesso.',
-            aluguel: aluguel,
-        };
     }
 
-    async iniciarAluguel(id_aluguel: number): Promise<any> {
-        const aluguel = await this.prisma.aluguel.update({
-            where: { id: id_aluguel },
-            data: { status: 'INICIADO' },
-            include: {
-                cliente: true,
-            },
-        });
-
-        if (!aluguel) {
-            return {
-                success: false,
-                message: 'Aluguel não encontrado.',
-            };
-        }
-
-        const atualizarJogo = await this.prisma.jogo.update({
-            where: { id: aluguel.jogoId },
-            data: { status: 'ALUGADO' },
-        });
-
+    async iniciarAluguel(
+        email_cliente: string,
+        nome_jogo: string,
+        hora_inicio: string,
+        hora_fim: string,
+    ): Promise<any> {
         this.enviar_email(
-            aluguel.cliente.email,
+            email_cliente,
             'Início de Aluguel',
             `
                 <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
                     <h2 style="color: #000;">🚀 Seu Aluguel foi <span style="color: #007bff;">Iniciado</span> com Sucesso!</h2>
 
                     <p style="font-size: 16px; color: #555;">
-                        <strong>🎮 Jogo:</strong> <span style="color: #222;">${atualizarJogo.nome}</span><br>
-                        <strong>📅 Data/Hora de Início:</strong> ${aluguel.dataInicio}<br>
-                        <strong>📅 Data/Hora de Fim:</strong> ${aluguel.dataFim}<br>
+                        <strong>🎮 Jogo:</strong> <span style="color: #222;">${nome_jogo}</span><br>
+                        <strong>📅 Data/Hora de Início:</strong> ${hora_inicio}<br>
+                        <strong>📅 Data/Hora de Fim:</strong> ${hora_fim}<br>
                         <strong>🔖 Status:</strong> <b style="color: #007bff;">INICIADO</b>
                     </p>
 
@@ -302,49 +337,27 @@ export class AluguelService {
                         Este é um e-mail automático, não responda.
                     </p>
                 </div>
-        `,);
-
-        return {
-            success: true,
-            message: 'Aluguel iniciado com sucesso.',
-            aluguel: aluguel,
-            jogo: atualizarJogo,
-        };
+            `
+        );
     }
 
-    async finalizarAluguel(id_aluguel: number): Promise<any> {
-        const aluguel = await this.prisma.aluguel.update({
-            where: { id: id_aluguel },
-            data: { status: 'FINALIZADO' },
-            include: {
-                jogo: true,
-                cliente: true,
-            },
-        });
-
-        if (!aluguel) {
-            return {
-                success: false,
-                message: 'Aluguel não encontrado.',
-            };
-        }
-
-        const atualizarJogo = await this.prisma.jogo.update({
-            where: { id: aluguel.jogoId },
-            data: { status: 'DISPONIVEL' },
-        });
-
+    async finalizarAluguel(
+        email_cliente: string,
+        nome_jogo: string,
+        hora_inicio: string,
+        hora_fim: string,
+    ): Promise<any> {
         this.enviar_email(
-            aluguel.cliente.email,
+            email_cliente,
             'Finalização de Aluguel',
             `
                 <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
                     <h2 style="color: #000;">🏁 Seu Aluguel foi <span style="color: #6c757d;">Finalizado</span> com Sucesso!</h2>
 
                     <p style="font-size: 16px; color: #555;">
-                        <strong>🎮 Jogo:</strong> <span style="color: #222;">${atualizarJogo.nome}</span><br>
-                        <strong>📅 Data/Hora de Início:</strong> ${aluguel.dataInicio}<br>
-                        <strong>📅 Data/Hora de Fim:</strong> ${aluguel.dataFim}<br>
+                        <strong>🎮 Jogo:</strong> <span style="color: #222;">${nome_jogo}</span><br>
+                        <strong>📅 Data/Hora de Início:</strong> ${hora_inicio}<br>
+                        <strong>📅 Data/Hora de Fim:</strong> ${hora_fim}<br>
                         <strong>🔖 Status:</strong> <b style="color: #6c757d;">FINALIZADO</b>
                     </p>
 
@@ -358,12 +371,6 @@ export class AluguelService {
                     </p>
                 </div>
         `);
-
-        return {
-            success: true,
-            message: 'Aluguel finalizado com sucesso.',
-            aluguel: aluguel,
-        };
     }
 
     async enviar_email(email: string, assunto: string, mensagem: string): Promise<any> {
@@ -518,25 +525,10 @@ export class AluguelService {
         };
     }
 
-    async bloquearCliente(id: number, motivo: string): Promise<any> {
-        const cliente = await this.prisma.cliente.update({
-            where: { id: id },
-            data: {
-                bloqueado: true,
-                motivoBloqueio: motivo,
-                dataBloqueio: new Date(),
-            },
-        });
-
-        if (!cliente) {
-            return {
-                success: false,
-                message: 'Cliente não encontrado.',
-            };
-        }
+    async bloquearCliente(cliente_email: string, motivo: string, data_bloqueio: string): Promise<any> {
 
         this.enviar_email(
-            cliente.email,
+            cliente_email,
             'Bloqueio de Conta',
             `
                 <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
@@ -544,7 +536,7 @@ export class AluguelService {
 
                     <p style="font-size: 16px; color: #555;">
                         <strong>🛑 Motivo:</strong> <span style="color: #222;">${motivo}</span><br>
-                        <strong>📅 Data do Bloqueio:</strong> ${cliente.dataBloqueio}<br><br>
+                        <strong>📅 Data do Bloqueio:</strong> ${data_bloqueio}<br><br>
                         ❌ <b style="color: #dc3545;">Você não poderá alugar jogos até que a situação seja resolvida.</b><br>
                         🚫 Por favor, <b>não tente realizar novos aluguéis</b> até que o bloqueio seja removido.
                     </p>
@@ -559,33 +551,14 @@ export class AluguelService {
                 </div>
             `
         );
-
-        return {
-            success: true,
-            message: 'Cliente bloqueado com sucesso.',
-            cliente: cliente,
-        };
     }
 
-    async desbloquearCliente(id: number): Promise<any> {
-        const cliente = await this.prisma.cliente.update({
-            where: { id: id },
-            data: {
-                bloqueado: false,
-                motivoBloqueio: null,
-                dataBloqueio: null,
-            },
-        });
-
-        if (!cliente) {
-            return {
-                success: false,
-                message: 'Cliente não encontrado.',
-            };
-        }
+    async desbloquearCliente(
+        email_cliente: string,
+    ): Promise<any> {
 
         this.enviar_email(
-            cliente.email,
+            email_cliente,
             'Desbloqueio de Conta',
             `
                 <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
@@ -606,12 +579,6 @@ export class AluguelService {
                 </div>
             `
         );
-
-        return {
-            success: true,
-            message: 'Cliente desbloqueado com sucesso.',
-            cliente: cliente,
-        };
     }
 
     @Cron('0 0 8 * * 1-5')
@@ -640,6 +607,7 @@ export class AluguelService {
     @Cron('0 17 * * * *')
     async redefinirVariavel(): Promise<void> {
         this.hora_desativacao = '17:00:00';
+        this.hora_ativacao = '08:00:00';
     }
 
     @Cron(CronExpression.EVERY_HOUR)
@@ -648,6 +616,14 @@ export class AluguelService {
         const horaAtual = agora.getHours();
 
         const horaDesativar = parseInt(this.hora_desativacao.split(':')[0]);
+        const horaAtivar    = parseInt(this.hora_ativacao.split(':')[0]);
+
+        if(horaAtual == horaAtivar) {
+            await this.prisma.admin.updateMany({
+                data: { servicoJogosAtivo: true },
+            });
+            this.logger.log('Serviço de Jogos ativado às 8h.');
+        }
 
         if (horaAtual === horaDesativar) {
             await this.prisma.admin.updateMany({
@@ -658,6 +634,10 @@ export class AluguelService {
 
     async agendarDesativacaoServicoJogos(hora: string): Promise<void> {
         this.hora_desativacao = hora;
+    }
+
+    async agendarAtivacaoServicoJogos(hora: string): Promise<void> {
+        this.hora_ativacao = hora;
     }
 
     async desativarServicoJogosAgora(): Promise<any> {
@@ -684,5 +664,35 @@ export class AluguelService {
         });
 
         return admin ? admin.servicoJogosAtivo : false;
+    }
+
+    async removerTodosAlugueis(): Promise<any> {
+        return await this.prisma.aluguel.deleteMany({});
+    }
+
+    async removerTodosClientes(): Promise<any> {
+        return await this.prisma.cliente.deleteMany({});
+    }
+
+    async buscarAlugueis(filtro: string, parametro: string): Promise<any> {
+        return await this.prisma.aluguel.findMany({
+            where: {
+                [filtro]: {
+                    contains: parametro,
+                    mode: 'insensitive', // Ignora maiúsculas/minúsculas
+                },
+            },
+        });
+    }
+
+    async buscarClientes(filtro: string, parametro: string): Promise<any> {
+        return await this.prisma.cliente.findMany({
+            where: {
+                [filtro]: {
+                    contains: parametro,
+                    mode: 'insensitive', // Ignora maiúsculas/minúsculas
+                },
+            },
+        });
     }
 }

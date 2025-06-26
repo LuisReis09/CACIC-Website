@@ -45,25 +45,35 @@ export class MonitoriasController {
         return this.monitoriasService.cadastrar(monitoria);
     }
 
-
-    @Patch("/aprovar/:id_monitoria")
-    async aprovarMonitoria(@Param('id_monitoria') id_monitoria: number) {
-        return this.monitoriasService.aprovar(id_monitoria);
+    @Get("/consultar/:id_monitoria")
+    async consultarMonitoria(@Param('id_monitoria') id_monitoria: number) {
+        return this.monitoriasService.consultar(Number(id_monitoria));
     }
 
-    @Patch("/reprovar")
-    async reprovarMonitoria(@Body('reprovar') reprovar: { id_monitoria: number, motivo: string }) {
-        return this.monitoriasService.reprovar(reprovar.id_monitoria, reprovar.motivo);
+
+    @Patch("/atualizar/:id_monitoria")
+    async atualizarMonitoria(@Param('id_monitoria') id_monitoria: number, @Body() monitoria: any) {
+        return this.monitoriasService.atualizar(Number(id_monitoria), monitoria);
     }
 
     @Delete("/deletar/:id_monitoria")
     async removerMonitoria(@Param('id_monitoria') id_monitoria: number) {
-        return this.monitoriasService.deletar(id_monitoria);
+        return this.monitoriasService.deletar(Number(id_monitoria));
+    }
+
+    @Delete("/deletar")
+    async removerTodasMonitorias() {
+        return this.monitoriasService.deletarTodos();
     }
 
     @Public()
     @Post("/SAC")
     async enviarEmailSAC(@Body() emailData: { email: string, assunto: string, mensagem: string }) {
         return this.monitoriasService.SAC(emailData.email, emailData.assunto, emailData.mensagem);
+    }
+
+    @Get("/buscar/:filtro/:parametro")
+    async buscarMonitorias(@Param('filtro') filtro: string, @Param('parametro') parametro: string) {
+        return this.monitoriasService.buscar(filtro, parametro);
     }
 }

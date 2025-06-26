@@ -7,7 +7,7 @@ import styles from '../../styles/admin/Login.module.css';
 
 
 const Login: React.FC = () => {
-    const [login, setLogin] = React.useState('');
+    const [login, setLogin]       = React.useState('');
     const [password, setPassword] = React.useState('');
     const { setScreen, setToken } = useAdminContext();
 

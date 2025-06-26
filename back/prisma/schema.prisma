@@ -55,9 +55,9 @@ model Monitoria {
   monitores    String
   emailMonitor String
   disciplina   String
-  linkDiscord  String
-  linkWhatsapp String
-  status       String @default("PENDENTE_APROVACAO")
+  linkDiscord    String
+  linkWhatsapp   String
+  status         String @default("PENDENTE_APROVACAO")
   professorId  Int
   professor    Professor @relation(fields: [professorId], references: [id])
 }

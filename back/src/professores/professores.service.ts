@@ -46,13 +46,30 @@ export class ProfessoresService {
     const professor = await this.prisma.professor.findUnique({
       where: {
         id: id,
-      },
-      include: {
-        feedbacks: true,
-      },
+      }
     });
 
     return professor;
+  }
+
+  async consultarFeedback(id: number) {
+    const feedback = await this.prisma.feedback.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    return feedback;
+  }
+
+  async consultarVotante(id: number) {
+    const votante = await this.prisma.votante.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    return votante;
   }
 
   async inserir(professor: Professor) {
@@ -77,6 +94,10 @@ export class ProfessoresService {
         id: id,
       },
     });
+  }
+
+  async deletarTodos() {
+    return this.prisma.professor.deleteMany({});
   }
 
   async atualizar(id: number, professor: Professor) {
@@ -236,5 +257,76 @@ export class ProfessoresService {
     await this.prisma.votante.deleteMany({});
 
     return { message: 'Todos os feedbacks e votantes foram deletados com sucesso.' };
+  }
+
+  async deletarVotantes(id: number) {
+    return this.prisma.votante.delete({
+      where: {
+        id: id,
+      },
+    });
+  }
+
+  async deletarTodosVotantes() {
+    return this.prisma.votante.deleteMany({});
+  }
+
+  async atualizarFeedback(id: number, feedback: Feedback) {
+    return this.prisma.feedback.update({
+      where: {
+        id: id,
+      },
+      data: {
+        didatica: feedback.didatica,
+        cordialidade: feedback.cordialidade,
+        planejamento: feedback.planejamento,
+        avaliacoes: feedback.avaliacoes,
+      },
+    });
+  }
+
+  async atualizarVotante(id: number, votante: { cpf?: string; professorId?: number }) {
+    return this.prisma.votante.update({
+      where: {
+        id: id,
+      },
+      data: {
+        cpf: votante.cpf,
+        professorId: votante.professorId,
+      },
+    });
+  }
+
+  async buscar(filtro: string, parametro: string) {
+    return this.prisma.professor.findMany({
+      where: {
+        [filtro]: {
+          contains: parametro,
+          mode: 'insensitive', // Ignora maiúsculas/minúsculas
+        },
+      },
+    });
+  }
+
+  async buscarFeedbacks(filtro: string, parametro: string) {
+    return this.prisma.feedback.findMany({
+      where: {
+        [filtro]: {
+          contains: parametro,
+          mode: 'insensitive', // Ignora maiúsculas/minúsculas
+        },
+      },
+    });
+  }
+
+  async buscarVotantes(filtro: string, parametro: string) {
+    return this.prisma.votante.findMany({
+      where: {
+        [filtro]: {
+          contains: parametro,
+          mode: 'insensitive', // Ignora maiúsculas/minúsculas
+        },
+      },
+    });
   }
 }
