@@ -78,7 +78,7 @@ const Criar: React.FC = () => {
                 <TabelaOption setTabela={setTabela} setColumnRoute={setColumnRoute} toCreate={true} />
 
                 <div className={styles.form_container}>
-                    {colunas && colunas
+                    {Array.isArray(colunas) && colunas
                     .filter((coluna: any) => coluna.column != "id")
                     .map((coluna: any) => (
                         

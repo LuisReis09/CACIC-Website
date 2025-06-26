@@ -116,7 +116,7 @@ const Atualizar: React.FC = () => {
                 </div>
 
                 <div className={styles.form_container}>
-                    {colunas && colunas
+                    {Array.isArray(colunas) && colunas
                     .filter((coluna: any) => coluna.column != "id")
                     .map((coluna: any) => (
                         
