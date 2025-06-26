@@ -175,8 +175,8 @@ export class AluguelService {
                 this.aprovarAluguel(
                     aluguelAtualizado.cliente.email,
                     aluguelAtualizado.jogo.nome,
-                    aluguelAtualizado.horaInicio.toISOString(),
-                    aluguelAtualizado.horaFim.toISOString(),
+                    aluguelAtualizado.horaInicio,
+                    aluguelAtualizado.horaFim,
                     String(aluguelAtualizado.jogo.precoPorHora.toFixed(2))
                 );
                 break;
@@ -184,16 +184,16 @@ export class AluguelService {
                 this.iniciarAluguel(
                     aluguelAtualizado.cliente.email,
                     aluguelAtualizado.jogo.nome,
-                    aluguelAtualizado.horaInicio.toISOString(),
-                    aluguelAtualizado.horaFim.toISOString()
+                    aluguelAtualizado.horaInicio,
+                    aluguelAtualizado.horaFim
                 );
                 break;
             case StatusAluguel.FINALIZADO:
                 this.finalizarAluguel(
                     aluguelAtualizado.cliente.email,
                     aluguelAtualizado.jogo.nome,
-                    aluguelAtualizado.horaInicio.toISOString(),
-                    aluguelAtualizado.horaFim.toISOString()
+                    aluguelAtualizado.horaInicio,
+                    aluguelAtualizado.horaFim
                 );
                 break;
         }
@@ -230,7 +230,7 @@ export class AluguelService {
             this.desbloquearCliente(clienteAtualizado.email);
         }
         if(!Cliente.bloqueado && cliente.bloqueado && cliente.motivoBloqueio && cliente.dataBloqueio) {
-            this.bloquearCliente(clienteAtualizado.email, cliente.motivoBloqueio, cliente.dataBloqueio.toISOString());
+            this.bloquearCliente(clienteAtualizado.email, cliente.motivoBloqueio, String(cliente.dataBloqueio));
         }
     }
 
@@ -277,7 +277,7 @@ export class AluguelService {
         };
     }
 
-    async aprovarAluguel(email_cliente: string, nome_jogo: string, hora_inicio: string, hora_fim: string, preco_aluguel: string): Promise<any> {
+    async aprovarAluguel(email_cliente: string, nome_jogo: string, hora_inicio: string | number, hora_fim: string | number, preco_aluguel: string): Promise<any> {
         this.enviar_email(
             email_cliente,
             'Aprovação de Aluguel',
@@ -312,8 +312,8 @@ export class AluguelService {
     async iniciarAluguel(
         email_cliente: string,
         nome_jogo: string,
-        hora_inicio: string,
-        hora_fim: string,
+        hora_inicio: string | number,
+        hora_fim: string | number,
     ): Promise<any> {
         this.enviar_email(
             email_cliente,
@@ -346,8 +346,8 @@ export class AluguelService {
     async finalizarAluguel(
         email_cliente: string,
         nome_jogo: string,
-        hora_inicio: string,
-        hora_fim: string,
+        hora_inicio: string | number,
+        hora_fim: string | number,
     ): Promise<any> {
         this.enviar_email(
             email_cliente,
@@ -431,8 +431,10 @@ export class AluguelService {
     }
 
     async enviarEmailJogos(): Promise<any> {
-        const agora = new Date();
-        const daquiDuasHoras = new Date(agora.getTime() + 2 * 60 * 60 * 1000);
+        // Define as variaveis ints agora e daquiDuasHoras
+        const agora = new Date().getHours();
+        const daquiDuasHoras = agora+2;
+
 
         // Pega todos os jogos disponíveis
         const jogosDisponiveis = await this.prisma.jogo.findMany({
@@ -498,7 +500,7 @@ export class AluguelService {
         for (const cliente of clientes) {
             const mensagem = `
                 <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
-                    <h2 style="color: #000;">🎯 Jogos Disponíveis nas Próximas 2 Horas</h2>
+                    <h2 style="color: #000;">🎯 Jogos Disponíveis nas Próximas Horas</h2>
 
                     <p style="font-size: 16px; color: #555;">
                         Olá ${cliente.nome},<br><br>

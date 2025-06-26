@@ -13,8 +13,8 @@ export class AluguelController {
     async requisitarAluguel(
         @Param('id_jogo') id_jogo: number,
         @Body() cliente: Cliente,
-        @Body('horaInicio') horaInicio: Date,
-        @Body('horaFim') horaFim: Date
+        @Body('horaInicio') horaInicio: number,
+        @Body('horaFim') horaFim: number
     ) {
         return this.aluguelService.requisitarAluguel(Number(id_jogo), cliente, horaInicio, horaFim);
     }
@@ -25,8 +25,8 @@ export class AluguelController {
             { column: 'id', type: 'number'},
             { column: 'jogoId', type:'number'},
             { column: 'clienteId', type: 'number' },
-            { column: 'horaInicio', type: 'date' },
-            { column: 'horaFim', type: 'date' },
+            { column: 'horaInicio', type: 'number' },
+            { column: 'horaFim', type: 'number' },
             { column: 'status', type: 'enum', options: ['PENDENTE_APROVACAO', 'RESERVADO', 'INICIADO', 'FINALIZADO'] }
         ];
     }

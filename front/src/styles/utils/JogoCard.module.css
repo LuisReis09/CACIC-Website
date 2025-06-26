@@ -1,0 +1,21 @@
+.jogo_card{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: 200px;
+    height: 230px;
+    padding: 10px;
+
+    /* background-color: var(--background-color-2); */
+    background-color: chartreuse;
+    border-radius: 20px;
+}
+
+.img{
+    width: 200px;
+    height: 150px;
+    border-radius: 15px;
+    
+    object-fit: cover;
+}
