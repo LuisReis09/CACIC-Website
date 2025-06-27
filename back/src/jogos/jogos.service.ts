@@ -13,6 +13,7 @@ export enum StatusAluguel {
   RESERVADO = 'RESERVADO',
   INICIADO = 'INICIADO',
   FINALIZADO = 'FINALIZADO',
+  CANCELADO = 'CANCELADO',
 }
 
 export interface Jogo {
@@ -84,13 +85,12 @@ export class JogosService {
         return this.prisma.jogo.deleteMany({});
     }
 
-    async buscar(filtro: string, parametro: string) {
+    async buscar(filtro: string, parametro: string | number) {
+        const isString = typeof parametro === 'string';
+
         return this.prisma.jogo.findMany({
             where: {
-                [filtro]: {
-                    contains: parametro,
-                    mode: 'insensitive' // Ignora maiúsculas/minúsculas
-                }
+                [filtro]: isString ? { contains: parametro as string, mode: 'insensitive' } : parametro
             }
         });
     }

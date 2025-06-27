@@ -55,13 +55,12 @@ export class GruposService {
         });
     }
 
-    async buscar(filtro: string, parametro: string) {
+    async buscar(filtro: string, parametro: string | number) {
+        const isString = typeof parametro === 'string';
+
         return this.prisma.grupoWhatsapp.findMany({
             where: {
-                [filtro]: {
-                    contains: parametro,
-                    mode: 'insensitive',
-                },
+                [filtro]: isString ? { contains: parametro as string, mode: 'insensitive' } : parametro,
             },
         });
     }

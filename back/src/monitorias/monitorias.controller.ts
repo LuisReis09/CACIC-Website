@@ -72,8 +72,11 @@ export class MonitoriasController {
         return this.monitoriasService.SAC(emailData.email, emailData.assunto, emailData.mensagem);
     }
 
-    @Get("/buscar/:filtro/:parametro")
-    async buscarMonitorias(@Param('filtro') filtro: string, @Param('parametro') parametro: string) {
+    @Get("/buscar/:filtro/:parametro/:tipo")
+    async buscarMonitorias(@Param('filtro') filtro: string, @Param('parametro') parametro: string | number, @Param('tipo') tipo: string) {
+        if(tipo == 'number'){
+            parametro = Number(parametro);
+        }
         return this.monitoriasService.buscar(filtro, parametro);
     }
 }

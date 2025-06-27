@@ -133,18 +133,27 @@ export class ProfessoresController {
     return this.professoresService.atualizarVotante(Number(id), votante);
   }
 
-  @Get('/buscar/:filtro/:parametro')
-  async buscar(@Param('filtro') filtro: string, @Param('parametro') parametro: string) {
+  @Get('/buscar/:filtro/:parametro/:tipo')
+  async buscar(@Param('filtro') filtro: string, @Param('parametro') parametro: string | number, @Param('tipo') tipo: string) {
+    if(tipo == 'number'){
+      parametro = Number(parametro);
+    }
     return this.professoresService.buscar(filtro, parametro);
   }
 
-  @Get('/feedbacks/buscar/:filtro/:parametro')
-  async buscarFeedbacks(@Param('filtro') filtro: string, @Param('parametro') parametro: string) {
+  @Get('/feedbacks/buscar/:filtro/:parametro/:tipo')
+  async buscarFeedbacks(@Param('filtro') filtro: string, @Param('parametro') parametro: string | number, @Param('tipo') tipo: string) {
+    if(tipo == 'number'){
+      parametro = Number(parametro);
+    }
     return this.professoresService.buscarFeedbacks(filtro, parametro);
   }
 
-  @Get('/votantes/buscar/:filtro/:parametro')
-  async buscarVotantes(@Param('filtro') filtro: string, @Param('parametro') parametro: string) {
+  @Get('/votantes/buscar/:filtro/:parametro/:tipo')
+  async buscarVotantes(@Param('filtro') filtro: string, @Param('parametro') parametro: string | number, @Param('tipo') tipo: string) {
+    if(tipo == 'number'){
+      parametro = Number(parametro);
+    }
     return this.professoresService.buscarVotantes(filtro, parametro);
   }
 

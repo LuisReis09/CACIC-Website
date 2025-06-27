@@ -112,6 +112,7 @@ enum StatusAluguel {
   RESERVADO
   INICIADO
   FINALIZADO
+  CANCELADO
 }
 
 

@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
+import { isString } from 'util';
 
 export interface Professor {
   nome: string;
@@ -29,6 +30,7 @@ export interface Feedback {
 @Injectable()
 export class ProfessoresService {
   constructor(private readonly prisma: PrismaService) {}
+  
 
   async listar() {
     return this.prisma.professor.findMany({});
@@ -297,35 +299,47 @@ export class ProfessoresService {
     });
   }
 
-  async buscar(filtro: string, parametro: string) {
+  async buscar(filtro: string, parametro: string | number) {
+    const isString = typeof parametro === 'string';
+
     return this.prisma.professor.findMany({
       where: {
-        [filtro]: {
-          contains: parametro,
-          mode: 'insensitive', // Ignora maiúsculas/minúsculas
-        },
+        [filtro]: isString
+          ? {
+              contains: parametro,
+              mode: 'insensitive', // Ignora maiúsculas/minúsculas
+            }
+          : parametro, // Se não for string, assume que é um número e não aplica contains
       },
     });
   }
 
-  async buscarFeedbacks(filtro: string, parametro: string) {
+  async buscarFeedbacks(filtro: string, parametro: string | number) {
+    const isString = typeof parametro === 'string';
+
     return this.prisma.feedback.findMany({
       where: {
-        [filtro]: {
-          contains: parametro,
-          mode: 'insensitive', // Ignora maiúsculas/minúsculas
-        },
+        [filtro]: isString
+          ? {
+              contains: parametro,
+              mode: 'insensitive', // Ignora maiúsculas/minúsculas
+            }
+          : parametro, // Se não for string, assume que é um número e não aplica contains
       },
     });
   }
 
-  async buscarVotantes(filtro: string, parametro: string) {
+  async buscarVotantes(filtro: string, parametro: string | number) {
+    const isString = typeof parametro === 'string';
+
     return this.prisma.votante.findMany({
       where: {
-        [filtro]: {
-          contains: parametro,
-          mode: 'insensitive', // Ignora maiúsculas/minúsculas
-        },
+        [filtro]: isString
+          ? {
+              contains: parametro,
+              mode: 'insensitive', // Ignora maiúsculas/minúsculas
+            }
+          : parametro, // Se não for string, assume que é um número e não aplica contains
       },
     });
   }

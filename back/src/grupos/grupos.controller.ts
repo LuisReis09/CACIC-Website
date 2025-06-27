@@ -48,8 +48,11 @@ export class GruposController {
         return this.gruposService.atualizar(id, grupo);
     }
 
-    @Get("/buscar/:filtro/:parametro")
-    async buscar(@Param('filtro') filtro: string, @Param('parametro') parametro: string) {
+    @Get("/buscar/:filtro/:parametro/:tipo")
+    async buscar(@Param('filtro') filtro: string, @Param('parametro') parametro: string | number, @Param('tipo') tipo: string) {
+        if(tipo == 'number'){
+            parametro = Number(parametro);
+        }
         return this.gruposService.buscar(filtro, parametro);
     }
 }

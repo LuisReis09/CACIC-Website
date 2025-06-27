@@ -38,7 +38,7 @@ const Atualizar: React.FC = () => {
             },
             body: JSON.stringify(formData),
         })
-            .then(response => response.json())
+            .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
             .then(data => {
                 if (data.success) {
                     alert('Registro atualizado com sucesso!');
@@ -47,7 +47,11 @@ const Atualizar: React.FC = () => {
                     alert('Erro ao atualizar registro: ' + data.message);
                 }
             })
-            .catch(error => console.error('Error updating record:', error));
+            .catch(error => {
+                alert('Perdeu acesso ao servidor. Tente relogar.');
+                // Recarrega a página:
+                window.location.reload();
+            });
     }
 
     const fetchColunas = async () => {
@@ -64,7 +68,11 @@ const Atualizar: React.FC = () => {
                     return text ? JSON.parse(text) : null;
                 })
                 .then(data => setColunas(data))
-                .catch(error => console.error('Error fetching columns:', error));
+                .catch(error => {
+                    alert('Perdeu acesso ao servidor. Tente relogar.');
+                    // Recarrega a página:
+                    window.location.reload();
+                });
         }
     }
 
@@ -79,6 +87,7 @@ const Atualizar: React.FC = () => {
             })
                 .then(async response => {
                     const text = await response.text();
+                    console.log(text);
                     return text ? JSON.parse(text) : null;
                 })
                 .then(data => {
@@ -91,7 +100,11 @@ const Atualizar: React.FC = () => {
                         setFormData({});
                     }
                 })
-                .catch(error => console.error('Error fetching data:', error));
+                .catch(error => {
+                    alert('Perdeu acesso ao servidor. Tente relogar.');
+                    // Recarrega a página:
+                    window.location.reload();
+                });
         }
     }
 
@@ -112,7 +125,7 @@ const Atualizar: React.FC = () => {
                 <TabelaOption setTabela={setTabela} setColumnRoute={setColumnRoute} toCreate={false} />
                 <div className={styles.id_container}>
                     <label className={styles.label_id}>ID:</label>
-                    <input type="number" value={id} onChange={(e) => setId(Number(e.target.value))} className={styles.input_id} placeholder="ID do registro..." />
+                    <input type="number" onChange={(e) => setId(Number(e.target.value))} className={styles.input_id} placeholder="ID do registro..." />
                 </div>
 
                 <div className={styles.form_container}>
@@ -134,10 +147,9 @@ const Atualizar: React.FC = () => {
                             ) : coluna.type === 'number' ? (
                                 <input 
                                     type="number" 
-                                    onChange={(e) => handleChange(coluna.column, e.target.value)} 
+                                    onChange={(e) => handleChange(coluna.column, Number(e.target.value))} 
                                     className={styles.input_cell} 
                                     placeholder={"Informe o(a) " + coluna.column}
-                                    value={formData[coluna.column] || ''}
                                 />
                             ) : coluna.type === 'boolean' ? (
                                 <select onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell} value={formData[coluna.column] || ''}>
@@ -154,7 +166,7 @@ const Atualizar: React.FC = () => {
                                 </select>
                             ) : coluna.type === 'date' ? (
                                 <input 
-                                    type="time" 
+                                    type="datetime-local" 
                                     onChange={(e) => handleChange(coluna.column, e.target.value)} 
                                     className={styles.input_cell}
                                     value={formData[coluna.column] || ''}

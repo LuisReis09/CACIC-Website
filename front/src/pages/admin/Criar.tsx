@@ -30,9 +30,13 @@ const Criar: React.FC = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             })
-                .then(response => response.json())
+                .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
                 .then(data => setColunas(data))
-                .catch(error => console.error('Error fetching columns:', error));
+                .catch(error => {
+                    alert('Perdeu acesso ao servidor. Tente relogar.');
+                    // Recarrega a página:
+                    window.location.reload();
+                });
         }
     }
 
@@ -50,7 +54,7 @@ const Criar: React.FC = () => {
             },
             body: JSON.stringify(formData),
         })
-            .then(response => response.json())
+            .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
             .then(data => {
                 alert('Cadastro realizado com sucesso!');
             })

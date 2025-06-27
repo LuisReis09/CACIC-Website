@@ -7,6 +7,9 @@ import { Logger } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import * as dotenv from 'dotenv';
 
+import { QrCodePix } from 'qrcode-pix';
+import QRCode from 'qrcode';
+
 dotenv.config();
 
 export interface Aluguel {
@@ -185,7 +188,8 @@ export class AluguelService {
                     aluguelAtualizado.cliente.email,
                     aluguelAtualizado.jogo.nome,
                     aluguelAtualizado.horaInicio,
-                    aluguelAtualizado.horaFim
+                    aluguelAtualizado.horaFim,
+                    Number(aluguelAtualizado.jogo.precoPorHora.toFixed(2)) * (aluguelAtualizado.horaFim - aluguelAtualizado.horaInicio)
                 );
                 break;
             case StatusAluguel.FINALIZADO:
@@ -196,6 +200,12 @@ export class AluguelService {
                     aluguelAtualizado.horaFim
                 );
                 break;
+            case StatusAluguel.CANCELADO:
+                this.cancelarAluguel(
+                    aluguelAtualizado.cliente.email,
+                    aluguelAtualizado.jogo.nome
+                );
+                break;
         }
 
         return {
@@ -203,6 +213,45 @@ export class AluguelService {
             message: 'Aluguel atualizado com sucesso.',
             aluguel: aluguelAtualizado,
         };
+    }
+
+    async cancelarAluguel(
+        email_cliente: string,
+        nome_jogo: string,
+    ){
+        this.enviar_email(
+            email_cliente,
+            'Cancelamento de Aluguel',
+            `
+                <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+                    <h2 style="color: #000;">❌ Seu Aluguel foi <span style="color: #dc3545;">Cancelado ou Reprovado</span></h2>
+
+                    <p style="font-size: 16px; color: #555;">
+                        <strong>🎮 Jogo:</strong> <span style="color: #222;">${nome_jogo}</span><br>
+                        <strong>🔖 Status:</strong> <b style="color: #dc3545;">CANCELADO</b>
+                    </p>
+
+                    
+                    <p style="margin-top: 20px; font-size: 15px; color: #333;">
+                        O seu pedido de aluguel foi cancelado ou reprovado por um dos seguintes motivos:
+                    </p>
+                    <ul style="font-size: 15px; color: #333; margin-left: 20px;">
+                        <li>Não haverá disponibilidade de membros do Centro Acadêmico para atender no horário solicitado.</li>
+                        <li>O cliente descumpriu alguma das regras de aluguel.</li>
+                        <li>O cliente não compareceu ao local de retirada no horário combinado.</li>
+                    </ul>
+                    
+
+                    <div style="margin-top: 20px; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; border-radius: 6px; color: #721c24;">
+                        ⚠️ Se você acredita que isso foi um erro, ou deseja resolver sua situação, <b>entre em contato conosco</b> para mais informações.
+                    </div>
+
+                    <p style="margin-top: 30px; font-size: 14px; color: #999;">
+                        Este é um e-mail automático, não responda.
+                    </p>
+                </div>
+            `
+        );
     }
 
     async atualizarCliente(
@@ -314,6 +363,7 @@ export class AluguelService {
         nome_jogo: string,
         hora_inicio: string | number,
         hora_fim: string | number,
+        preco_aluguel: number
     ): Promise<any> {
         this.enviar_email(
             email_cliente,
@@ -329,6 +379,16 @@ export class AluguelService {
                         <strong>🔖 Status:</strong> <b style="color: #007bff;">INICIADO</b>
                     </p>
 
+                    <div style="margin-top: 30px; text-align: center;">
+                        <p style="font-size: 16px; color: #333;">
+                            💰 Para realizar o pagamento do aluguel, utilize o QR Code abaixo:
+                        </p>
+                        <img src="${this.gerarQrCode(preco_aluguel, "Aluguel do Jogo " + nome_jogo)}" alt="QR Code Pix" style="width: 250px; height: 250px; margin-top: 10px;" />
+                        <p style="font-size: 14px; color: #555; margin-top: 10px;">
+                            Ou copie e cole o código Pix gerado na sua aplicação bancária.
+                        </p>
+                    </div>
+
                     <div style="margin-top: 20px; background-color: #cce5ff; border: 1px solid #b8daff; padding: 15px; border-radius: 6px; color: #004085;">
                         🎮 Aproveite seu jogo!<br>
                         ⏰ <strong>Lembre-se:</strong> devolva o jogo no horário combinado para evitar multas e bloqueios. <br>
@@ -339,6 +399,7 @@ export class AluguelService {
                         Este é um e-mail automático, não responda.
                     </p>
                 </div>
+
             `
         );
     }
@@ -666,24 +727,83 @@ export class AluguelService {
         return await this.prisma.cliente.deleteMany({});
     }
 
-    async buscarAlugueis(filtro: string, parametro: string): Promise<any> {
+    async buscarAlugueis(filtro: string, parametro: string | number): Promise<any> {
+        const isString = typeof parametro === 'string';
+
         return await this.prisma.aluguel.findMany({
             where: {
-                [filtro]: {
-                    contains: parametro,
-                    mode: 'insensitive', // Ignora maiúsculas/minúsculas
-                },
+                [filtro]: isString
+                    ? {
+                        contains: parametro,
+                        mode: 'insensitive', // Ignora maiúsculas/minúsculas
+                    }
+                    : parametro, // Se não for string, assume que é um número e não aplica contains
             },
         });
     }
 
-    async buscarClientes(filtro: string, parametro: string): Promise<any> {
+    async buscarClientes(filtro: string, parametro: string | number): Promise<any> {
+        const isString = typeof parametro === 'string';
+
         return await this.prisma.cliente.findMany({
             where: {
-                [filtro]: {
-                    contains: parametro,
-                    mode: 'insensitive', // Ignora maiúsculas/minúsculas
-                },
+                [filtro]: isString
+                    ? {
+                        contains: parametro,
+                        mode: 'insensitive', // Ignora maiúsculas/minúsculas
+                    }
+                    : parametro, // Se não for string, assume que é um número e não aplica contains
+            },
+        });
+    }
+
+    async gerarQrCode(
+        valor: string | number,
+        descricao: string = 'Pagamento de Aluguel',
+    )
+    : Promise<any> {
+        const chave_pix = process.env.PIX_KEY;
+        
+        if (!chave_pix) {
+            throw new Error('Chave PIX não configurada');
+        }
+
+        const qrCodePix = QrCodePix({
+            version: '01',
+            key: chave_pix,
+            name: 'CACIC - UFPB',
+            city: 'Joao Pessoa',
+            message: descricao,
+            value: Number(valor),
+        });
+
+        const payload = await qrCodePix.payload(); // string do código Pix Copia e Cola
+
+        // Gera QR code em base64 (você pode salvar como imagem se preferir)
+        const qrCodeBase64 = await QRCode.toDataURL(payload);
+
+        return qrCodeBase64;
+    }
+
+    async buscarClientesPorFiltro(
+        filtro: string,
+        parametro: string | number | Date
+    ){
+        const isString = typeof parametro === 'string';
+        const isNumber = typeof parametro === 'number';
+
+        return await this.prisma.cliente.findMany({
+            where: {
+                [filtro]: isString
+                    ? {
+                        contains: parametro,
+                        mode: 'insensitive', // Ignora maiúsculas/minúsculas
+                    }
+                    : isNumber
+                        ? parametro // Se for número, não aplica contains
+                        : filtro === 'dataBloqueio'
+                            ? { gte: parametro } // Se for data, aplica filtro de maior ou igual
+                            : undefined, // Caso contrário, não aplica filtro
             },
         });
     }

@@ -230,14 +230,18 @@ export class MonitoriasService {
         }
     }
 
-    async buscar(filtro: string, parametro: string) {
+    async buscar(filtro: string, parametro: string | number) {
         // Busca monitorias com base em um filtro e parâmetro:
+        const isString = typeof parametro === 'string';
+
         return this.prisma.monitoria.findMany({
             where: {
-                [filtro]: {
-                    contains: parametro,
-                    mode: 'insensitive', // Ignora maiúsculas/minúsculas
-                },
+                [filtro]: isString
+                    ? {
+                        contains: parametro,
+                        mode: 'insensitive', // Ignora maiúsculas/minúsculas
+                    }
+                    : parametro, // Se não for string, assume que é um número e não aplica contains
             }
         });
     }

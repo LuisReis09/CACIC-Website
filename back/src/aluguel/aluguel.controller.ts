@@ -27,7 +27,7 @@ export class AluguelController {
             { column: 'clienteId', type: 'number' },
             { column: 'horaInicio', type: 'number' },
             { column: 'horaFim', type: 'number' },
-            { column: 'status', type: 'enum', options: ['PENDENTE_APROVACAO', 'RESERVADO', 'INICIADO', 'FINALIZADO'] }
+            { column: 'status', type: 'enum', options: ['PENDENTE_APROVACAO', 'RESERVADO', 'INICIADO', 'FINALIZADO', 'CANCELADO'] }
         ];
     }
 
@@ -58,7 +58,7 @@ export class AluguelController {
     @Patch("/atualizar/:id")
     async atualizarAluguel(
         @Param('id') id: number,
-        @Body() aluguel: { jogoId?: number; clienteId?: number; horaInicio?: Date; horaFim?: Date; status?: string }
+        @Body() aluguel: { jogoId?: number; clienteId?: number; horaInicio?: number; horaFim?: number; status?: string }
     ) {
         return this.aluguelService.atualizarAluguel(Number(id), aluguel);
     }
@@ -146,21 +146,41 @@ export class AluguelController {
         return this.aluguelService.ativarServicoJogosAgora();
     }
 
-    @Get("/buscar/:filtro/:parametro")
+    @Get("/buscar/:filtro/:parametro/:tipo")
     async buscarAlugueis(
         @Param('filtro') filtro: string,
-        @Param('parametro') parametro: string
+        @Param('parametro') parametro: string | number,
+        @Param('tipo') tipo: string
     ) {
-        // Busca aluguéis com base em um filtro e parâmetro
+        if(tipo == 'number'){
+            parametro = Number(parametro);
+        }
+        
         return this.aluguelService.buscarAlugueis(filtro, parametro);
     }
 
-    @Get("/clientes/buscar/:filtro/:parametro")
+    @Get("/clientes/:parametro")
     async buscarClientes(
         @Param('filtro') filtro: string,
-        @Param('parametro') parametro: string
+        @Param('parametro') parametro: string | number
     ) {
-        // Busca clientes com base em um filtro e parâmetro
         return this.aluguelService.buscarClientes(filtro, parametro);
+    }
+
+    @Get("/clientes/buscar/:filtro/:parametro/:tipo")
+    async buscarClientesPorFiltro(
+        @Param('filtro') filtro: string,
+        @Param('parametro') parametro: string | number | Date,
+        @Param('tipo') tipo: string
+    ) {
+        if(tipo == 'number'){
+            parametro = Number(parametro);
+        }
+        if(tipo == 'date'){
+            // Se o tipo for 'date', converte o parâmetro para uma data
+            parametro = new Date(parametro as string);
+        }
+        
+        return this.aluguelService.buscarClientesPorFiltro(filtro, parametro);
     }
 }

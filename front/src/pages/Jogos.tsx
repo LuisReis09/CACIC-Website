@@ -20,7 +20,7 @@ const Jogos: React.FC = () => {
         <div className={"main_container " + styles.jogosList_container}>
            <h1 className={styles.title}>Alugue um dos nossos jogos. <span className={styles.span}>Divirta-se!</span></h1>
 
-           <p className={styles.p}>Leia as <a className={styles.a} href="" target='_blank'>diretrizes de aluguel</a> do CA antes de alugar os jogos!</p>
+           <p className={styles.p}>Leia as <a className={styles.a} href="Termos_Servico_Jogos.pdf" target='_blank'>diretrizes de aluguel</a> do CA antes de alugar os jogos!</p>
 
            <div className={styles.jogos_list + " scrollbar"}>
                 {

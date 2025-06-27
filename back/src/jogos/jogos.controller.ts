@@ -52,8 +52,11 @@ export class JogosController {
     }
 
     @Public()
-    @Get("/buscar/:filtro/:parametro")
-    async buscarJogoPorNome(@Param('filtro') filtro: string, @Param('parametro') parametro: string) {
+    @Get("/buscar/:filtro/:parametro/:tipo")
+    async buscarJogoPorNome(@Param('filtro') filtro: string, @Param('parametro') parametro: string | number, @Param('tipo') tipo: string) {
+        if(tipo == 'number'){
+            parametro = Number(parametro);
+        }
         return this.jogosService.buscar(filtro, parametro);
     }
 
