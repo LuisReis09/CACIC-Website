@@ -81,6 +81,11 @@ export class ProfessoresController {
     return this.professoresService.inserir(professor);
   }
 
+  @Post('/cadastrarMuitos')
+  async inserirMuitos(@Body() professores: Professor[]) {
+    return this.professoresService.inserirMuitos(professores);
+  }
+
   @Post('/feedbacks/cadastrar')
   async inserirFeedback(@Body() feedback: Feedback) {
     return this.professoresService.avaliar(feedback);

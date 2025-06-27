@@ -7,9 +7,12 @@ import ProfessorScreen from './professores/ProfessorScreen';
 const Professores = () => {
     const [screen, setScreen] = React.useState<string>("lista");
     const [professor, setProfessor] = React.useState();
-
+    const handleSelectProfessor = (prof: any) => {
+        setProfessor(prof);
+        setScreen("professor");
+    };
     if(screen == "lista"){
-        return <ProfessorList   setScreen={setScreen} setProf={setProfessor}/>
+        return <ProfessorList onSelectProfessor={handleSelectProfessor}/>
     }else{
         return <ProfessorScreen setScreen={setScreen} prof={professor}/>
     }

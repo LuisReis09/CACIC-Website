@@ -115,11 +115,11 @@ enum StatusAluguel {
   CANCELADO
 }
 
-
-model GrupoWhatsapp {
-  id          Int      @id @default(autoincrement())
-  nome        String
-  link        String
-  descricao   String
-  imagem      String
+model Laboratorio {
+  id      Int @id @default(autoincrement())
+  nome    String
+  link    String
+  localizacao     String
+  descricao       String
+  imagem          String
 }

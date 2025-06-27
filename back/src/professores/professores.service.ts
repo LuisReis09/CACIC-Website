@@ -90,6 +90,12 @@ export class ProfessoresService {
     });
   }
 
+  async inserirMuitos(professores: Professor[]) {
+    return this.prisma.professor.createMany({
+      data: professores
+    });
+  }
+
   async deletar(id: number) {
     return this.prisma.professor.delete({
       where: {

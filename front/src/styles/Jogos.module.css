@@ -28,13 +28,15 @@
 
 .jogos_list{
     display: flex;
-    gap: auto;
+    justify-content: space-around;
     flex-wrap: wrap;
+    gap: 20px;
+
     width: 85%;
-    /* height: 70%;
-    max-height: 70%; */
     height: 300px;
     max-height: 300px;
+
+    margin-bottom: 40px;
 
     overflow-y: scroll;
 }

@@ -1,0 +1,40 @@
+
+.main_container{
+    background-color: var(--background-color-2);
+    width: 100%;
+    height: 85%;
+    border-radius: 8px;
+}
+
+.header{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    padding: 10px;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+
+    font-size: var(--mid-size);
+}
+.img{
+    width: 200px;
+    height: 150px;
+    border-radius: 1px;
+    object-fit: cover;
+}
+
+.main_box{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    background-color: var(--background-color-1);
+    padding: 20px;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

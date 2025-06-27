@@ -8,7 +8,11 @@
     padding: 10px;
 
     /* background-color: var(--background-color-2); */
-    background-color: chartreuse;
+    /* background-color: chartreuse; */
+    border-top: 5px solid var(--text-color-3);
+    border-right: 5px solid var(--text-color-3);
+    border-bottom: 5px solid var(--text-color-2);
+    border-left: 5px solid var(--text-color-2);
     border-radius: 20px;
 }
 
@@ -18,4 +22,11 @@
     border-radius: 15px;
     
     object-fit: cover;
+}
+
+.titulo{
+    font-weight: 500;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }

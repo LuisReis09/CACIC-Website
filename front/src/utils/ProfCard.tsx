@@ -13,7 +13,7 @@ interface ProfCardProps{
 const ProfCard: React.FC<ProfCardProps> = ({prof_nome, professor_img, email, onClick}) => {
 
     return (
-        <div className={styles.prof_card_box} onClick={() => onClick}>
+        <div className={styles.prof_card_box} onClick={onClick}>
             <img className={styles.img} src={professor_img ? professor_img : "/assets/professors/imagem_padrao.svg"}></img>
             
             <div className={styles.prof_card_info}>

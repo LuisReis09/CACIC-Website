@@ -14,7 +14,7 @@ const Jogos: React.FC = () => {
             {nome: "Ludo", img: "/assets/imagem_padrao.svg", preco: "1,00", status: "INDISPONIVEL"},
             {nome: "Coup", img: "/assets/imagem_padrao.svg", preco: "2,00", status: "DISPONIVEL"},
         ])
-    }, []) 
+    }, [jogos_list]) 
 
     return (
         <div className={"main_container " + styles.jogosList_container}>

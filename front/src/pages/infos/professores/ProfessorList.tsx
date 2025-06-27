@@ -9,11 +9,10 @@ import ProfCard from '../../../utils/ProfCard'
 import styles from '../../../styles/infos/ProfessorList.module.css'
 
 interface ProfessorListProps{
-    setScreen: Function;
-    setProf: Function;
+  onSelectProfessor: (prof: any) => void;
 }
 
-const ProfessorList: React.FC<ProfessorListProps> = ({ setScreen, setProf }) => {
+const ProfessorList: React.FC<ProfessorListProps> = ({ onSelectProfessor }) => {
   const router = useRouter();
   const [professores, setProfessores] = React.useState<any[]>();
 
@@ -45,8 +44,7 @@ const ProfessorList: React.FC<ProfessorListProps> = ({ setScreen, setProf }) => 
               professor_img={prof.imagem}
               email={prof.email}
               onClick={() => {
-                setProf(prof);
-                setScreen("professor");
+                onSelectProfessor(prof);
               }}
             />
           ))
