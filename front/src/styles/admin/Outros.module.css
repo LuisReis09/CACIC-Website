@@ -1,0 +1,100 @@
+.big_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    height: 100%;
+}
+
+.container {
+    width: 90%;
+    min-height: max-content;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    padding: 50px 50px;
+    gap: 40px;
+    
+    background-color: var(--background-color-2);
+}
+
+.emprestimos_power_box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 240px;
+    padding: 20px 25px;
+    color: var(--text-color-1);
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 10px;
+}
+
+.ativar{
+    background-color: #009F2F;
+}
+
+.desativar{
+    background-color: #CB2323;
+}
+
+.emprestimos_status_box{
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    gap: 10px;
+    color: var(--text-color-1);
+    width: 290px;
+}
+
+.emprestimos_status_box > h1{
+    font-weight: normal;
+}
+
+.emprestimos_status_box > input{
+    height: 40px;
+    text-indent: 20px;
+
+    color: var(--text-color-1);
+    background-color: #000814;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+.emprestimos_status_box > p{
+    font-size: 13px;
+    color: var(--text-color-1);
+    opacity: 0.5;
+    margin-bottom: 10px;
+}
+
+.emprestimos_status_buttons > button {
+    padding: 10px 20px;
+    color: var(--text-color-1);
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.emprestimos_agendar_inicio{
+    background-color: rgba(0, 159, 47, 50);
+}
+
+.emprestimos_agendar_termino{
+    background-color: rgba(203, 35, 35, 50);
+}
+
+.emprestimos_status_buttons{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}

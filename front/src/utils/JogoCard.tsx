@@ -17,7 +17,7 @@ const JogoCard: React.FC<JogoCardProps> = ({img, nome, preco, status}) => {
                 <h2 className={styles.titulo}>{nome}</h2>
             </div>
 
-            <p className={styles.p}>{preco} <span className={styles.span}>por hora</span></p>
+            <p className={styles.p}><span className={styles.span}>{preco}</span> por hora</p>
         </div>
     )
 }

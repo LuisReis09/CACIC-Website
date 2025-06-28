@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap');
+
 
 :root {
     /* Color var */
@@ -14,6 +17,9 @@
     
     /* Font var */
     --font-family-1: 'Urbanist', sans-serif;
+    --font-family-2: 'Syne Mono', monospace;
+    /* --font-family-2: 'B612 Mono', monospace; */
+    --font-family-3: 'Cutive Mono', monospace;
     
     --big-size: 25px;
     --mid-size: 17px;
@@ -29,7 +35,10 @@
 body {
     background-color: var(--background-color-1);
     color: var(--text-color-1);
-    font-family: var(--font-family-1);
+    font-family: var(--font-family-2);
+    font-weight: 600;
+    overflow-x: hidden;
+    
 }
 
 .main_container{
@@ -61,7 +70,20 @@ body {
     border-radius: 10px;
     border: 2px solid #2d2d2d00; /* Dá espaço interno fake */
 }
-  
+
 .scrollbar::-webkit-scrollbar-thumb:hover {
     background: var(--text-color-2);
+}
+
+::placeholder{
+    font-family: var(--font-family-2);
+    font-weight: 500;
+}
+input{
+    font-family: var(--font-family-2);
+    font-weight: 600;
+}
+::selection {
+    background: var(--text-color-3);
+    color: var(--background-color-1);
 }

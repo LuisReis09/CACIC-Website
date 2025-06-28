@@ -1,16 +1,13 @@
 import React from 'react';
-import { useRouter } from 'next/router';
+import styles from './../styles/Sobre.module.css';
+import SobreContent from '../utils/SobreContent';
 
 const Sobre: React.FC = () => {
-    const router = useRouter();
-
-    return (
-        <div className={"main_container"}>
-           Sobre
-           {/* <button onClick={() => router.push("/Infos")}>Mudar</button> */}
-        </div>
-    );
-
-}
+  return (
+    <div className={styles.container}>
+      <SobreContent />
+    </div>
+  );
+};
 
 export default Sobre;

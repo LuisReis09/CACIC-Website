@@ -10,6 +10,7 @@ const Criar: React.FC = () => {
     const [colunas, setColunas] = React.useState<any[]>([]);
     const [tabela, setTabela]   = React.useState<string>('professores');
     const [columnRoute, setColumnRoute] = React.useState<string>('/professores');
+    const [jsonFile, setJsonFile] = React.useState<File | null>(null);
     const { token } = useAdminContext();
 
     const [formData, setFormData] = React.useState<{ [key: string]: any }>({});
@@ -65,6 +66,47 @@ const Criar: React.FC = () => {
             });
     };
 
+    const handleJsonCreate = async () => {
+
+        // Lê o array de objetos que vem do arquivo JSON, enviando este array para o servidor
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const jsonData = e.target?.result;
+            if (typeof jsonData === 'string') {
+                try {
+                    const data = JSON.parse(jsonData);
+                    if (!Array.isArray(data)) {
+                        alert('O arquivo JSON deve conter um array de objetos.');
+                        return;
+                    }
+
+                    fetch(`http://localhost:4000${columnRoute}/cadastrarMuitos`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                        },
+                        body: JSON.stringify(data),
+                    })
+                        .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
+                        .then(data => {
+                            alert('Cadastro realizado com sucesso!');
+                        })
+                        .catch(error => {
+                            alert('Perdeu acesso ao servidor. Tente relogar.');
+                            // Recarrega a página:
+                            window.location.reload();
+                        });
+                } catch (error) {
+                    alert('Erro ao processar o arquivo JSON. Certifique-se de que ele está no formato correto.');
+                }
+            }
+        };
+
+        if(jsonFile)
+            reader.readAsText(jsonFile);
+    }
+
     React.useEffect(() => {
         fetchColunas();
     }, [tabela]);
@@ -72,6 +114,12 @@ const Criar: React.FC = () => {
     React.useEffect(() => {
         fetchColunas();
     }, []);
+
+    React.useEffect(() => {
+        if (jsonFile != null) {
+            handleJsonCreate();
+        }
+    }, [jsonFile]);
 
 
     return (
@@ -113,7 +161,23 @@ const Criar: React.FC = () => {
                     ))}
                 </div>
 
-                <button className={styles.criar_button} onClick={handleCreate}>Criar</button>
+                <div className={styles.button_container}>
+                    <button className={styles.criar_button} onClick={handleCreate}>Criar</button>
+                    {
+                        (tabela == 'professores' || tabela == 'laboratorios' || tabela == 'jogos') &&
+                        <div>
+                            <input 
+                                className={styles.json_criar_button} 
+                                type="file" 
+                                accept=".json"
+                                onChange={(e) => setJsonFile(e.target.files ? e.target.files[0] : null)}
+                                id="jsonFile_input"
+                                hidden
+                            />
+                            <label htmlFor="jsonFile_input" className={styles.json_criar_button}>Arquivo JSON</label>
+                        </div>
+                    }
+                </div>
             </div>
 
         </div>

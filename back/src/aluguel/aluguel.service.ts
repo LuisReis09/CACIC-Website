@@ -27,7 +27,7 @@ export class AluguelService {
     private readonly senha_cacic = process.env.CACIC_APP_PASSWORD;
     private readonly logger = new Logger(AluguelService.name);
 
-    private hora_desativacao: string = '17:00:00'; // 17h
+    private hora_desativacao: string = '18:00:00'; // 17h
     private hora_ativacao: string = '08:00:00'; // 8h
 
     async requisitarAluguel(
@@ -647,14 +647,10 @@ export class AluguelService {
     }
 
     async ativarServicoJogosAgora(): Promise<any> {
-        return this.prisma.admin.update({
+        return await this.prisma.admin.update({
             where: { id: 1 }, // Só existe um admin
             data: { servicoJogosAtivo: true },
-        }).then(() => {
-            return { success: true, message: 'Serviço de Jogos ativado com sucesso.' };
-        }).catch((error) => {
-            return { success: false, message: 'Erro ao ativar o serviço de Jogos.', error };
-        });
+        })
     }
 
     @Cron('0 17 * * * *')
@@ -675,7 +671,7 @@ export class AluguelService {
             await this.prisma.admin.updateMany({
                 data: { servicoJogosAtivo: true },
             });
-            this.logger.log('Serviço de Jogos ativado às 8h.');
+            this.logger.log('Serviço de Jogos ativado às ' + this.hora_ativacao);
         }
 
         if (horaAtual === horaDesativar) {
@@ -686,11 +682,21 @@ export class AluguelService {
     }
 
     async agendarDesativacaoServicoJogos(hora: string): Promise<void> {
-        this.hora_desativacao = hora;
+        // Recebe numero inteiro (8 a 18) na string, então precisamos converter para HH:MM:SS
+        if(Number(hora) < 10){
+            this.hora_desativacao = `0${hora}:00:00`; // Exemplo: 8 -> 08:00:00
+        }else{
+            this.hora_desativacao = `${hora}:00:00`; // Exemplo: 12 -> 12:00:00
+        }
     }
 
     async agendarAtivacaoServicoJogos(hora: string): Promise<void> {
-        this.hora_ativacao = hora;
+        // Recebe numero inteiro (8 a 18)
+        if(Number(hora) < 10){
+            this.hora_ativacao = `0${hora}:00:00`; // Exemplo: 8 -> 08:00:00
+        }else{
+            this.hora_ativacao = `${hora}:00:00`; // Exemplo: 12 -> 12:00:00
+        }
     }
 
     async desativarServicoJogosAgora(): Promise<any> {
@@ -806,5 +812,21 @@ export class AluguelService {
                             : undefined, // Caso contrário, não aplica filtro
             },
         });
+    }
+
+    async servicoAtivo(): Promise<any> {
+        const admin = await this.prisma.admin.findUnique({
+            where: { id: 1 }, // Só existe um admin
+            select: { servicoJogosAtivo: true },
+        });
+
+        return admin ? admin.servicoJogosAtivo : false;
+    }
+
+    async horariosHoje(): Promise<{ ativacao: string; desativacao: string }> {
+        return {
+            ativacao: this.hora_ativacao,
+            desativacao: this.hora_desativacao,
+        };
     }
 }

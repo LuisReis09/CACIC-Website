@@ -49,11 +49,6 @@
     background-color: var(--background-color-1);
 }
 
-.admin_login_input_container > input:focus{
-    border: 2px solid var(--text-color-2);
-    box-shadow: 0 0 3px var(--text-color-2);
-}
-
 .admin_login_button{
     padding: 10px 30px;
     background-color: #003566;

@@ -87,11 +87,9 @@ const Atualizar: React.FC = () => {
             })
                 .then(async response => {
                     const text = await response.text();
-                    console.log(text);
                     return text ? JSON.parse(text) : null;
                 })
                 .then(data => {
-                    console.log(data)
                     // Retira o campo 'id' do objeto retornado e atualiza o formData
                     if (data) {
                         const { id, ...rest } = data;

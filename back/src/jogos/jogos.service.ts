@@ -64,6 +64,12 @@ export class JogosService {
         });
     }
 
+    async cadastrarVarios(jogos: any[]) {
+        return this.prisma.jogo.createMany({
+            data: jogos
+        });
+    }
+
     async atualizar(id: number, jogo: Jogo) {
         return this.prisma.jogo.update({
             where: {

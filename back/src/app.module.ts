@@ -11,11 +11,10 @@ import { JogosController } from './jogos/jogos.controller';
 import { JogosModule } from './jogos/jogos.module';
 import { AluguelModule } from './aluguel/aluguel.module';
 import { MonitoriasModule } from './monitorias/monitorias.module';
-import { GruposModule } from './grupos/grupos.module';
 import { LaboratoriosModule } from './laboratorios/laboratorios.module';
 
 @Module({
-  imports: [ProfessoresModule, AuthModule, UsersModule, JogosModule, AluguelModule, MonitoriasModule, GruposModule, LaboratoriosModule],
+  imports: [ProfessoresModule, AuthModule, UsersModule, JogosModule, AluguelModule, MonitoriasModule, LaboratoriosModule],
   controllers: [AppController, JogosController],
   providers: [
     AppService,

@@ -120,35 +120,30 @@ const Listar: React.FC = () => {
                     <TabelaOption toCreate={false} setTabela={setTabela} setColumnRoute={setColumnRoute}/>
                 </div>
 
-                { true ?
-                    <div className={styles.tabela_container +" scrollbar"}>
-                        <table className={styles.tabela}>
-                            <thead>
-                                <tr>
-                                    { Array.isArray(colunas) &&
-                                    colunas.map((coluna, index) => (
-                                        <th key={index}>{coluna.column}</th>
+                
+                <div className={styles.tabela_container +" scrollbar"}>
+                    <table className={styles.tabela}>
+                        <thead>
+                            <tr>
+                                { Array.isArray(colunas) &&
+                                colunas.map((coluna, index) => (
+                                    <th key={index}>{coluna.column}</th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            { Array.isArray(dados) &&
+                            dados.map((item, index) => (
+                                <tr key={index}>
+                                    {colunas.map((coluna, colIndex) => (
+                                        <td key={colIndex}>{item[coluna.column]}</td>
                                     ))}
                                 </tr>
-                            </thead>
-                            <tbody>
-                                { Array.isArray(dados) &&
-                                dados.map((item, index) => (
-                                    <tr key={index}>
-                                        {colunas.map((coluna, colIndex) => (
-                                            <td key={colIndex}>{item[coluna.column]}</td>
-                                        ))}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    : 
-                    <div className={styles.tabela_container}>
-                        <p>Nenhum dado encontrado.</p>
-                    </div>
-                }
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                
             </div>
 
 

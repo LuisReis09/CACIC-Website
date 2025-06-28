@@ -9,7 +9,7 @@ export class LaboratoriosService {
         return await this.prisma.laboratorio.findMany({});
     }
 
-    async cadatrar(laboratorio: any){
+    async cadastrar(laboratorio: any){
         return await this.prisma.laboratorio.create({
             data: laboratorio
         });
@@ -34,19 +34,13 @@ export class LaboratoriosService {
         });
     }
 
-    async bucar(filtro: string, parametro: string | number) {
+    async buscar(filtro: string, parametro: string | number) {
         const isString = typeof parametro === 'string';
 
         return await this.prisma.laboratorio.findMany({
             where: {
                 [filtro]: isString ? { contains: parametro, mode: 'insensitive' } : parametro
             }
-        });
-    }
-
-    async deletar(id: number) {
-        return await this.prisma.laboratorio.delete({
-            where: { id }
         });
     }
 

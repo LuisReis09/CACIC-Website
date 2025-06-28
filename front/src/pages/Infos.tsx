@@ -17,8 +17,8 @@ const Infos: React.FC = () => {
                             onClick={() => router.push("/infos/Professores")}               img='professors_card.svg'/>
                 <TopicCard  className= {styles.topic_card} topico="Monitorias"               
                             onClick={() => router.push("/infos/Monitorias")}                img='monitors_card.svg'/>
-                <TopicCard  className= {styles.topic_card} topico="Grupos do Whatsapp"          
-                            onClick={() => router.push("/infos/Grupos")}                    img='whatsapp_card.svg'/>
+                <TopicCard  className= {styles.topic_card} topico="Laboratórios"          
+                            onClick={() => router.push("/infos/Laboratorios")}                    img='whatsapp_card.svg'/>
                 <TopicCard  className= {styles.topic_card} topico="Fluxograma das Cadeiras"  
                             onClick={() => console.log("Baixando arquivo...")}              img='flowchart_card.svg'/>
             </div>

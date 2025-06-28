@@ -25,7 +25,7 @@ export class LaboratoriosController {
 
     @Get("/consultar/:id")
     async consultar(@Param('id') id: string) {
-        return this.laboratoriosService.consultar(id);
+        return this.laboratoriosService.consultar(Number(id));
     }
 
     @Post("/cadastrar")
@@ -40,12 +40,12 @@ export class LaboratoriosController {
 
     @Patch("/atualizar/:id")
     async atualizar(@Param('id') id: string, @Body() laboratorio: any){
-        return this.laboratoriosService.atualizar(id, laboratorio);
+        return this.laboratoriosService.atualizar(Number(id), laboratorio);
     }
 
     @Delete("/deletar/:id")
     async deletar(@Param('id') id: string) {
-        return this.laboratoriosService.deletar(id);
+        return this.laboratoriosService.deletar(Number(id));
     }
 
     @Delete("/deletar")
@@ -54,7 +54,7 @@ export class LaboratoriosController {
     }
 
     @Get("/buscar/:filtro/:valor/:type")
-    async buscar(@Param('filtro') filtro: string, @Param('valor') valor: string, @Param('type') type: string) {
+    async buscar(@Param('filtro') filtro: string, @Param('valor') valor: string | number, @Param('type') type: string) {
         if(type === "number") {
             valor = Number(valor);
         }

@@ -36,6 +36,11 @@ export class JogosController {
         return this.jogosService.cadastrar(jogo);
     }
 
+    @Post("/cadastrarMuitos")
+    async cadastrarVariosJogos(@Body() jogos: Jogo[]) {
+        return this.jogosService.cadastrarVarios(jogos);
+    }
+
     @Patch("/atualizar/:id")
     async atualizarJogo(@Param('id') id: number, @Body() jogo: Jogo) {
         return this.jogosService.atualizar(Number(id), jogo);

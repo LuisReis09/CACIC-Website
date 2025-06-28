@@ -32,7 +32,7 @@ const TabelaOption: React.FC<TabelaOptionProps> = ({setTabela, setColumnRoute, t
         <select onChange={handleChange} className={styles.tabelaSelect}>
             <option value='{"tabela":"professores","rota":"/professores"}'>Professores</option>
             <option value='{"tabela":"monitorias","rota":"/monitorias"}'>Monitorias</option>
-            <option value='{"tabela":"grupos","rota":"/grupos"}'>Grupos</option>
+            <option value='{"tabela":"laboratorios","rota":"/laboratorios"}'>Laboratórios</option>
             <option value='{"tabela":"jogos","rota":"/jogos"}'>Jogos</option>
             {addOtherTables()}
         </select>

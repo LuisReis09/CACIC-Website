@@ -90,7 +90,7 @@ export class ProfessoresService {
     });
   }
 
-  async inserirMuitos(professores: Professor[]) {
+  async inserirMuitos(professores: any[]) {
     return this.prisma.professor.createMany({
       data: professores
     });

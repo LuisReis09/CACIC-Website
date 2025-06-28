@@ -85,6 +85,23 @@
     font-size: 20px;
 }
 
+.button_container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.json_criar_button {
+    padding: 10px 25px;
+    width: fit-content;
+    margin: 0 auto;
+    border-radius: 10px;
+    background-color: var(--background-color-3);
+    color: var(--text-color-1);
+    font-size: 20px;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 768px) {
     .container {
         width: 100%;

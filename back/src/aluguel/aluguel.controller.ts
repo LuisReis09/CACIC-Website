@@ -183,4 +183,16 @@ export class AluguelController {
         
         return this.aluguelService.buscarClientesPorFiltro(filtro, parametro);
     }
+
+    @Get("/servicoAtivo")
+    async isServicoAtivo() {
+        // Verifica se o serviço de jogos está ativo
+        return this.aluguelService.servicoAtivo();
+    }
+
+    @Get("/horariosHoje")
+    async horariosHoje() {
+        // Retorna os horários disponíveis para hoje
+        return this.aluguelService.horariosHoje();
+    }
 }
