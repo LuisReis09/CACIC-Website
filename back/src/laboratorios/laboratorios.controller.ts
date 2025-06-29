@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { LaboratoriosService } from './laboratorios.service'
 import { Get, Post, Patch, Delete, Body, Param } from '@nestjs/common';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('laboratorios')
 export class LaboratoriosController {
@@ -18,6 +19,7 @@ export class LaboratoriosController {
         ]
     }
 
+    @Public()
     @Get("/listar")
     async listar() {
         return this.laboratoriosService.listar();

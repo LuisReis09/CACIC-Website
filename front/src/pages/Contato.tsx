@@ -1,4 +1,5 @@
 import React from 'react';
+import { Notificacao, NotificacaoTipo } from '../utils/Notificacao';
 
 // Styles Imports
 import styles from '../styles/Contato.module.css';
@@ -8,6 +9,13 @@ const Contato: React.FC = () => {
     const [remetente, setRemetente] = React.useState('');
     const [assunto, setAssunto] = React.useState('');
     const [mensagem, setMensagem] = React.useState('');
+
+    const [notificacao, setNotificacao] = React.useState<{
+    tipo: NotificacaoTipo;
+    titulo: string;
+    conteudo: string;
+} | null>(null);
+
 
     const handleEnviarEmail = async () => {
         fetch('http://localhost:4000/monitorias/SAC', {
@@ -24,9 +32,17 @@ const Contato: React.FC = () => {
         })
         .then(response => {
             if (response.ok) {
-                alert('E-mail enviado com sucesso!');
+                setNotificacao({
+                tipo: NotificacaoTipo.SUCESSO,
+                titulo: "E-mail Enviado!",
+                conteudo: "Seu e-mail foi enviado com sucesso!"
+            });
             } else {
-                alert('Erro ao enviar o e-mail. Tente novamente mais tarde.');
+                setNotificacao({
+                tipo: NotificacaoTipo.ERRO,
+                titulo: "Erro ao Enviar E-mail!",
+                conteudo: "Ocorreu um erro ao enviar o e-mail. Por favor,Tente novamente mais tarde."
+            });
             }
 
             setRemetente('');

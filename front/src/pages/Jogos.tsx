@@ -1,12 +1,14 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 import styles from './../styles/Jogos.module.css'
 import JogoCard from '../utils/JogoCard'
 import { Notificacao, NotificacaoTipo } from '../utils/Notificacao';
 
 const Jogos: React.FC = () => {
-    const [jogos_list, setJogos_list] = useState<any[]>()
+    const [jogos_list, setJogos_list] = useState<any[]>();
+    const router = useRouter();
 
     interface NotificacaoItem {
         tipo: NotificacaoTipo;
@@ -17,17 +19,11 @@ const Jogos: React.FC = () => {
     }
 
     useEffect( () => {
-
-        setJogos_list([
-            {nome: "Xadrez", img: "/assets/imagem_padrao.svg", preco: "1,00", status: "DISPONIVEL"},
-            {nome: "Uno", img: "/assets/imagem_padrao.svg", preco: "0,50", status: "DISPONIVEL"},
-            {nome: "Ludo", img: "/assets/imagem_padrao.svg", preco: "1,00", status: "INDISPONIVEL"},
-            {nome: "Coup", img: "/assets/imagem_padrao.svg", preco: "2,00", status: "DISPONIVEL"},
-            {nome: "Xadrez", img: "/assets/imagem_padrao.svg", preco: "1,00", status: "DISPONIVEL"},
-            {nome: "Uno", img: "/assets/imagem_padrao.svg", preco: "0,50", status: "DISPONIVEL"},
-            {nome: "Ludo", img: "/assets/imagem_padrao.svg", preco: "1,00", status: "INDISPONIVEL"},
-            {nome: "Coup", img: "/assets/imagem_padrao.svg", preco: "2,00", status: "DISPONIVEL"},
-        ])
+        fetch('http://localhost:4000/jogos/listar')
+        .then(response => response.json())
+        .then(data => {
+            setJogos_list(data);
+        })
     }, []) 
 
     return (
@@ -43,9 +39,10 @@ const Jogos: React.FC = () => {
                             <JogoCard 
                                 key={index}
                                 nome={jogo.nome}
-                                img={jogo.img}
+                                img={jogo.imagem}
                                 status={jogo.status}
-                                preco={jogo.preco} 
+                                preco={jogo.precoPorHora} 
+                                onClick={() => router.push(`/jogos/${jogo.id}`)}
                             />
                         ))
                     }

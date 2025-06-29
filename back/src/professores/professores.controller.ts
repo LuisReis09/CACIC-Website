@@ -2,11 +2,13 @@ import { Controller } from '@nestjs/common';
 import { ProfessoresService } from './professores.service';
 import { Get, Post, Param, Delete, Body, Patch } from '@nestjs/common';
 import { Professor, Feedback } from './professores.service';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('professores')
 export class ProfessoresController {
   constructor(private readonly professoresService: ProfessoresService) {}
 
+  @Public()
   @Get('/listar')
   async listar() {
     return this.professoresService.listar();
@@ -61,11 +63,13 @@ export class ProfessoresController {
     ];
   }
 
+  @Public()
   @Get('/consultar/:id')
   async consultar(@Param('id') id: number){
     return await this.professoresService.consultar(Number(id));
   }
 
+  @Public()
   @Get('/feedbacks/consultar/:id')
   async consultarFeedbacks(@Param('id') id: number) {
     return this.professoresService.consultarFeedback(Number(id));

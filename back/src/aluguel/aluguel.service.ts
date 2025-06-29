@@ -49,7 +49,7 @@ export class AluguelService {
                     email: cliente.email,
                     contato: cliente.contato,
                     bloqueado: false,
-                    motivoBloqueio: null,
+                    motivoBloqueio: '',
                     dataBloqueio: null,
                 },
             });
@@ -72,7 +72,19 @@ export class AluguelService {
             },
         });
 
-        if (conflitos.length > 0) {
+        const qtd_jogo = await this.prisma.jogo.findUnique({
+            where: { id: id_jogo },
+            select: { quantidade: true },
+        });
+
+        if(!qtd_jogo) {
+            return {
+                success: false,
+                message: 'Jogo não encontrado.',
+            };
+        }
+
+        if (conflitos.length >= qtd_jogo.quantidade) {
             return {
                 success: false,
                 message: 'Jogo já está alugado nesse período.',
@@ -828,5 +840,43 @@ export class AluguelService {
             ativacao: this.hora_ativacao,
             desativacao: this.hora_desativacao,
         };
+    }
+
+    async disponibilidade(id_jogo: number): Promise<{[hora: number]: 'DISPONIVEL' | 'ALUGADO'}> {
+
+        // Busca o jogo e verifica se existe
+        const jogo = await this.prisma.jogo.findUnique({
+            where: { id: id_jogo },
+        });
+
+        if (!jogo) {
+            throw new Error('Jogo não encontrado.');
+        }
+
+        // Busca todos os alugueis ativos (não cancelados) que têm conflito com o período
+        const alugueis = await this.prisma.aluguel.findMany({
+            where: {
+                jogoId: id_jogo,
+                status: { not: 'CANCELADO' }, // Ignora cancelados
+                horaInicio: { lte: Number(this.hora_ativacao.substring(0, 2)) },
+                horaFim: { gte: Number(this.hora_desativacao) },
+            },
+        });
+
+        // Prepara resposta
+        const resultado: {[hora: number]: 'DISPONIVEL' | 'ALUGADO'} = {};
+        const hora_fim = Number(this.hora_desativacao.substring(0, 2));
+        for (let hora = Number(this.hora_ativacao.substring(0, 2)); hora <= hora_fim; hora++) {
+            // Conta quantos alugueis pegam essa hora
+            const alugueisNaHora = alugueis.filter(a => a.horaInicio <= hora && a.horaFim >= hora);
+
+            if (alugueisNaHora.length >= jogo.quantidade) {
+                resultado[hora] = 'ALUGADO';
+            } else {
+                resultado[hora] = 'DISPONIVEL';
+            }
+        }
+
+        return resultado;
     }
 }

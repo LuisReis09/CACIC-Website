@@ -6,6 +6,8 @@ import TabelaOption from '@/utils/TabelaOption';
 import styles from '../../styles/admin/Criar.module.css';
 import { useAdminContext } from '@/utils/AdminContext';
 
+import { Notificacao, NotificacaoTipo } from '../../utils/Notificacao';
+
 const Criar: React.FC = () => {
     const [colunas, setColunas] = React.useState<any[]>([]);
     const [tabela, setTabela]   = React.useState<string>('professores');
@@ -14,7 +16,12 @@ const Criar: React.FC = () => {
     const { token } = useAdminContext();
 
     const [formData, setFormData] = React.useState<{ [key: string]: any }>({});
-    // Função para atualizar
+    const [notificacao, setNotificacao] = React.useState<{
+        tipo: NotificacaoTipo;
+        titulo: string;
+        conteudo: string;
+    } | null>(null);
+
     const handleChange = (column: string, value: any) => {
         setFormData((prev) => ({
             ...prev,
@@ -33,9 +40,12 @@ const Criar: React.FC = () => {
             })
                 .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
                 .then(data => setColunas(data))
-                .catch(error => {
-                    alert('Perdeu acesso ao servidor. Tente relogar.');
-                    // Recarrega a página:
+                .catch(() => {
+                    setNotificacao({
+                        tipo: NotificacaoTipo.ERRO,
+                        titulo: "Erro",
+                        conteudo: "Perdeu acesso ao servidor. Tente relogar."
+                    });
                     window.location.reload();
                 });
         }
@@ -43,7 +53,11 @@ const Criar: React.FC = () => {
 
     const handleCreate = async () => {
         if (Object.keys(formData).length === 0) {
-            alert('Por favor, preencha pelo menos um campo.');
+            setNotificacao({
+                tipo: NotificacaoTipo.ATENCAO,
+                titulo: "Atenção!",
+                conteudo: "Por favor, preencha pelo menos um campo."
+            });
             return;
         }
 
@@ -56,19 +70,25 @@ const Criar: React.FC = () => {
             body: JSON.stringify(formData),
         })
             .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
-            .then(data => {
-                alert('Cadastro realizado com sucesso!');
+            .then(() => {
+                setNotificacao({
+                    tipo: NotificacaoTipo.SUCESSO,
+                    titulo: "Cadastro realizado",
+                    conteudo: "Seu cadastro foi realizado com sucesso!"
+                });
+                setFormData({});
             })
-            .catch(error => {
-                alert('Perdeu acesso ao servidor. Tente relogar.');
-                // Recarrega a página:
+            .catch(() => {
+                setNotificacao({
+                    tipo: NotificacaoTipo.ERRO,
+                    titulo: "Erro",
+                    conteudo: "Perdeu acesso ao servidor. Tente relogar."
+                });
                 window.location.reload();
             });
     };
 
     const handleJsonCreate = async () => {
-
-        // Lê o array de objetos que vem do arquivo JSON, enviando este array para o servidor
         const reader = new FileReader();
         reader.onload = async (e) => {
             const jsonData = e.target?.result;
@@ -76,7 +96,11 @@ const Criar: React.FC = () => {
                 try {
                     const data = JSON.parse(jsonData);
                     if (!Array.isArray(data)) {
-                        alert('O arquivo JSON deve conter um array de objetos.');
+                        setNotificacao({
+                            tipo: NotificacaoTipo.ERRO,
+                            titulo: "Erro",
+                            conteudo: "O arquivo JSON deve conter um array de objetos."
+                        });
                         return;
                     }
 
@@ -89,16 +113,27 @@ const Criar: React.FC = () => {
                         body: JSON.stringify(data),
                     })
                         .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
-                        .then(data => {
-                            alert('Cadastro realizado com sucesso!');
+                        .then(() => {
+                            setNotificacao({
+                                tipo: NotificacaoTipo.SUCESSO,
+                                titulo: "Cadastro Realizado",
+                                conteudo: "Seu cadastro foi realizado com sucesso!"
+                            });
                         })
-                        .catch(error => {
-                            alert('Perdeu acesso ao servidor. Tente relogar.');
-                            // Recarrega a página:
+                        .catch(() => {
+                            setNotificacao({
+                                tipo: NotificacaoTipo.ERRO,
+                                titulo: "Erro ao cadastrar",
+                                conteudo: "Perdeu acesso ao servidor. Tente relogar."
+                            });
                             window.location.reload();
                         });
                 } catch (error) {
-                    alert('Erro ao processar o arquivo JSON. Certifique-se de que ele está no formato correto.');
+                    setNotificacao({
+                        tipo: NotificacaoTipo.ERRO,
+                        titulo: "Erro ao processar JSON",
+                        conteudo: "Certifique-se de que o arquivo está no formato correto."
+                    });
                 }
             }
         };
@@ -119,28 +154,37 @@ const Criar: React.FC = () => {
         if (jsonFile != null) {
             handleJsonCreate();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [jsonFile]);
 
 
     return (
         <div className={styles.big_container}>
             <Nav />
-            
+
+            {notificacao && (
+                <Notificacao
+                    tipo={notificacao.tipo}
+                    titulo={notificacao.titulo}
+                    conteudo={notificacao.conteudo}
+                    onRemover={() => setNotificacao(null)}
+                />
+            )}
+
             <div className={styles.container}>
                 <TabelaOption setTabela={setTabela} setColumnRoute={setColumnRoute} toCreate={true} />
 
                 <div className={styles.form_container}>
                     {Array.isArray(colunas) && colunas
-                    .filter((coluna: any) => coluna.column != "id")
+                    .filter((coluna: any) => coluna.column !== "id")
                     .map((coluna: any) => (
-                        
                         <div key={coluna.column} className={styles.input_container}>
                             <label className={styles.label_cell}>{coluna.column}</label>
 
                             {coluna.type === 'string' ? (
-                                <input type="text" onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell} placeholder={"Informe o(a) " + coluna.column}/>
+                                <input type="text" onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell} placeholder={"Informe o(a) " + coluna.column} />
                             ) : coluna.type === 'number' ? (
-                                <input type="number" onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell} placeholder={"Informe o(a) " + coluna.column}/>
+                                <input type="number" onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell} placeholder={"Informe o(a) " + coluna.column} />
                             ) : coluna.type === 'boolean' ? (
                                 <select onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell}>
                                     <option value="true">Sim</option>
@@ -155,7 +199,7 @@ const Criar: React.FC = () => {
                                     ))}
                                 </select>
                             ) : coluna.type === 'date' ? (
-                                <input type="datetime-local" onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell}/>
+                                <input type="datetime-local" onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell} />
                             ) : null}
                         </div>
                     ))}
@@ -164,7 +208,7 @@ const Criar: React.FC = () => {
                 <div className={styles.button_container}>
                     <button className={styles.criar_button} onClick={handleCreate}>Criar</button>
                     {
-                        (tabela == 'professores' || tabela == 'laboratorios' || tabela == 'jogos') &&
+                        (tabela === 'professores' || tabela === 'laboratorios' || tabela === 'jogos') &&
                         <div>
                             <input 
                                 className={styles.json_criar_button} 
@@ -179,10 +223,8 @@ const Criar: React.FC = () => {
                     }
                 </div>
             </div>
-
         </div>
-    );
-
+        );
 }
 
 export default Criar;

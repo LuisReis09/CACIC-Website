@@ -4,12 +4,19 @@ import { useRef } from 'react';
 
 
 import styles from '../../styles/admin/Login.module.css';
+import { Notificacao, SetNotificacao } from '../../utils/Notificacao';  
 
 
 const Login: React.FC = () => {
     const [login, setLogin]       = React.useState('');
     const [password, setPassword] = React.useState('');
     const { setScreen, setToken } = useAdminContext();
+
+    const [notificacao, setNotificacao] = React.useState<{
+        tipo: NotificacaoTipo;
+        titulo: string;
+        conteudo: string;
+    } | null>(null);
 
     // Referência para o campo de login
     const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -36,13 +43,26 @@ const Login: React.FC = () => {
                 setScreen('listar');
             }else{
                 // Se não, exibe uma mensagem de erro
-                alert('Login ou senha incorretos. Tente novamente.');
+                setNotificacao({
+                    tipo: 'erro',
+                    titulo: 'Erro ao fazer login',
+                    conteudo: 'Login falhou. Verifique suas credenciais e tente novamente.',
+                });
             }
         })
     }
 
     return (
         <div className={styles.admin_login_container}>
+            {notificacao && (
+                <Notificacao
+                    tipo={notificacao.tipo}
+                    titulo={notificacao.titulo}
+                    conteudo={notificacao.conteudo}
+                    onRemover={() => setNotificacao(null)}
+                />
+            )}
+            
            <h1><span className={styles.admin_span_highlight}>Admin</span> Log-In</h1>
 
             <div className={styles.admin_login_inputs}>

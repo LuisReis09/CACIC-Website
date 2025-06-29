@@ -1,0 +1,67 @@
+.labCard{
+
+}
+
+.labCardHeader{
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #003566;
+    width: 300px;
+    justify-content: space-between;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.labCardHeaderContent{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 23px;
+}
+
+.labCardImage{
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    object-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+}
+
+.opened_symbol{
+    transition: transform 0.3s ease;
+}
+
+.labCardContent{
+    padding: 10px 15px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: rgba(0, 53, 102, 1);
+    font-weight: normal;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    transition: height 2s ease;
+    text-align: justify;
+    font-size: 15px;
+    position: absolute;
+    z-index: 99;
+}
+
+.labCardContent a{
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+}
+
+@media screen and (max-width: 800px) {
+    .labCardContent{
+        position: static;
+        background-color: rgba(0, 53, 102, 0.5);
+    }
+    
+}

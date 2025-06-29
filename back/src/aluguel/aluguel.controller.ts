@@ -195,4 +195,11 @@ export class AluguelController {
         // Retorna os horários disponíveis para hoje
         return this.aluguelService.horariosHoje();
     }
+
+    @Public()
+    @Get("/disponibilidade/:id_jogo")
+    async verificarDisponibilidade(@Param('id_jogo') id_jogo: number) {
+        // Verifica a disponibilidade de um jogo específico
+        return this.aluguelService.disponibilidade(Number(id_jogo));
+    }
 }

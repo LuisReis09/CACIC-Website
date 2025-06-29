@@ -34,10 +34,9 @@
     align-items: center;
     justify-content: start;
     gap: 1rem;
-    margin-right: 15px;
-    margin-left: 15px;
+    /* margin-right: 15px;
+    margin-left: 15px; */
     padding: 4px 1rem;
-    background-color: var(--background-color-3);
     border-radius: 8px;
     cursor: pointer;
     transition: 0.2s ease-in-out;       
@@ -45,6 +44,7 @@
     height: 90px; 
     text-align: center;
     color: white; 
+    background-color: var(--background-color-3);
 }
 
 .prof_card_box:hover {

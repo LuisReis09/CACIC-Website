@@ -4,11 +4,19 @@ import { useAdminContext } from '@/utils/AdminContext';
 
 import styles from '../../styles/admin/Outros.module.css';
 
+import { Notificacao, SetNotificacao } from '../../utils/Notificacao';  
+
+
 const Outros: React.FC = () => {
     const [emprestimosLigados, setEmprestimosLigados] = React.useState<boolean>(false);
     const [horarios, setHorarios] = React.useState<{ativacao: string, desativacao: string} | null>(null);
     const [agendamento, setAgendamento] = React.useState<number>(8);
     const { token } = useAdminContext();
+    const [notificacao, setNotificacao] = React.useState<{
+        tipo: NotificacaoTipo;
+        titulo: string;
+        conteudo: string;
+    } | null>(null);
 
     const fetchEmprestimosStatus = async () => {
         fetch('http://localhost:4000/aluguel/servicoAtivo', {
@@ -26,7 +34,11 @@ const Outros: React.FC = () => {
                 setEmprestimosLigados(data);
             })
             .catch(error => {
-                alert('Perdeu acesso ao servidor. Tente relogar.');
+                useNotificacao({
+                    tipo: 'erro',
+                    titulo: 'Erro',
+                    conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
+                })
                 // Recarrega a página:
                 window.location.reload();
             });
@@ -48,7 +60,11 @@ const Outros: React.FC = () => {
                 setHorarios(data);
             })
             .catch(error => {
-                alert('Perdeu acesso ao servidor. Tente relogar.');
+                useNotificacao({
+                    tipo: 'erro',
+                    titulo: 'Erro',
+                    conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
+                });
                 // Recarrega a página:
                 window.location.reload();
             });
@@ -70,7 +86,11 @@ const Outros: React.FC = () => {
                 setEmprestimosLigados(!emprestimosLigados);
             })
             .catch(error => {
-                alert('Perdeu acesso ao servidor. Tente relogar.');
+                useNotificacao({
+                    tipo: 'erro',
+                    titulo: 'Erro',
+                    conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
+                });
                 // Recarrega a página:
                 window.location.reload();
             });
@@ -78,7 +98,6 @@ const Outros: React.FC = () => {
 
     const agendarAtivacao = async () => {
         // if (agendamento < 8 || agendamento > 18) {
-        //     alert('Por favor, insira uma hora válida entre 8 e 18.');
         //     return;
         // }
         fetch(`http://localhost:4000/aluguel/agendarAtivacaoServicoJogos/${agendamento}`, {
@@ -93,11 +112,19 @@ const Outros: React.FC = () => {
                 return text ? JSON.parse(text) : null;
             })
             .then(data => {
-                alert('Agendamento de ativação realizado com sucesso!');
+                useNotificacao({
+                    tipo: 'sucesso',
+                    titulo: 'Sucesso',
+                    conteudo: 'Agendamento de ativação realizado com sucesso!',
+                })
                 fetchHorarios(); // Atualiza os horários após o agendamento
             })
             .catch(error => {
-                alert('Perdeu acesso ao servidor. Tente relogar.');
+                useNotificacao({
+                    tipo: 'erro',
+                    titulo: 'Erro',
+                    conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
+                })
                 // Recarrega a página:
                 window.location.reload();
             });
@@ -105,7 +132,11 @@ const Outros: React.FC = () => {
 
     const agendarDesativacao = async () => {
         if (agendamento < 8 || agendamento > 18) {
-            alert('Por favor, insira uma hora válida entre 8 e 18.');
+            useNotificacao({
+                tipo: 'erro',
+                titulo: 'Erro',
+                conteudo: 'Por favor, insira uma hora válida entre 8 e 18.',
+            })
             return;
         }
         fetch(`http://localhost:4000/aluguel/agendarDesativacaoServicoJogos/${agendamento}`, {
@@ -120,11 +151,19 @@ const Outros: React.FC = () => {
                 return text ? JSON.parse(text) : null;
             })
             .then(data => {
-                alert('Agendamento de desativação realizado com sucesso!');
+                useNotificacao({
+                    tipo: 'sucesso',
+                    titulo: 'Sucesso',
+                    conteudo: 'Agendamento de desativação realizado com sucesso!',
+                })
                 fetchHorarios(); // Atualiza os horários após o agendamento
             })
             .catch(error => {
-                alert('Perdeu acesso ao servidor. Tente relogar.');
+                useNotificacao({
+                    tipo: 'erro',
+                    titulo: 'Erro',
+                    conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
+                })
                 // Recarrega a página:
                 window.location.reload();
             });
@@ -143,10 +182,18 @@ const Outros: React.FC = () => {
                 return text ? JSON.parse(text) : null;
             })
             .then(data => {
-                alert('E-mails enviados com sucesso!');
+                useNotificacao({
+                    tipo: 'sucesso',
+                    titulo: 'Sucesso',
+                    conteudo: 'E-mails enviados com sucesso!',
+                })
             })
             .catch(error => {
-                alert('Perdeu acesso ao servidor. Tente relogar.');
+                useNotificacao({
+                    tipo: 'erro',
+                    titulo: 'Erro',
+                    conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
+                })
                 // Recarrega a página:
                 window.location.reload();
             });
@@ -160,7 +207,14 @@ const Outros: React.FC = () => {
     return (
         <div className={styles.big_container}>
             <Nav />
-
+            {notificacao && (
+                <Notificacao
+                    tipo={notificacao.tipo}
+                    titulo={notificacao.titulo}
+                    conteudo={notificacao.conteudo}
+                    onRemover={() => setNotificacao(null)}
+                />
+            )}
             <div className={styles.container}>
                 <div className={styles.emprestimos_power_box + ' ' +  (emprestimosLigados ? styles.desativar : styles.ativar)}
                     onClick={powerEmprestimos}

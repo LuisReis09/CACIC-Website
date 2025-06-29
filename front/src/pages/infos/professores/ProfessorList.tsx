@@ -17,12 +17,15 @@ const ProfessorList: React.FC<ProfessorListProps> = ({ onSelectProfessor }) => {
   const [professores, setProfessores] = React.useState<any[]>();
 
   useEffect(() => {
-    setProfessores([
-      { nome: "Luis", imagem: "", email: "luis@gmail.com" },
-      { nome: "Herick2", imagem: "", email: "Herick@gmail.com" },
-      { nome: "Herick", imagem: "", email: "Herick@gmail.com" },
-      { nome: "Davi", imagem: "", email: "davi@gmail.com" }
-    ]);
+    fetch("http://localhost:4000/professores/listar")
+      .then((response) => response.json())
+      .then((data) => {
+        setProfessores(data);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar professores:", error);
+        setProfessores([]);
+      });
   }, []);
 
 
@@ -30,7 +33,7 @@ const ProfessorList: React.FC<ProfessorListProps> = ({ onSelectProfessor }) => {
     <div className="main_container">
       <div className={styles.header}>
         <div className={styles.back_button} onClick={() => router.push("/Infos")}>
-          <i className={"fa fa fa-caret-left" + " " + styles.i} />
+          <i className={"fa fa-caret-left" + " " + styles.i} />
         </div>
         <p>Informações dos Professores</p>
       </div>

@@ -1,0 +1,13 @@
+.labs_container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    height: 75%;
+    width: 90%;
+    margin: 0 auto;
+    padding-right: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

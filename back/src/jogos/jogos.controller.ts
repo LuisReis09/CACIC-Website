@@ -21,6 +21,7 @@ export class JogosController {
             { column: 'nome', type: 'string', maxLength: 150 },
             { column: 'precoPorHora', type: 'number' },
             { column: 'imagem', type: 'string' },
+            { column: 'quantidade', type: 'number' },
             { column: 'status', type: 'enum', options: ['DISPONIVEL', 'INDISPONIVEL', 'ALUGADO'] }
         ]
     }

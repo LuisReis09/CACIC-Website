@@ -21,6 +21,7 @@ export interface Jogo {
     precoPorHora: number;
     imagem: string;
     status: StatusJogo;
+    quantidade: number;
 }
 
 export interface Cliente {
@@ -59,7 +60,8 @@ export class JogosService {
                 nome: jogo.nome,
                 precoPorHora: jogo.precoPorHora,
                 imagem: jogo.imagem,
-                status: StatusJogo.DISPONIVEL
+                status: StatusJogo.DISPONIVEL,
+                quantidade: jogo.quantidade
             }
         });
     }
@@ -122,5 +124,6 @@ export class JogosService {
             }
         });
     }
+
 
 }

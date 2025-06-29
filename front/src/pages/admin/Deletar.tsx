@@ -4,6 +4,8 @@ import Nav from './Nav';
 import TabelaOption from '@/utils/TabelaOption';
 import { useAdminContext } from '@/utils/AdminContext';
 
+import { Notificacao, NotificacaoTipo } from '../../utils/Notificacao';
+
 import styles from '../../styles/admin/Deletar.module.css';
 
 const Deletar: React.FC = () => {
@@ -14,6 +16,12 @@ const Deletar: React.FC = () => {
     const [colunas, setColunas] = React.useState<any[]>([]);
     const [dados, setDados] = React.useState<any[]>([]);
     const { token } = useAdminContext();
+    const [notificacao, setNotificacao] = React.useState<{
+        tipo: NotificacaoTipo;
+        titulo: string;
+        conteudo: string;
+    } | null>(null);
+
 
     const fetchDados = async () => {
         fetch('http://localhost:4000' + columnRoute + '/listar', {
@@ -28,8 +36,11 @@ const Deletar: React.FC = () => {
                 setDados(data);
             })
             .catch(error => {
-                alert('Perdeu acesso ao servidor. Tente relogar.');
-                // Recarrega a página:
+                setNotificacao({
+                    tipo: NotificacaoTipo.ERRO,
+                    titulo: "Erro",
+                    conteudo: "Perdeu acesso ao servidor. Tente relogar."
+                });
                 window.location.reload();
             });
     }
@@ -45,11 +56,18 @@ const Deletar: React.FC = () => {
             .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
             .then(data => {
                 setDados(dados.filter(dado => dado.id !== id));
-                alert('Item deletado com sucesso!');
+                setNotificacao({
+                    tipo: NotificacaoTipo.SUCESSO,
+                    titulo: "Item deletado",
+                    conteudo: "Item deletado com sucesso!"
+                });
             })
             .catch(error => {
-                alert('Perdeu acesso ao servidor. Tente relogar.');
-                // Recarrega a página:
+                setNotificacao({
+                    tipo: NotificacaoTipo.ERRO,
+                    titulo: "Erro ao deletar",
+                    conteudo: "Perdeu acesso ao servidor. Tente relogar."
+                });
                 window.location.reload();
             });
     }
@@ -65,17 +83,20 @@ const Deletar: React.FC = () => {
             })
             .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
             .then(data => { 
-                if (data.success) {
-                    setDados([]);
-                    alert('Todos os itens foram deletados com sucesso!');
-                } else {
-                    alert('Erro ao deletar todos os itens.');
-                }
+                setDados([]);
+                setNotificacao({
+                    tipo: NotificacaoTipo.SUCESSO,
+                    titulo: "Itens deletados",
+                    conteudo: "Todos os itens foram deletados com sucesso!"
+                });
             }
             )
             .catch(error => {
-                alert('Perdeu acesso ao servidor. Tente relogar.');
-                // Recarrega a página:
+                setNotificacao({
+                    tipo: NotificacaoTipo.ERRO,
+                    titulo: "Erro ao deletar",
+                    conteudo: "Perdeu acesso ao servidor. Tente relogar."
+                });
                 window.location.reload();
             });
     }
@@ -94,8 +115,11 @@ const Deletar: React.FC = () => {
                 setFiltro(data[0].column); // Define o filtro inicial como a primeira coluna
             })
             .catch(error => {
-                alert('Perdeu acesso ao servidor. Tente relogar.');
-                // Recarrega a página:
+                setNotificacao({
+                    tipo: NotificacaoTipo.ERRO,
+                    titulo: "Erro",
+                    conteudo: "Perdeu acesso ao servidor. Tente relogar."
+                });
                 window.location.reload();
             });
     }
@@ -113,8 +137,11 @@ const Deletar: React.FC = () => {
                 setDados(data);
             })
             .catch(error => {
-                alert('Perdeu acesso ao servidor. Tente relogar.');
-                // Recarrega a página:
+                setNotificacao({
+                    tipo: NotificacaoTipo.ERRO,
+                    titulo: "Erro",
+                    conteudo: "Perdeu acesso ao servidor. Tente relogar."
+                });
                 window.location.reload();
             });
     }
@@ -146,6 +173,14 @@ const Deletar: React.FC = () => {
     return (
         <div className={styles.big_container}>
             <Nav />
+            {notificacao && (
+                <Notificacao
+                    tipo={notificacao.tipo}
+                    titulo={notificacao.titulo}
+                    conteudo={notificacao.conteudo}
+                    onRemover={() => setNotificacao(null)}
+                />
+            )}
             
            <div className={styles.container}>
                 <div className={styles.top_part}>
