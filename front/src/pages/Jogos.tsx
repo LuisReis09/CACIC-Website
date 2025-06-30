@@ -10,14 +10,6 @@ const Jogos: React.FC = () => {
     const [jogos_list, setJogos_list] = useState<any[]>();
     const router = useRouter();
 
-    interface NotificacaoItem {
-        tipo: NotificacaoTipo;
-        titulo: string;
-        conteudo: string;
-        tempo?: number;
-        width?: string | null;
-    }
-
     useEffect( () => {
         fetch('http://localhost:4000/jogos/listar')
         .then(response => response.json())

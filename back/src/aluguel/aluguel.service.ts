@@ -853,13 +853,14 @@ export class AluguelService {
             throw new Error('Jogo não encontrado.');
         }
 
+
         // Busca todos os alugueis ativos (não cancelados) que têm conflito com o período
         const alugueis = await this.prisma.aluguel.findMany({
             where: {
                 jogoId: id_jogo,
                 status: { not: 'CANCELADO' }, // Ignora cancelados
                 horaInicio: { lte: Number(this.hora_ativacao.substring(0, 2)) },
-                horaFim: { gte: Number(this.hora_desativacao) },
+                horaFim: { gte: Number(this.hora_desativacao.substring(0, 2)) },
             },
         });
 

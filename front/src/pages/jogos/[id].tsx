@@ -15,11 +15,12 @@ const Jogo: React.FC = () => {
                 .then(response => response.json())
                 .then(data => setJogo(data))
                 .catch(error => console.error('Erro ao buscar jogo:', error));
+                
 
             fetch(`http://localhost:4000/aluguel/disponibilidade/${id}`)
                 .then(response => response.json())
                 .then(data => {
-                    setHorarios(data);
+                    setHorarios([data]);
                 })
                 .catch(error => console.error('Erro ao buscar horários:', error));
         }
@@ -29,7 +30,7 @@ const Jogo: React.FC = () => {
         <div className={styles.jogo_container}>
             <div>
                 <i className='fa fa-arrow-left'></i>
-                <h1>Alugar {jogo.nome}</h1>
+                <h1>Alugar {jogo?.nome}</h1>
             </div>
 
 
@@ -38,16 +39,24 @@ const Jogo: React.FC = () => {
                         <img src={jogo?.imagem} alt="Imagem Ilustrativa do Jogo"></img>
                         <div className={styles.jogo_text}>
                             <h1>{jogo?.nome}</h1>
-                            <p><strong>R$ {jogo?.precoPorHora}</strong> por hora</p>
+                            <p><strong>R$ {Number(jogo?.precoPorHora).toFixed(2)}</strong> por hora</p>
                         </div>
                     </div>
 
-                    <div>
-                        {
+                    <div className={styles.horarios_container}>
+                        {   
                             horarios &&
-                            horarios.map((horario, index) => {
-                                return <></>
+                            Object.keys(horarios[0]).map((horario) => {
+                                return (
+                                    <div 
+                                        className={styles.horario_card + " "} 
+                                        key={horario}>
+
+                                        <p>{horario}:00 - {Number(horario) + 1}:00</p>
+                                    </div>
+                                )
                             })
+                            
                         }
                     </div>
             </div>

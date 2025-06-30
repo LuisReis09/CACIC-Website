@@ -10,7 +10,7 @@ const Nav: React.FC = () => {
     const pathname = usePathname();
     const router = useRouter();
     const isActive = (path: string) => {
-        if (pathname.toLowerCase().includes(path.toLowerCase())) 
+        if (pathname?.toLowerCase().includes(path?.toLowerCase())) 
             return `${styles.nav_link} ${styles.current_route}`
         else
             return `${styles.nav_link}`
