@@ -33,7 +33,11 @@ export class ProfessoresService {
   
 
   async listar() {
-    return this.prisma.professor.findMany({});
+    return this.prisma.professor.findMany({
+        include: {
+          feedbacks: true, // Inclui o feedback associado ao professor
+        },
+    });
   }
 
   async listarFeedbacks() {

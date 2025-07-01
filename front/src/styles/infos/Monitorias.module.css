@@ -1,0 +1,63 @@
+.header{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    padding: 10px;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+
+    font-size: var(--mid-size);
+}
+
+.back_button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+    background-color: var(--background-color-1);
+    color: var(--text-color-2);
+
+    cursor: pointer;
+}
+
+.main_content{
+    height: 70%;
+}
+
+.monitorias_box{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    width: 90%;
+    padding-right: 10px;
+    margin: 0 auto;
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+.cadastrar_button{
+    cursor: pointer;
+    font-size: 20px;
+    padding: 10px 20px;
+    font-weight: bold;
+    color: var(--text-color-1);
+    background-color: var(--button-color);
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    margin: 0 auto;
+    margin-top: 20px;
+    display: block;
+    transition: background-color 0.3s, scale 0.3s;
+}
+
+.cadastrar_button:hover{
+    background-color: #004576;
+    scale: 1.1;
+}

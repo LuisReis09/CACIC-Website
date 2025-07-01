@@ -8,6 +8,7 @@ export class MonitoriasController {
     constructor(private readonly monitoriasService: MonitoriasService) {}
 
 
+    @Public()
     @Get("/listar")
     async listarMonitorias() {
         return this.monitoriasService.listar();
@@ -23,7 +24,7 @@ export class MonitoriasController {
             { column: 'linkDiscord', type: 'string' },
             { column: 'linkWhatsapp', type: 'string' },
             { column: 'status', type: 'enum', options: ['PENDENTE_APROVACAO', 'APROVADA'] },
-            { column: 'professorID', type: 'number' }
+            { column: 'professorId', type: 'number' }
         ]
     }
 
@@ -33,7 +34,6 @@ export class MonitoriasController {
         return this.monitoriasService.listarAprovadas();
     }
 
-    @Public()
     @Get("/listarPendentes")
     async listarMonitoriasPendentes() {
         return this.monitoriasService.listarPendentes();
@@ -43,6 +43,11 @@ export class MonitoriasController {
     @Post("/cadastrar")
     async cadastrarMonitoria(@Body() monitoria: any) {
         return this.monitoriasService.cadastrar(monitoria);
+    }
+
+    @Post("/cadastrarMuitos")
+    async cadastrarVariosMonitorias(@Body() monitorias: any[]) {
+        return this.monitoriasService.cadastrarVarios(monitorias);
     }
 
     @Get("/consultar/:id_monitoria")

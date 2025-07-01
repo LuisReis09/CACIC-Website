@@ -184,9 +184,9 @@ const Criar: React.FC = () => {
                             {coluna.type === 'string' ? (
                                 <input type="text" onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell} placeholder={"Informe o(a) " + coluna.column} />
                             ) : coluna.type === 'number' ? (
-                                <input type="number" onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell} placeholder={"Informe o(a) " + coluna.column} />
+                                <input type="number" onChange={(e) => handleChange(coluna.column, Number(e.target.value))} className={styles.input_cell} placeholder={"Informe o(a) " + coluna.column} />
                             ) : coluna.type === 'boolean' ? (
-                                <select onChange={(e) => handleChange(coluna.column, e.target.value)} className={styles.input_cell}>
+                                <select onChange={(e) => handleChange(coluna.column, e.target.value === "true")} className={styles.input_cell}>
                                     <option value="true">Sim</option>
                                     <option value="false">Não</option>
                                 </select>
@@ -208,7 +208,7 @@ const Criar: React.FC = () => {
                 <div className={styles.button_container}>
                     <button className={styles.criar_button} onClick={handleCreate}>Criar</button>
                     {
-                        (tabela === 'professores' || tabela === 'laboratorios' || tabela === 'jogos') &&
+                        (tabela === 'professores' || tabela === 'laboratorios' || tabela === 'jogos' || tabela === 'monitorias') &&
                         <div>
                             <input 
                                 className={styles.json_criar_button} 

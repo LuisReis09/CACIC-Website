@@ -1,0 +1,67 @@
+.monitoria_card{
+    padding: 10px;
+    background-color: #003566;
+    color: #ffffff;
+    border-radius: 10px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.monitoria_header{
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.monitoria_links{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.discord_link, .whatsapp_link{
+    background-color: (255, 255, 255, 0.75);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.discord_link{
+    background-image: url("/assets/discord.svg");
+}
+
+.whatsapp_link{
+    background-image: url("/assets/whatsapp.svg");
+}
+
+.monitoria_info > h1{
+    font-size: 20px;
+    margin: 0;
+    color: var(--text-color-2);
+}
+
+.monitoria_info > h2{
+    font-size: 15px;
+    margin: 0;
+}
+
+.monitoria_monitor{
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: normal;
+    margin: 0 auto;
+}
+
+.monitoria_monitor > .monitoria_monitor_nome{
+    font-weight: bold;
+}

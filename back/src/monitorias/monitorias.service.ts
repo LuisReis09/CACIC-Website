@@ -74,6 +74,15 @@ export class MonitoriasService {
         });
     }
 
+    async cadastrarVarios(monitorias: Monitoria[]) {
+        // Cadastra várias monitorias de uma vez:
+        const monitoriasCriadas = await this.prisma.monitoria.createMany({
+            data: monitorias,
+        });
+
+        return monitoriasCriadas;
+    }
+
     async atualizar(id: number, monitoria: Monitoria, motivoRejeicao?: string) {
         const monit = await this.prisma.monitoria.findUnique({
             where: { id },

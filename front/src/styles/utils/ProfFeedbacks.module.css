@@ -1,0 +1,17 @@
+.feedback_container{
+    display: flex;
+    width: 200px;
+    justify-content: space-between;
+}
+
+.feedback_stars_box{
+    width: 80px;
+}
+
+.feedback_stars_background{
+    background: url('/back_stars.svg') no-repeat center;
+}
+
+.feedback_stars{
+    background: url('/golden_stars.svg') no-repeat center;
+}

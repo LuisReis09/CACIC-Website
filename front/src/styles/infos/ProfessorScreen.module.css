@@ -29,3 +29,154 @@
     font-size: 28px;
     color: var(--text-color-2);
 }
+
+.main_box{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 75%;
+    margin: 0 auto;
+    overflow-y: auto;
+    gap: 50px;
+    padding-right: 10px;
+}
+
+.first_section{
+    display: flex;
+    gap: 50px;
+}
+
+.first_section > img{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.first_section > .info{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
+.first_section > .info > .info_upper > strong{
+    font-size: 30px;
+    color: var(--text-color-2);
+}
+
+.second_section{
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.second_section > .feedbacks{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.second_section > .feedbacks > .feedback_title{
+    font-size: 23px;
+    display: flex;
+    gap: 20px;
+}
+
+.second_section > .feedbacks > .feedbacks_box{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.feedback_button{
+    padding: 15px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    height: fit-content;
+    width: fit-content;
+    background-color: var(--button-color);
+    outline: none;
+    border: none;
+    color: var(--text-color-1);
+    font-size: 20px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, scale 0.3s ease;
+}
+
+.feedback_button:hover{
+    background-color: #004576;
+    scale: 1.1;
+}
+
+.third_section{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.third_section > .areas{
+    display: flex;
+    gap: 10px;
+    font-size: 23px;
+}
+
+.main_box > hr{
+    opacity: 0.5;
+}
+
+.fourth_section{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.fourth_section > .disciplinas{
+    display: flex;
+    gap: 10px;
+    font-size: 23px;
+}
+
+@media screen and (max-width: 800){
+
+    .main_box{
+        width: 90%;
+    }
+    
+    .first_section{
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+        gap: 20px;
+    }
+
+    .first_section > img{
+        width: 150px;
+        height: 150px;
+    }
+
+    .first_section > .info{
+        align-items: center;
+        gap: 50px;
+        width: 100%;
+    }
+
+    .first_section > .info > .info_lower{
+        text-align: left;
+        width: 100%;
+    }
+
+    .second_section{
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        min-height: max-content;
+        align-items: first baseline;
+    }
+
+    .feedback_button{
+        margin: 0 auto;
+    }
+}
