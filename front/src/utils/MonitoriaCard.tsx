@@ -15,7 +15,7 @@ const MonitoriaCard: React.FC<MonitoriaCardProps> = ({ monitoria }) => {
             <div className={styles.monitoria_header}>
                 <div className={styles.monitoria_info}>
                     <h1>{monitoria.disciplina}</h1>
-                    <h2>{monitoria.professor.nome}</h2>
+                    <h2>{monitoria.professor}</h2>
                 </div>
 
                 <div className={styles.monitoria_links}>

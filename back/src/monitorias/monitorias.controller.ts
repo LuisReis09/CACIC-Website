@@ -23,8 +23,8 @@ export class MonitoriasController {
             { column: 'disciplina', type: 'string' },
             { column: 'linkDiscord', type: 'string' },
             { column: 'linkWhatsapp', type: 'string' },
-            { column: 'status', type: 'enum', options: ['PENDENTE_APROVACAO', 'APROVADA'] },
-            { column: 'professorId', type: 'number' }
+            { column: 'professor', type: 'string' },
+            { column: 'status', type: 'enum', options: ['PENDENTE_APROVACAO', 'APROVADA'] }
         ]
     }
 

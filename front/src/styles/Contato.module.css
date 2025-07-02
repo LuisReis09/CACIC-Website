@@ -77,7 +77,7 @@
 
 .submit_button:hover{
     background-color: #004576;
-    scale: 1.1;
+    scale: 1.05;
 }
 
 @media screen and (max-width: 1600px) {

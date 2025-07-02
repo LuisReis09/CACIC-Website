@@ -42,10 +42,11 @@ body {
 }
 
 .main_container{
-    background-color: var(--background-color-2);
+    background-color: #001228;
     width: 100%;
     height: 85%;
     border-radius: 8px;
+    min-height: max-content;
 }
 
 .scrollbar{
@@ -86,4 +87,8 @@ input{
 ::selection {
     background: var(--text-color-3);
     color: var(--background-color-1);
+}
+
+button{
+    font-family: var(--font-family-2);
 }

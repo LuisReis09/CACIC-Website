@@ -26,7 +26,6 @@ model Professor {
   linkedin         String
   imagem           String
   feedbacks        Feedback[]
-  monitorias       Monitoria[]
   votantes         Votante[]
 }
 
@@ -58,8 +57,7 @@ model Monitoria {
   linkDiscord    String
   linkWhatsapp   String
   status         String @default("PENDENTE_APROVACAO")
-  professorId  Int
-  professor    Professor @relation(fields: [professorId], references: [id])
+  professor      String
 }
 
 model Admin {

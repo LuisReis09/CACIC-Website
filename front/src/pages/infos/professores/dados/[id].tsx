@@ -2,25 +2,31 @@ import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 // Styles Imports
-import styles from '../../../styles/infos/ProfessorScreen.module.css'
-import ProfFeedbacks from '../../../utils/ProfFeedbacks';
+import styles from '@/styles/infos/ProfessorScreen.module.css'
+import ProfFeedbacks from '@/utils/ProfFeedbacks';
 
-interface ProfessorScreenProps{
-    setScreen: Function;
-    prof: any;
-}
-
-const ProfessorScreen: React.FC<ProfessorScreenProps> = ({setScreen, prof}) => {
+const ProfessorScreen: React.FC = () => {
     const router = useRouter();
+    const { id } = router.query;
+    const [prof, setProf] = React.useState<any>({});
 
     useEffect(() => {
-        console.log(prof);
+        if(!id) return;
+        
+        fetch(`http://localhost:4000/professores/consultar/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                setProf(data);
+            })
+            .catch(error => {
+                console.error('Erro ao buscar os dados do professor:', error);
+            });
     }, []);
     
     return (
         <div className={"main_container"}>
             <div className={styles.header}>
-                <div className={styles.back_button} onClick={() => window.location.reload()}>
+                <div className={styles.back_button} onClick={() => router.push("/infos/Professores")}>
                 <i className={"fa fa-caret-left" + " " + styles.i} />
                 </div>
                 <p>Informações dos Professores</p>
@@ -42,7 +48,7 @@ const ProfessorScreen: React.FC<ProfessorScreenProps> = ({setScreen, prof}) => {
                     </div>
                 </div>
 
-                {   prof.feedbacks &&
+                {   
                     <>
                     <hr/>
 
@@ -54,13 +60,14 @@ const ProfessorScreen: React.FC<ProfessorScreenProps> = ({setScreen, prof}) => {
                             </div>
 
                             <div className={styles.feedbacks_box}>
-                                <ProfFeedbacks categoria="Didática" nota={prof.feedbacks[0]?.didatica}/>
-                                <ProfFeedbacks categoria="Planejamento" nota={prof.feedbacks[0]?.planejamento}/>
-                                <ProfFeedbacks categoria="Avaliações" nota={prof.feedbacks[0]?.avaliações}/>
-                                <ProfFeedbacks categoria="Cordialidade" nota={prof.feedbacks[0]?.cordialidade}/>
+                                <ProfFeedbacks categoria="Didática" nota={prof.feedbacks ? prof.feedbacks[0].didatica : 0}/>
+                                <ProfFeedbacks categoria="Planejamento" nota={prof.feedbacks ? prof.feedbacks[0].planejamento : 0}/>
+                                <ProfFeedbacks categoria="Avaliações" nota={prof.feedbacks ? prof.feedback[0].avaliacoes : 0}/>
+                                <ProfFeedbacks categoria="Cordialidade" nota={prof.feedbacks ? prof.feedbacks[0].cordialidade : 0}/>
+                                <p>Número de Votos: {prof.feedbacks? prof.feedbacks[0].qtdFeedbacks : 0}</p>
                             </div>
                         </div>
-                        <button className={styles.feedback_button}>Avaliar!</button>
+                        <button className={styles.feedback_button} onClick={() => router.push(`/infos/professores/avaliar/${id}`)}>Avaliar!</button>
                     </div>
                     </>
                 }

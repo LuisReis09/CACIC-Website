@@ -12,7 +12,7 @@ interface Monitoria {
     disciplina: string;
     linkDiscord: string;
     linkWhatsapp: string;
-    professorId: number;
+    professor: string;
     status: string;
 }
 
@@ -25,11 +25,7 @@ export class MonitoriasService {
     constructor(private prisma: PrismaService) {}
 
     async listar(){
-        return this.prisma.monitoria.findMany({
-            include: {
-                professor: true,
-            },
-        });
+        return this.prisma.monitoria.findMany({});
     }
 
     async consultar(id_monitoria: number) {
@@ -43,9 +39,6 @@ export class MonitoriasService {
             where: {
                 status: 'PENDENTE',
             },
-            include: {
-                professor: true,
-            },
         });
     }
 
@@ -54,9 +47,6 @@ export class MonitoriasService {
         return this.prisma.monitoria.findMany({
             where: {
                 status: 'APROVADA',
-            },
-            include: {
-                professor: true,
             },
         });
     }
@@ -69,7 +59,7 @@ export class MonitoriasService {
                 disciplina: monitoria.disciplina,
                 linkDiscord: monitoria.linkDiscord,
                 linkWhatsapp: monitoria.linkWhatsapp,
-                professorId: monitoria.professorId,
+                professor: monitoria.professor,
             },
         });
     }
@@ -96,7 +86,7 @@ export class MonitoriasService {
                 disciplina:     monitoria.disciplina,
                 linkDiscord:    monitoria.linkDiscord,
                 linkWhatsapp:   monitoria.linkWhatsapp,
-                professorId:    monitoria.professorId,
+                professor:    monitoria.professor,
                 status:         monitoria.status, // Pode ser 'PENDENTE', 'APROVADA', etc.
             },
         });
