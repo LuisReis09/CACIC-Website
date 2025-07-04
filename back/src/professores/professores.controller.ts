@@ -90,6 +90,7 @@ export class ProfessoresController {
     return this.professoresService.inserirMuitos(professores);
   }
 
+  @Public()
   @Post('/feedbacks/cadastrar')
   async inserirFeedback(@Body() feedback: Feedback) {
     return this.professoresService.avaliar(feedback);

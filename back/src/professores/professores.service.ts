@@ -20,7 +20,6 @@ export interface Feedback {
   professorId: number;
   cpf: string;
   matricula: string;
-  curso: string;
   didatica: number;
   cordialidade: number;
   planejamento: number;
@@ -59,9 +58,9 @@ export class ProfessoresService {
   }
 
   async consultarFeedback(id: number) {
-    const feedback = await this.prisma.feedback.findUnique({
+    const feedback = await this.prisma.feedback.findFirst({
       where: {
-        id: id,
+        professorId: id,
       },
     });
 
@@ -132,12 +131,22 @@ export class ProfessoresService {
   }
 
   async avaliar(feedback: Feedback){
-    const { professorId, cpf, matricula, curso, didatica, cordialidade, planejamento, avaliacoes } = feedback;
+    const { professorId, cpf, matricula, didatica, cordialidade, planejamento, avaliacoes } = feedback;
 
     // Primeiro passo: Verifica se a matricula eh de um aluno, realizando webscraping
-    const matriculaValida = await this.verificarMatricula(matricula, curso);
+    let matriculaValida = await this.verificarMatricula(matricula, "CC");
     if (!matriculaValida) {
-      throw new BadRequestException('Matrícula inválida ou não encontrada.');
+      matriculaValida = await this.verificarMatricula(matricula, "EC");
+    }
+    if (!matriculaValida) {
+      matriculaValida = await this.verificarMatricula(matricula, "SI");
+    }
+
+    if (!matriculaValida) {
+      return {
+        success: false,
+        message: 'Matrícula inválida. Verifique se a matrícula está correta e pertence a um aluno dos cursos de CC, EC ou CDIA.',
+      };
     }
 
     // Segundo passo: Verifica se o professor existe
@@ -148,7 +157,10 @@ export class ProfessoresService {
     });
 
     if (!professor) {
-      throw new BadRequestException('Professor não encontrado.');
+      return {
+        success: false,
+        message: 'Professor não encontrado.',
+      }
     }
 
     // Terceiro passo: Verifica se o feedback já foi dado por esse aluno
@@ -160,7 +172,10 @@ export class ProfessoresService {
     });
 
     if (feedbackExistente) {
-      throw new BadRequestException('Feedback já foi dado por este aluno.');
+      return {
+        success: false,
+        message: 'Feedback já registrado para este professor com o CPF fornecido.',
+      };
     }
 
     // Quarto passo: Atualiza o feedback de um professor, obtendo a nova média
@@ -173,7 +188,7 @@ export class ProfessoresService {
 
     // Se não houver feedback, cria um novo
     if (!feedbackAtual) {
-      return this.prisma.feedback.create({
+      await this.prisma.feedback.create({
         data: {
           professorId: professorId,
           didatica: didatica,
@@ -207,12 +222,18 @@ export class ProfessoresService {
     }
 
     // Quinto passo: Registra o votante para evitar feedbacks duplicados
-    return await this.prisma.votante.create({
+    let votante = await this.prisma.votante.create({
       data: {
         cpf: cpf,
         professorId: professorId,
       },
     });
+
+    return {
+      success: true,
+      message: 'Feedback registrado com sucesso.',
+      votante: votante,
+    }
 
   }
 

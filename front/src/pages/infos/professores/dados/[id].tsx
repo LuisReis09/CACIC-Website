@@ -9,6 +9,7 @@ const ProfessorScreen: React.FC = () => {
     const router = useRouter();
     const { id } = router.query;
     const [prof, setProf] = React.useState<any>({});
+    const [feedbacks, setFeedbacks] = React.useState<any>(null);
 
     useEffect(() => {
         if(!id) return;
@@ -16,12 +17,22 @@ const ProfessorScreen: React.FC = () => {
         fetch(`http://localhost:4000/professores/consultar/${id}`)
             .then(response => response.json())
             .then(data => {
+                console.log(data);
                 setProf(data);
             })
             .catch(error => {
                 console.error('Erro ao buscar os dados do professor:', error);
             });
-    }, []);
+        fetch(`http://localhost:4000/professores/feedbacks/consultar/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                setFeedbacks(data);
+            })
+            .catch(error => {
+                console.error('Erro ao buscar os feedbacks do professor:', error);
+            });
+    }, [id]);
     
     return (
         <div className={"main_container"}>
@@ -60,11 +71,11 @@ const ProfessorScreen: React.FC = () => {
                             </div>
 
                             <div className={styles.feedbacks_box}>
-                                <ProfFeedbacks categoria="Didática" nota={prof.feedbacks ? prof.feedbacks[0].didatica : 0}/>
-                                <ProfFeedbacks categoria="Planejamento" nota={prof.feedbacks ? prof.feedbacks[0].planejamento : 0}/>
-                                <ProfFeedbacks categoria="Avaliações" nota={prof.feedbacks ? prof.feedback[0].avaliacoes : 0}/>
-                                <ProfFeedbacks categoria="Cordialidade" nota={prof.feedbacks ? prof.feedbacks[0].cordialidade : 0}/>
-                                <p>Número de Votos: {prof.feedbacks? prof.feedbacks[0].qtdFeedbacks : 0}</p>
+                                <ProfFeedbacks categoria="Didática" nota={feedbacks ? feedbacks.didatica : 0}/>
+                                <ProfFeedbacks categoria="Planejamento" nota={feedbacks ? feedbacks.planejamento : 0}/>
+                                <ProfFeedbacks categoria="Avaliações" nota={feedbacks ? feedbacks.avaliacoes : 0}/>
+                                <ProfFeedbacks categoria="Cordialidade" nota={feedbacks ? feedbacks.cordialidade : 0}/>
+                                <p>Número de Votos: {feedbacks? feedbacks.qtdFeedbacks : 0}</p>
                             </div>
                         </div>
                         <button className={styles.feedback_button} onClick={() => router.push(`/infos/professores/avaliar/${id}`)}>Avaliar!</button>

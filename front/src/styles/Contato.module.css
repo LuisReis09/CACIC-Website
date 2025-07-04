@@ -1,8 +1,18 @@
 .contato_container{
     display: flex;
+    align-items: center;
+}
+
+.main_content{
+    height: 95%;
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+    gap: 20px;
     flex-direction: column;
     overflow-y: auto;
     justify-content: space-around;
+    align-items: center;
 }
 
 .contato_container > h1{
@@ -21,8 +31,8 @@
     flex-direction: column;
     width: 100%;
     height: 400px;
-    justify-content: space-between;
     align-items: center;
+    gap: 15px;
 }
 
 .form_container{

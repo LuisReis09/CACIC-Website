@@ -24,6 +24,34 @@ const Votacao: React.FC = () => {
         return value;
     };
 
+    const handleVotacao = () => {
+        fetch('http://localhost:4000/professores/feedbacks/cadastrar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                professorId: Number(id),
+                cpf: cpf,
+                matricula: matricula,
+                didatica: didatica,
+                cordialidade: cordialidade,
+                planejamento: planejamento,
+                avaliacoes: avaliacoes
+            })
+        }).then(response => response.json())
+        .then(data => {
+
+            // INDEPENDENTE DO RETORNO, MOSTRAR A MENSAGEM PRO CLIENTE. PORÉM, MUDA A COR/SIMBOLO/ESTILO DA MENSAGEM.
+            if(!data.success){
+                console.error(data.message);
+            }else{
+                console.log(data.message);
+                router.push("/infos/professores/dados/" + id);
+            }
+        })
+    }
+
     React.useEffect(() => {
         if (!id) return;
 
@@ -149,7 +177,7 @@ const Votacao: React.FC = () => {
                         Nosso objetivo, como CA, é oferecer um espaço para a opinião dos estudantes.
                     </p>
 
-                    <button className={styles.avaliar_button}>Avaliar!</button>
+                    <button className={styles.avaliar_button} onClick={handleVotacao}>Avaliar!</button>
                 </div>
             </div>
         </div>
