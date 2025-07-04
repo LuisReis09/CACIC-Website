@@ -33,10 +33,9 @@ export class AluguelService {
     async requisitarAluguel(
         id_jogo: number,
         cliente: Cliente,
-        horaInicio: number,
-        horaFim: number
-    ) : Promise<any> {
-        // Verifica se o cliente existe
+        horas: number[] // array de inícios
+    ): Promise<any> {
+        // Verifica cliente
         let clienteExistente = await this.prisma.cliente.findUnique({
             where: { cpf: cliente.cpf },
         });
@@ -55,92 +54,95 @@ export class AluguelService {
             });
         } else if (clienteExistente.bloqueado) {
             return {
-            success: false,
-            message: `Cliente bloqueado: ${clienteExistente.motivoBloqueio}`,
+                success: false,
+                message: `Cliente bloqueado: ${clienteExistente.motivoBloqueio}`,
             };
         }
 
-        const conflitos = await this.prisma.aluguel.findMany({
-            where: {
-                jogoId: id_jogo,
-                horaInicio: {
-                    lte: horaFim,
-                },
-                horaFim: {
-                    gte: horaInicio,
-                },
-            },
-        });
-
         const qtd_jogo = await this.prisma.jogo.findUnique({
             where: { id: id_jogo },
-            select: { quantidade: true },
+            select: { quantidade: true, nome: true },
         });
 
-        if(!qtd_jogo) {
+        if (!qtd_jogo) {
             return {
                 success: false,
                 message: 'Jogo não encontrado.',
             };
         }
 
-        if (conflitos.length >= qtd_jogo.quantidade) {
+        // Checa conflitos para cada hora
+        const conflitos: any[] = [];
+
+        for (const horaInicio of horas) {
+            const horaFim = horaInicio + 1;
+
+            const conflitosEncontrados = await this.prisma.aluguel.findMany({
+                where: {
+                    jogoId: id_jogo,
+                    horaInicio: { lte: horaFim },
+                    horaFim: { gte: horaInicio },
+                },
+            });
+
+            if (conflitosEncontrados.length >= qtd_jogo.quantidade) {
+                conflitos.push({
+                    hora: horaInicio,
+                    conflitos: conflitosEncontrados.map(a => ({
+                        de: a.horaInicio,
+                        ate: a.horaFim,
+                    })),
+                });
+            }
+        }
+
+        if (conflitos.length > 0) {
             return {
                 success: false,
-                message: 'Jogo já está alugado nesse período.',
-                conflitos: conflitos.map((a) => ({
-                    de: a.horaInicio,
-                    ate: a.horaFim,
-                })),
+                message: 'Existem conflitos em alguns horários.',
+                conflitos,
             };
         }
 
-        // Cria o aluguel
-        const aluguel = await this.prisma.aluguel.create({
-            data: {
-                jogoId: id_jogo,
-                clienteId: clienteExistente.id,
-                horaInicio: horaInicio,
-                horaFim: horaFim,
-            },
-            include: {
-                jogo: true,
-                cliente: true,
-            },
-        });
+        // Cria os aluguéis
+        const alugueisCriados: any = [];
 
-        if( !aluguel) {
-            return {
-                success: false,
-                message: 'Erro ao realizar o aluguel.',
-            };
+        for (const horaInicio of horas) {
+            const horaFim = horaInicio + 1;
+
+            const aluguel = await this.prisma.aluguel.create({
+                data: {
+                    jogoId: id_jogo,
+                    clienteId: clienteExistente.id,
+                    horaInicio,
+                    horaFim,
+                },
+                include: {
+                    jogo: true,
+                    cliente: true,
+                },
+            });
+
+            alugueisCriados.push(aluguel);
         }
 
+        // Envia email (resumindo info)
         this.enviar_email(
             cliente.email,
             'Aluguel de Jogo',
             `
-                <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
-                    <h2 style="color: #000;">✅ Pedido de Aluguel Realizado com Sucesso!</h2>
-
-                    <p style="font-size: 16px; color: #555;">
-                    <strong>🎮 Jogo:</strong> <span style="color: #222;">${aluguel.jogo.nome}</span><br>
-                    <strong>📅 Data/Hora de Início:</strong> ${aluguel.horaInicio}<br>
-                    <strong>📅 Data/Hora de Fim:</strong> ${aluguel.horaFim}<br>
-                    <strong>🔖 Status:</strong> <b style="color: #FF3000;">PENDENTE DE APROVAÇÃO</b>
-                    </p>
-
-                    <div style="margin-top: 20px; background-color: #fff3cd; border: 1px solid #ffeeba; padding: 15px; border-radius: 6px; color: #000">
-                        ⏳ Aguarde a aprovação do administrador para confirmar seu aluguel, estamos analisando a disponibilidade dos membros do Centro Acadêmico.
-                    </div>
-
-                    <p style="margin-top: 20px; font-size: 15px; color: #333;">
-                        <strong>Importante:</strong> Caso a reserva seja aprovada, você receberá o Qr Code para pagamento via PIX, que deve ser apresentado na sala do Centro Acadêmico no horário de início do aluguel.
-                    </p>
-
-                    <p style="margin-top: 30px; font-size: 14px; color: #999;">
-                    Este é um e-mail automático, não responda.
-                    </p>
+                <div style="max-width:700px; margin:auto; font-family:Arial,sans-serif;">
+                    <h2>✅ Pedido de Aluguel Realizado com Sucesso!</h2>
+                    <p><strong>🎮 Jogo:</strong> ${qtd_jogo.nome}</p>
+                    <p><strong>Horários reservados:</strong></p>
+                    <ul>
+                        ${alugueisCriados.map(a =>
+                            `<li>${a.horaInicio}:00 às ${a.horaFim}:00</li>`
+                        ).join('')}
+                    </ul>
+                    <p><b>Status:</b> PENDENTE DE APROVAÇÃO</p>
+                    <p>⏳ Aguarde a aprovação do administrador...</p>
+                    <p style="font-size:14px;color:#999;">E-mail automático, não responda.</p>
                 </div>
             `
         );
@@ -148,9 +150,10 @@ export class AluguelService {
         return {
             success: true,
             message: 'Aluguel realizado com sucesso.',
-            aluguel: aluguel,
+            alugueis: alugueisCriados,
         };
     }
+
 
     async listar(): Promise<any> {
         return this.prisma.aluguel.findMany({

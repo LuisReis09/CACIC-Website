@@ -4,6 +4,7 @@
     flex-direction: column;
     align-items: space-around;
     justify-content: space-around;
+    min-height: max-content;
 }
 
 .content{
@@ -16,7 +17,9 @@
 }
 
 .main_frame{
-    width: 75%;
+    width: 80%;
+    min-height: max-content;
+    margin-bottom: 20px;
 }
 
 .content > Aside{

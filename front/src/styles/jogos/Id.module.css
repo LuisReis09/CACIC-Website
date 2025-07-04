@@ -1,0 +1,182 @@
+.jogo_container{
+    display: flex;
+    flex-direction: column;
+    justify-items: start;
+    /* align-items: center; */
+}
+
+.header{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    padding: 10px;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+
+    font-size: var(--mid-size);
+}
+
+.back_button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+    background-color: var(--background-color-1);
+    color: var(--text-color-2);
+
+    cursor: pointer;
+}
+
+.i{
+    font-size: 28px;
+    color: var(--text-color-2);
+}
+
+.jogo_details{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 50px;
+
+    /* align-items: flex-start; */
+    align-items: center;
+    justify-content: space-around;
+    width: 90%;
+    height: 90%;
+
+    margin: 0 auto;
+}
+
+.jogo_info{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    align-items: center;
+    justify-content: left;
+    height: auto;
+    width: auto;
+    /* margin-bottom: 30px; */
+}
+.span{
+    font-size: 25px;
+    color: var(--text-color-2);
+}
+
+.jogo_img{
+    max-width: 250px;
+    height: auto;
+    max-height: 350px;
+    border-radius: 8px;
+    object-fit: cover;
+
+    margin: 0 auto;
+}
+.jogo_text{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: start;
+
+    width: auto;
+    height: 100%;
+}
+
+.horarios{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.horarios_title{
+    text-align: center;
+}
+
+.horarios_container{
+    display: grid;
+    /* grid-auto-flow: column;
+    grid-template-rows: repeat(auto-fill, minmax(40px, auto)); */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 4px;
+
+    width: 300px;
+}
+.horario_card{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 10px 5px;
+    cursor: pointer;
+
+    /* background-color: var(--background-color-1); */
+    border: 2px solid var(--text-color-2);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.horario_card:hover{
+    transform: scale(1.03);
+    transition: all 0.3s ease;
+}
+
+.horario_card_selected{
+    background-color: var(--text-color-2);
+    color: var(--background-color-1);
+    border: 2px solid var(--background-color-1);
+}
+
+.horario_card_disponivel{
+    background-color: #249f4b;
+    color: var(--background-color-1);
+    border: 2px solid #b8fcce;
+}
+
+.horario_card_alugado{
+    background-color: #FF2121;
+    color: var(--background-color-1);
+    border: 2px solid #ffabab;
+}
+
+.form_container{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+
+    width: 90%;
+    margin: 0 auto;
+}
+
+
+
+
+
+
+@media screen and (max-width: 565px){
+    .jogo_info{
+        align-items: center;
+        justify-content: center;
+ 
+    }
+    .jogo_text{
+        justify-content: center;
+        align-items: center;
+    }
+}
+@media screen and (max-width: 370px){
+
+    .horarios_container{
+        grid-template-columns: repeat(1, 1fr); 
+        width: 70%;
+    }
+
+}

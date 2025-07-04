@@ -20,6 +20,7 @@
     --font-family-2: 'Syne Mono', monospace;
     /* --font-family-2: 'B612 Mono', monospace; */
     --font-family-3: 'Cutive Mono', monospace;
+    /* --font-family-2: 'Cutive Mono', monospace; */
     
     --big-size: 25px;
     --mid-size: 17px;
@@ -38,7 +39,6 @@ body {
     font-family: var(--font-family-2);
     font-weight: 600;
     overflow-x: hidden;
-    
 }
 
 .main_container{
@@ -50,13 +50,16 @@ body {
 }
 
 .scrollbar{
+    overflow-y: scroll;
+    overflow-x: hidden;
+
     transition: 0.2s ease-in-out;
 }
 
 
 .scrollbar::-webkit-scrollbar {
     transition: all 0.2s ease-in-out;
-    width: 10px;
+    width: 8px;
     height: 10px;
     cursor: pointer;
 }
@@ -74,6 +77,16 @@ body {
 
 .scrollbar::-webkit-scrollbar-thumb:hover {
     background: var(--text-color-2);
+}
+
+.scrollbar_oculta {
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar_oculta::-webkit-scrollbar {
+  display: none;
 }
 
 ::placeholder{

@@ -25,7 +25,7 @@ const Jogos: React.FC = () => {
                 <p className={styles.p}>Leia as <a className={styles.a} href="Termos_Servico_Jogos.pdf" target='_blank'>diretrizes de aluguel</a> do CA antes de alugar os jogos!</p>
             </div>
 
-            <div className={styles.jogos_list + " scrollbar"}>
+            <div className={styles.jogos_list}>
                     {
                         jogos_list?.map((jogo: any, index: number) => (
                             <JogoCard 

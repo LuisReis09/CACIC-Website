@@ -53,7 +53,7 @@ const Contato: React.FC = () => {
 
     return (
         <div className={"main_container " + styles.contato_container}>
-            <div className={styles.main_content + " scrollbar"}>
+            <div className={styles.main_content}>
             <h1>Contate-nos por <span>E-mail</span>!</h1>
 
             <div className={styles.form_box}>

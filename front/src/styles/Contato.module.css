@@ -10,9 +10,10 @@
     display: flex;
     gap: 20px;
     flex-direction: column;
-    overflow-y: auto;
+    min-height: max-content;
     justify-content: space-around;
     align-items: center;
+    padding: 20px 0;
 }
 
 .contato_container > h1{
@@ -114,8 +115,8 @@
         padding: 20px 0;
     }
 
-    .contato_container > h1{
-        font-size: 25px;
+    .main_content > h1{
+        font-size: 21px;
     }
 
     .form_container{

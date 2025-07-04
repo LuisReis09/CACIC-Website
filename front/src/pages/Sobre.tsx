@@ -4,7 +4,7 @@ import SobreContent from '../utils/SobreContent';
 
 const Sobre: React.FC = () => {
   return (
-    <div className={styles.container}>
+    <div className={"main_container " + styles.sup_content}>
       <SobreContent />
     </div>
   );

@@ -13,10 +13,9 @@ export class AluguelController {
     async requisitarAluguel(
         @Param('id_jogo') id_jogo: number,
         @Body() cliente: Cliente,
-        @Body('horaInicio') horaInicio: number,
-        @Body('horaFim') horaFim: number
+        @Body('horaInicio') horaInicio: number[],
     ) {
-        return this.aluguelService.requisitarAluguel(Number(id_jogo), cliente, horaInicio, horaFim);
+        return this.aluguelService.requisitarAluguel(Number(id_jogo), cliente, horaInicio);
     }
 
     @Get("/colunas")

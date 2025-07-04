@@ -7,6 +7,8 @@
     height: 230px;
     padding: 10px;
 
+    cursor: pointer;
+
     /* background-color: var(--background-color-2); */
     /* background-color: chartreuse; */
     border-top: 5px solid var(--text-color-3);

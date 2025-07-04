@@ -30,13 +30,34 @@ const membros = [
     github: '#',
     linkedin: '#',
   },
+  {
+    nome: 'Iguatemir',
+    cargo: 'Mastermind',
+    avatar: '', 
+    github: '#',
+    linkedin: '#',
+  },
+  {
+    nome: 'Iguatemir',
+    cargo: 'Mastermind',
+    avatar: '', 
+    github: '#',
+    linkedin: '#',
+  },
+  {
+    nome: 'Iguatemir',
+    cargo: 'Mastermind',
+    avatar: '', 
+    github: '#',
+    linkedin: '#',
+  },
   
 ];
 
 const SobreContent: React.FC = () => (
   <div className={styles.rightPane}>
     <div className={styles.contentRow}>
-      <div className={styles.membersGrid}>
+      <div className={styles.membersGrid + " scrollbar"}>
         {membros.map((membro, idx) => (
           <div className={styles.memberCard} key={idx}>
             <div className={styles.avatar}>

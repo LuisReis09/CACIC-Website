@@ -35,7 +35,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <Nav />
             <Component {...pageProps} /> {/* ← Aqui muda conforme a rota */}
           </div>
-          <Aside />
+          {/* <Aside /> */}
         </div>
       </div>
     );
