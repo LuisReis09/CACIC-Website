@@ -24,3 +24,205 @@
 
     cursor: pointer;
 }
+
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    width: 90%;
+    margin: 0 auto;
+    min-height: max-content;
+    padding: 20px 0;
+}
+
+.title{
+    text-align: center;
+}
+
+.title > h1{
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--text-color-2);
+}
+
+.title > p{
+    font-weight: normal;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    gap: 15px;
+}
+
+.form_inputs{
+    display: flex;
+    width: 80%;
+    margin: 0 auto;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form_inputs > label{
+    font-size: 20px;
+    font-weight: bold;
+    width: 35%;
+}
+
+.form_inputs > input{
+    width: 60%;
+
+    background-color: var(--background-color-1);
+    color: var(--text-color-1);
+    outline: none;
+    border: 0;
+    border-radius: 10px;
+
+    height: 50px;
+    padding: 0 10px;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.form_monitores_inputs{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.dados_monitores_header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.qtd_monitores_btns{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.qtd_monitores_btns > button{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 25px;
+    font-weight: bold;
+    background-color: var(--background-color-3);
+    color: var(--text-color-2);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
+}
+
+.qtd_monitores_btns > button:hover{
+    background-color: #FFC300;
+    color: #001228;
+    transform: scale(1.05);
+}
+
+.qtd_monitores_btns > button:disabled{
+    background-color: var(--background-color-2);
+    cursor: not-allowed;
+}
+
+.monitor_inputs{
+    display: flex;
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+
+.dados_monitores_header > label{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.nome_monitor_input{
+    width: 40%;
+    background-color: var(--background-color-1);
+    color: var(--text-color-1);
+    outline: none;
+    border: 0;
+    border-right: 1px solid var(--background-color-2);
+    border-radius: 10px 0 0 10px;
+    height: 50px;
+    padding: 0 10px;
+    font-size: 20px;
+    text-indent: 15px;
+    font-weight: normal;
+}
+
+.email_monitor_input{
+    width: 60%;
+    background-color: var(--background-color-1);
+    color: var(--text-color-1);
+    outline: none;
+    border: 0;
+    border-radius: 0 10px 10px 0;
+    height: 50px;
+    padding: 0 10px;
+    font-size: 20px;
+    text-indent: 15px;
+    border-left: 1px solid var(--background-color-2);
+    font-weight: normal;
+}
+
+.btn_cadastrar{
+    cursor: pointer;
+    font-size: 20px;
+    padding: 10px 20px;
+    font-weight: bold;
+    color: var(--text-color-1);
+    background-color: var(--button-color);
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    margin: 0 auto;
+    margin-top: 20px;
+    display: block;
+    transition: background-color 0.3s, scale 0.3s;
+}
+
+.btn_cadastrar:hover{
+    background-color: #004576;
+    scale: 1.05;
+}
+
+@media screen and (max-width: 1000px) {
+    .form_inputs{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form_inputs > label{
+        width: 100%;
+        text-align: center;
+    }
+
+    .form_inputs > input{
+        width: 100%;
+        margin-top: 10px;
+        font-size: 14px !important;
+    }
+
+    .monitor_inputs{
+        width: 100%;
+    }
+
+    .nome_monitor_input, .email_monitor_input{
+        font-size: 14px !important;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .container{
+        width: 95% !important;
+    }
+    
+}

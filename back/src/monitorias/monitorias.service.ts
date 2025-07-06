@@ -52,7 +52,7 @@ export class MonitoriasService {
     }
 
     async cadastrar(monitoria: Monitoria) {
-        return this.prisma.monitoria.create({
+        const monitorias = await this.prisma.monitoria.create({
             data: {
                 monitores: monitoria.monitores,
                 emailMonitor: monitoria.emailMonitor,
@@ -62,6 +62,37 @@ export class MonitoriasService {
                 professor: monitoria.professor,
             },
         });
+
+        // Envia o e-mail de confirmação de cadastro, para cada monitoria cadastrada:
+        const emails = monitoria.emailMonitor.split(';').map(email => email.trim());
+        for (const email of emails) {
+            await this.enviarEmail(
+                email,
+                'Cadastro de Monitoria',
+                `
+                    <div style="max-width:700px; margin: auto; font-family: Arial, sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
+                        <h2 style="color: #000;">✅ Monitoria Cadastrada com Sucesso</h2>
+
+                        <p style="font-size: 16px; color: #555;">
+                            Olá,<br><br>
+                            Sua monitoria foi cadastrada com sucesso! 🎉<br>
+                            Em breve, nossa equipe irá analisar e aprovar sua solicitação.
+                        </p>
+
+                        <p style="font-size: 16px; color: #555;">
+                            Atenciosamente,<br>
+                            <b>Equipe do CACIC</b>
+                        </p>
+
+                        <p style="margin-top: 30px; font-size: 14px; color: #999;">
+                            Este é um e-mail automático, não responda.
+                        </p>
+                    </div>
+                `
+            );
+        }
+
+        return monitorias;
     }
 
     async cadastrarVarios(monitorias: Monitoria[]) {
@@ -91,11 +122,11 @@ export class MonitoriasService {
             },
         });
 
-        if(monit?.status === 'PENDENTE' && monit_atualizada.status === 'APROVADA'){
+        if(monit?.status === 'PENDENTE_APROVACAO' && monit_atualizada.status === 'APROVADA'){
             // Se a monitoria foi aprovada, envia o e-mail de aprovação:
             this.aprovar(monitoria.emailMonitor);
             
-        }else if(monit?.status === 'PENDENTE' && monit_atualizada.status === 'REPROVADA'){
+        }else if(monit?.status === 'PENDENTE_APROVACAO' && monit_atualizada.status === 'REPROVADA'){
             // Se a monitoria foi reprovada, envia o e-mail de reprovação:
             this.reprovar(monitoria.emailMonitor, motivoRejeicao || 'Motivo não especificado');
         }
@@ -114,7 +145,7 @@ export class MonitoriasService {
 
     async aprovar(email_monitor: string) {
         // Envia o e-mail de aprovação para o monitor:
-        this.enviarEmail(
+        await this.enviarEmail(
             email_monitor,
             'Monitoria Aprovada',
             `
@@ -148,7 +179,7 @@ export class MonitoriasService {
     async reprovar(email_monitor: string, motivo: string) {
 
         
-        this.enviarEmail(
+        await this.enviarEmail(
             email_monitor,
             'Monitoria Reprovada',
             `

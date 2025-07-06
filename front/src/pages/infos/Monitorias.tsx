@@ -12,7 +12,7 @@ const Monitorias: React.FC = () => {
     const router = useRouter();
 
     const fetchMonitorias = async () => {
-        fetch(`http://localhost:4000/monitorias/listar`)
+        fetch(`http://localhost:4000/monitorias/listarAprovadas`)
             .then(response => response.json())
             .then(data => {
                 setMonitorias(data);
