@@ -3,7 +3,18 @@ import { useRouter } from 'next/router';
 
 import styles from '../../styles/jogos/Id.module.css';
 
+const formatCPF = (cpf: string): string => {
+    return cpf.replace(/\D/g, "")
+              .replace(/(\d{3})(\d)/, "$1.$2")
+              .replace(/(\d{3})(\d)/, "$1.$2")
+              .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+}
 
+const formatTelefone = (telefone: string): string => {
+    return telefone.replace(/\D/g, "")
+                   .replace(/(\d{2})(\d)/, "($1) $2")
+                   .replace(/(\d{5})(\d)/, "$1-$2");
+}
 
 const Jogo: React.FC = () => {
     const router = useRouter();
@@ -13,6 +24,13 @@ const Jogo: React.FC = () => {
     const [horarios, setHorarios] = React.useState<any[]>([]);
 
     const [horariosSelected, setHorariosSelected] = React.useState<Set<string>>(new Set());
+
+    const [cliente, setCliente] = React.useState({
+        nome: "",
+        cpf: "",
+        email: "",
+        contato: ""
+    });
 
     const parseHorarios = () => {
         return Array.from(horariosSelected).map(horario => {
@@ -47,6 +65,13 @@ const Jogo: React.FC = () => {
         });
     };
 
+    const atualizarCliente = (campo: string, valor: string) => {
+        setCliente(prev => ({
+            ...prev,
+            [campo]: valor
+        }));
+    }
+
     React.useEffect(() => {
         if (id) {
             fetch(`http://localhost:4000/jogos/consultar/${id}`)
@@ -62,6 +87,8 @@ const Jogo: React.FC = () => {
                 })
                 .catch(error => console.error('Erro ao buscar horários:', error));
         }
+
+        console.log(cliente)
     }, []);
 
     return (
@@ -109,9 +136,60 @@ const Jogo: React.FC = () => {
             </div>
 
             <div className={styles.form_container}>
-                {/* Aqui vai o formulário dos dados do cliente */}
                 <p>Para solicitar a reserva do aluguel, preencha as informações abaixo:</p>
                 
+                <div className={styles.form}>
+                    <div className={styles.form_inputs}>
+                        <label htmlFor="nome">Nome:</label>
+                        <input 
+                            type="text" 
+                            id="nome" 
+                            placeholder="Digite seu nome" 
+                            onChange={(e) => atualizarCliente("nome", e.target.value)} 
+                            value={cliente.nome}/>
+                    </div>
+
+                    <div className={styles.form_inputs}>
+                        <label htmlFor="cpf">CPF:</label>
+                        <input 
+                            type="text" 
+                            id="cpf" 
+                            placeholder="123.456.789-00" 
+                            maxLength={14}
+                            onChange={(e) => atualizarCliente("cpf", formatCPF(e.target.value))} 
+                            value={cliente.cpf}/>
+                    </div>
+
+                    <div className={styles.form_inputs}>
+                        <label htmlFor="email">Email:</label>
+                        <input 
+                            type="text" 
+                            id="email" 
+                            placeholder="Digite seu email" 
+                            onChange={(e) => atualizarCliente("email", e.target.value)} 
+                            value={cliente.email}/>
+                    </div>
+
+                    <div className={styles.form_inputs}>
+                        <label htmlFor="numero">Número de Telefone:</label>
+                        <input
+                            type="text" 
+                            id="numero" 
+                            placeholder="(99) 99999-9999" 
+                            maxLength={15}
+                            onChange={(e) => atualizarCliente("contato", formatTelefone(e.target.value))} 
+                            value={cliente.contato}/>
+                    </div>
+
+                    <button 
+                        className={styles.button}
+                        onClick={() => {console.log(cliente)}}
+                    >
+                        Solicitar Aluguel
+                    </button>
+                </div>
+
+                <p className={styles.form_rodape} >Obs: a reserva está sugeita a validação dos moderadores!</p>
             </div>
         </div>
     );

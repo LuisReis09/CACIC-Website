@@ -39,6 +39,7 @@ body {
     font-family: var(--font-family-2);
     font-weight: 600;
     overflow-x: hidden;
+    height: 100%;
 }
 
 .main_container{

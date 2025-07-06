@@ -1,8 +1,8 @@
 .jogo_container{
     display: flex;
     flex-direction: column;
-    justify-items: start;
-    /* align-items: center; */
+    justify-items: center;
+    gap: 20px;
 }
 
 .header{
@@ -47,7 +47,7 @@
     align-items: center;
     justify-content: space-around;
     width: 90%;
-    height: 90%;
+    height: auto;
 
     margin: 0 auto;
 }
@@ -156,20 +156,117 @@
     margin: 0 auto;
 }
 
+.form_container p{
+    text-align: center;
+}
+
+.form{
+    width: 60%;
+    margin: 30px 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+}
+
+
+.form_rodape{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form_inputs{
+    width: 100%;
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form_inputs label{
+    font-size: var(--mid-size);
+    color: var(--text-color-1);
+}
+
+.form_inputs input{
+    width: 350px;
+    height: 40px;
+    padding: 0 10px;
+
+    border-radius: 8px;
+    border: none;
+    background-color: var(--background-color-1);
+    color: var(--text-color-1);
+
+    font-size: var(--text-size);
+}
+
+.button{
+    width: 200px;
+    height: 40px;
+
+    border-radius: 8px;
+    border: none;
+    background-color: var(--background-color-3);
+    color: var(--color-white);
+
+    font-size: var(--mid-size);
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.button:hover{
+    background-color: var(--text-color-2);
+    color: var(--background-color-1);
+    transform: scale(1.02);
+    transition: all 0.3s ease;
+}
+.button:focus{
+    outline: none;
+}
 
 
 
 
+
+
+@media screen and (max-width: 1000px){
+    .form_inputs{
+        flex-direction: column;
+
+        justify-content: start;
+        align-items: start;
+        gap: 8px;
+    }
+
+    .form_inputs input{
+        width: 100%;
+    }
+}
 
 @media screen and (max-width: 565px){
+    .jogo_details{
+        gap: 30px;
+        /* flex-direction: column; */
+        height: auto;
+    }
+
     .jogo_info{
         align-items: center;
         justify-content: center;
- 
+        
     }
     .jogo_text{
         justify-content: center;
         align-items: center;
+    }
+
+    .form{
+        width: 90%;
+        align-self: center;
     }
 }
 @media screen and (max-width: 370px){
