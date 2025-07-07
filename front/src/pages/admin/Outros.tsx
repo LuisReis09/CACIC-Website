@@ -4,7 +4,7 @@ import { useAdminContext } from '@/utils/AdminContext';
 
 import styles from '../../styles/admin/Outros.module.css';
 
-import { Notificacao, SetNotificacao } from '../../utils/Notificacao';  
+import { Notificacao, NotificacaoTipo } from '../../utils/Notificacao';  
 
 
 const Outros: React.FC = () => {
@@ -12,7 +12,7 @@ const Outros: React.FC = () => {
     const [horarios, setHorarios] = React.useState<{ativacao: string, desativacao: string} | null>(null);
     const [agendamento, setAgendamento] = React.useState<number>(8);
     const { token } = useAdminContext();
-    const [notificacao, setNotificacao] = React.useState<{
+    const [notificacao, useNotificacao] = React.useState<{
         tipo: NotificacaoTipo;
         titulo: string;
         conteudo: string;
@@ -35,7 +35,7 @@ const Outros: React.FC = () => {
             })
             .catch(error => {
                 useNotificacao({
-                    tipo: 'erro',
+                    tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 })
@@ -61,7 +61,7 @@ const Outros: React.FC = () => {
             })
             .catch(error => {
                 useNotificacao({
-                    tipo: 'erro',
+                    tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 });
@@ -87,7 +87,7 @@ const Outros: React.FC = () => {
             })
             .catch(error => {
                 useNotificacao({
-                    tipo: 'erro',
+                    tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 });
@@ -113,7 +113,7 @@ const Outros: React.FC = () => {
             })
             .then(data => {
                 useNotificacao({
-                    tipo: 'sucesso',
+                    tipo: NotificacaoTipo.SUCESSO,
                     titulo: 'Sucesso',
                     conteudo: 'Agendamento de ativação realizado com sucesso!',
                 })
@@ -121,7 +121,7 @@ const Outros: React.FC = () => {
             })
             .catch(error => {
                 useNotificacao({
-                    tipo: 'erro',
+                    tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 })
@@ -133,7 +133,7 @@ const Outros: React.FC = () => {
     const agendarDesativacao = async () => {
         if (agendamento < 8 || agendamento > 18) {
             useNotificacao({
-                tipo: 'erro',
+                tipo: NotificacaoTipo.ERRO,
                 titulo: 'Erro',
                 conteudo: 'Por favor, insira uma hora válida entre 8 e 18.',
             })
@@ -152,7 +152,7 @@ const Outros: React.FC = () => {
             })
             .then(data => {
                 useNotificacao({
-                    tipo: 'sucesso',
+                    tipo: NotificacaoTipo.SUCESSO,
                     titulo: 'Sucesso',
                     conteudo: 'Agendamento de desativação realizado com sucesso!',
                 })
@@ -160,7 +160,7 @@ const Outros: React.FC = () => {
             })
             .catch(error => {
                 useNotificacao({
-                    tipo: 'erro',
+                    tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 })
@@ -183,14 +183,14 @@ const Outros: React.FC = () => {
             })
             .then(data => {
                 useNotificacao({
-                    tipo: 'sucesso',
+                    tipo: NotificacaoTipo.SUCESSO,
                     titulo: 'Sucesso',
                     conteudo: 'E-mails enviados com sucesso!',
                 })
             })
             .catch(error => {
                 useNotificacao({
-                    tipo: 'erro',
+                    tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 })
@@ -212,7 +212,7 @@ const Outros: React.FC = () => {
                     tipo={notificacao.tipo}
                     titulo={notificacao.titulo}
                     conteudo={notificacao.conteudo}
-                    onRemover={() => setNotificacao(null)}
+                    onRemover={() => useNotificacao(null)}
                 />
             )}
             <div className={styles.container}>

@@ -16,8 +16,11 @@
 .topics_container{
     display: flex;
     justify-content: space-around;
-
+    flex-wrap: wrap;
+    gap: 20px;
     width: 90%;
+
+    margin-bottom: 20px;
 }
 
 .topic_card{

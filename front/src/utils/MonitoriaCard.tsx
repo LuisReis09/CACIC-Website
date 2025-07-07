@@ -7,8 +7,8 @@ interface MonitoriaCardProps {
 }
 
 const MonitoriaCard: React.FC<MonitoriaCardProps> = ({ monitoria }) => {
-    const monitores = monitoria.monitores.split(',').map((monitor: string) => monitor.trim());
-    const emails    = monitoria.emailMonitor.split(',').map((email: string) => email.trim());
+    const monitores = monitoria.monitores.split(';').map((monitor: string) => monitor.trim());
+    const emails    = monitoria.emailMonitor.split(';').map((email: string) => email.trim());
 
     return (
         <div className={styles.monitoria_card}>

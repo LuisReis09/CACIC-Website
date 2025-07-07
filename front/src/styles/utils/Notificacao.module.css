@@ -1,11 +1,13 @@
 .notificacao_box{
-    position: absolute;
+    position: fixed;
     top: 15px;
     right: -100%;
     z-index: 9999;
 
     height: 70px;
-    width: 350px;
+    min-height: max-content;
+    /* width: 350px; */
+    max-width: 500px;
 
     display: flex;
     flex-direction: row;
@@ -36,6 +38,7 @@
 .barra_lateral{
     width: 10px;
     height: 100%;
+    /* height: auto; */
 }.info{
     background-color: var(--text-color-3);
 }.sucesso{
@@ -56,6 +59,8 @@
     padding: 10px;
     margin-left: 5px;
 
+    /* min-width: max-content; */
+
     color: var(--text-color-1);
 }
 
@@ -75,9 +80,9 @@
     height: calc(100% - 10px);
     width: calc(100% - 10px);
 
-    overflow: hidden;
+    /* overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: nowrap; */
 }
 
 .notificacao_titulo{
@@ -86,21 +91,28 @@
     margin-bottom: 5px;
 
     /* para que o texto nao ultrapasse os limites: */
-    overflow: hidden;
+    /* overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: nowrap; */
+    text-wrap: break-word;
 }
 
 .notificacao_conteudo{
     font-size: 14px;
     font-weight: 300;
     margin-bottom: 5px;
-
-    overflow: hidden;
+    text-wrap: break-word;
+    /* overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: nowrap; */
 }
 
+@media screen and (max-width: 600px){
+    .notificacao_box{
+        max-width: calc(100% - 30px);
+        /* right: 15px; */
+    }
+}
 
 
 

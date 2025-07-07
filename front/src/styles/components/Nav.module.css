@@ -34,10 +34,10 @@
     .nav{
         align-items: center;
         justify-content: center;
-        gap: 10px;
+        gap: 15px;
     }
     .nav_link{
-        font-size: 14px;
+        font-size: 13px;
     }
     .current_route{
         font-weight: bold;

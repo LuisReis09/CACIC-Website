@@ -25,9 +25,14 @@
     cursor: pointer;
 }
 
-.main_content{
-    height: 70%;
+.monitorias_container{
+    min-height: max-content;
+    padding-bottom: 20px;
 }
+
+/* .main_content{
+    height: 80%;
+} */
 
 .monitorias_box{
     display: flex;
@@ -35,10 +40,9 @@
     justify-content: center;
     gap: 40px;
     width: 90%;
-    padding-right: 10px;
+    height: 400px;
     margin: 0 auto;
-    max-height: 100%;
-    overflow-y: auto;
+    min-height: max-content;
 }
 
 .cadastrar_button{

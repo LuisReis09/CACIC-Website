@@ -29,6 +29,7 @@
   border-radius: 8px;
   display: flex;
   align-items: center;
+  
   min-height: max-content;
   color: var(--text-color-1);
 }
@@ -73,6 +74,9 @@
   font-size: var(--mid-size);
   color: var(--text-color-1);
   flex: 1;
+  overflow-y: auto;
+  max-height: 100%;
+  padding-right: 5px;
 }
 
 .text h2 {
@@ -84,6 +88,13 @@
 .text p {
   text-indent: 36px;
   margin-bottom: 1em;
+  font-weight: normal;
+  text-align: justify;
+}
+
+.text p span {
+  color: var(--text-color-3);
+  font-weight: bold;
 }
 
 .socials i {
@@ -121,7 +132,9 @@
   }
   
   .contentRow {
-      flex-direction: column;
+      /* flex-direction: column; */
+      flex-direction: row;
+      flex-wrap: wrap-reverse;
       align-items: stretch;
       width: 100%;
       gap: 1rem;

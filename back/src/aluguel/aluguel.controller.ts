@@ -183,6 +183,7 @@ export class AluguelController {
         return this.aluguelService.buscarClientesPorFiltro(filtro, parametro);
     }
 
+    @Public()
     @Get("/servicoAtivo")
     async isServicoAtivo() {
         // Verifica se o serviço de jogos está ativo

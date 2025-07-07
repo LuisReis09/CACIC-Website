@@ -49,7 +49,7 @@ export const Notificacao: React.FC<NotificacaoProps> = ({ tipo, titulo, conteudo
       case NotificacaoTipo.ATENCAO:
         return <i className={styles.notificacao_icon + ' ' + styles.atencao_icon + ' fa fa-exclamation-circle'}></i>;
       default:
-        return null;
+        return "";
     }
   };
 

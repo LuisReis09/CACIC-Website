@@ -151,7 +151,7 @@ const Listar: React.FC = () => {
                 </div>
 
                 
-                <div className={styles.tabela_container +" scrollbar"}>
+                <div className={styles.tabela_container}>
                     <table className={styles.tabela}>
                         <thead>
                             <tr>

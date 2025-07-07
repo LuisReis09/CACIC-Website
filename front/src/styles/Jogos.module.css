@@ -48,3 +48,14 @@
     padding-right: 10px;
 
 }
+
+@media screen and (max-width: 768px) {
+    .text_container > h1{
+        font-size: 18px;
+    }
+
+    .text_container > p{
+        font-size: 14px !important;
+    }
+    
+}

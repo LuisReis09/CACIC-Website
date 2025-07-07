@@ -4,7 +4,7 @@ import { useRef } from 'react';
 
 
 import styles from '../../styles/admin/Login.module.css';
-import { Notificacao, SetNotificacao } from '../../utils/Notificacao';  
+import { Notificacao, NotificacaoTipo } from '../../utils/Notificacao';  
 
 
 const Login: React.FC = () => {
@@ -44,7 +44,7 @@ const Login: React.FC = () => {
             }else{
                 // Se não, exibe uma mensagem de erro
                 setNotificacao({
-                    tipo: 'erro',
+                    tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro ao fazer login',
                     conteudo: 'Login falhou. Verifique suas credenciais e tente novamente.',
                 });

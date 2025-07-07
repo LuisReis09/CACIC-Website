@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import { Notificacao, NotificacaoTipo } from '../../utils/Notificacao';
 
 import styles from '../../styles/jogos/Id.module.css';
 
@@ -22,6 +23,11 @@ const Jogo: React.FC = () => {
     const { id } = router.query;
     const [jogo, setJogo] = React.useState<any>(null);
     const [horarios, setHorarios] = React.useState<any[]>([]);
+    const [notificacao, setNotificacao] = React.useState<{
+        tipo: NotificacaoTipo;
+        titulo: string;
+        conteudo: string;
+    } | null>(null);
 
     const [horariosSelected, setHorariosSelected] = React.useState<Set<string>>(new Set());
 
@@ -31,6 +37,76 @@ const Jogo: React.FC = () => {
         email: "",
         contato: ""
     });
+
+    const handleSolicitar = async () => {
+        if (horariosSelected.size === 0) {
+            setNotificacao({
+                tipo: NotificacaoTipo.ERRO,
+                titulo: "Horários não selecionados",
+                conteudo: "Você precisa selecionar pelo menos um horário para solicitar o aluguel."
+            });
+            return;
+        }
+
+        if(!/^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cliente.cpf)) {
+            setNotificacao({
+                tipo: NotificacaoTipo.ERRO,
+                titulo: "CPF inválido",
+                conteudo: "Por favor, insira um CPF válido no formato XXX.XXX.XXX-XX."
+            });
+            return;
+        }
+
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cliente.email)) {
+            setNotificacao({
+                tipo: NotificacaoTipo.ERRO,
+                titulo: "Email inválido",
+                conteudo: "Por favor, insira um email válido."
+            });
+            return;
+        }
+
+        if(!/^\(\d{2}\) \d{5}-\d{4}$/.test(cliente.contato)) {
+            setNotificacao({
+                tipo: NotificacaoTipo.ERRO,
+                titulo: "Número de telefone inválido",
+                conteudo: "Por favor, insira um número de telefone válido no formato (XX) XXXXX-XXXX."
+            });
+            return;
+        }
+
+        if(cliente.nome == "" || cliente.cpf == "" || cliente.email == "" || cliente.contato == "") {
+            alert("Por favor, preencha todos os campos do formulário.");
+        }
+
+        
+        const horaInicio = parseHorarios();
+
+        fetch(`http://localhost:4000/aluguel/requisitar/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                cliente: cliente,
+                horaInicio: horaInicio,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Aluguel solicitado com sucesso!");
+                router.push("/Jogos");
+            } else {
+                alert("Erro ao solicitar aluguel: " + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao solicitar aluguel:', error);
+            alert("Erro ao solicitar aluguel. Tente novamente mais tarde.");
+        });
+
+    }
 
     const parseHorarios = () => {
         return Array.from(horariosSelected).map(horario => {
@@ -52,7 +128,14 @@ const Jogo: React.FC = () => {
     const handleHorarioClick = (horario: string) => {
         setHorariosSelected(prev => {
             // Não permite selecionar horários já alugados
-            if(horarios[0][horario] != "DISPONIVEL") return prev; 
+            if(horarios[0][horario] != "DISPONIVEL") {
+                setNotificacao({
+                    tipo: NotificacaoTipo.ERRO,
+                    titulo: "Horário Indisponível",
+                    conteudo: "Este horário já está alugado. Por favor, selecione outro horário."
+                });
+                return prev;
+            } 
             
             // Se o horário já estiver selecionado, remove-o; caso contrário, adiciona-o
             const newSet = new Set(prev);
@@ -83,17 +166,24 @@ const Jogo: React.FC = () => {
             fetch(`http://localhost:4000/aluguel/disponibilidade/${id}`)
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data)
                     setHorarios([data]);
                 })
                 .catch(error => console.error('Erro ao buscar horários:', error));
         }
-
-        console.log(cliente)
     }, []);
 
     return (
         <div className={"main_container " + styles.jogo_container}>
-            
+            {
+                notificacao && 
+                <Notificacao 
+                    tipo={notificacao.tipo} 
+                    titulo={notificacao.titulo} 
+                    conteudo={notificacao.conteudo} 
+                    onRemover={() => setNotificacao(null)} />
+            }
+
             <div className={styles.header}>
                 <div className={styles.back_button} onClick={() => router.push("../Jogos")}>
                 <i className={"fa fa-caret-left" + " " + styles.i} />
@@ -145,6 +235,7 @@ const Jogo: React.FC = () => {
                             type="text" 
                             id="nome" 
                             placeholder="Digite seu nome" 
+                            maxLength={100}
                             onChange={(e) => atualizarCliente("nome", e.target.value)} 
                             value={cliente.nome}/>
                     </div>
@@ -166,6 +257,7 @@ const Jogo: React.FC = () => {
                             type="text" 
                             id="email" 
                             placeholder="Digite seu email" 
+                            maxLength={100}
                             onChange={(e) => atualizarCliente("email", e.target.value)} 
                             value={cliente.email}/>
                     </div>
@@ -183,7 +275,7 @@ const Jogo: React.FC = () => {
 
                     <button 
                         className={styles.button}
-                        onClick={() => {console.log(cliente)}}
+                        onClick={() => handleSolicitar()}
                     >
                         Solicitar Aluguel
                     </button>

@@ -42,3 +42,8 @@
     font-size: 17px;
 }
 
+.jogo_indisponivel{
+    transform: grayscale(100%);
+    opacity: 0.8;
+}
+

@@ -135,14 +135,14 @@ const SobreContent: React.FC = () => (
           </div>
         ))}
       </div>
-      <div className={styles.text}>
+      <div className={styles.text + " scrollbar"}>
         <h2>Qual o nosso objetivo?</h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, GANHAR DINHEIRO!  sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          Enquanto Centro Acadêmico, somos a voz ativa e representativa dos estudantes perante todas as instâncias da UFPB — como direção de curso, direção de centro, colegiado, pró-reitorias, entre outros órgãos. Nosso compromisso é atuar de forma articulada e colaborativa com essas instâncias para garantir que os interesses, demandas e necessidades dos discentes sejam ouvidos, respeitados e atendidos. Trabalhamos não apenas para buscar melhorias nos processos burocráticos e acadêmicos do curso, mas também para conquistar avanços na infraestrutura física e nos serviços oferecidos, promovendo um ambiente universitário mais acolhedor e de qualidade para todos. Além disso, o Centro Acadêmico se dedica a fortalecer o senso de comunidade estudantil, incentivando o diálogo entre os estudantes, a fim de que laços de amizade e auxílios sejam colocados em prática.
         </p>
         <h2>Como nos contatar?</h2>
         <p>
-            Lorem ipsum dolor sit amet, loren sask consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Para entrar em contato conosco, você pode enviar um e-mail para <span>contatocacicufpb@gmail.com</span> (diretamente pelo seu aplicativo de e-mail ou pela aba “Contato” em nosso site), enviar uma mensagem pelo Instagram <span >@cacic.ci</span> ou, se preferir, falar pessoalmente com qualquer integrante do Centro Acadêmico (CA).
         </p>
       </div>
     </div>

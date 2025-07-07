@@ -35,6 +35,13 @@ export class AluguelService {
         cliente: Cliente,
         horas: number[] // array de inícios
     ): Promise<any> {
+        if((await this.servicoAtivo()) == false) {
+            return {
+                success: false,
+                message: 'Serviço de aluguel de jogos está desativado temporariamente.',
+            };
+        }
+
         // Verifica cliente
         let clienteExistente = await this.prisma.cliente.findUnique({
             where: { cpf: cliente.cpf },
@@ -670,7 +677,7 @@ export class AluguelService {
 
     @Cron('0 17 * * * *')
     async redefinirVariavel(): Promise<void> {
-        this.hora_desativacao = '17:00:00';
+        this.hora_desativacao = '18:00:00';
         this.hora_ativacao = '08:00:00';
     }
 
@@ -829,7 +836,7 @@ export class AluguelService {
         });
     }
 
-    async servicoAtivo(): Promise<any> {
+    async servicoAtivo(): Promise<boolean> {
         const admin = await this.prisma.admin.findUnique({
             where: { id: 1 }, // Só existe um admin
             select: { servicoJogosAtivo: true },
@@ -869,7 +876,7 @@ export class AluguelService {
 
         // Prepara resposta
         const resultado: {[hora: number]: 'DISPONIVEL' | 'ALUGADO'} = {};
-        const hora_fim = Number(this.hora_desativacao.substring(0, 2));
+        const hora_fim = Number(this.hora_desativacao.substring(0, 2)) - 1;
         for (let hora = Number(this.hora_ativacao.substring(0, 2)); hora <= hora_fim; hora++) {
             // Conta quantos alugueis pegam essa hora
             const alugueisNaHora = alugueis.filter(a => a.horaInicio <= hora && a.horaFim >= hora);
