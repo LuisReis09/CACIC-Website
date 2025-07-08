@@ -10,13 +10,13 @@ export class UsersService {
   }
 
   async findOne(login: string) {
-    return this.prisma.admin.findUnique({
+    return await this.prisma.admin.findUnique({
       where: { login: login },
     });
   }
 
   async createAdmin(data: { login: string; senha: string }) {
-    return this.prisma.admin.create({
+    return await this.prisma.admin.create({
       data,
     });
   }

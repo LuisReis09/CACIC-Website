@@ -32,19 +32,22 @@ export class ProfessoresService {
   
 
   async listar() {
-    return this.prisma.professor.findMany({
+    return await this.prisma.professor.findMany({
         include: {
           feedbacks: true, // Inclui o feedback associado ao professor
+        },
+        orderBy: {
+          nome: 'asc', // Ordena os professores pelo nome
         },
     });
   }
 
   async listarFeedbacks() {
-    return this.prisma.feedback.findMany({});
+    return await this.prisma.feedback.findMany({});
   }
 
   async listarVotantes() {
-    return this.prisma.votante.findMany({});
+    return await this.prisma.votante.findMany({});
   }
 
   async consultar(id: number) {
@@ -64,6 +67,10 @@ export class ProfessoresService {
       },
     });
 
+    if(!feedback) {
+      return {};
+    }
+
     return feedback;
   }
 
@@ -78,7 +85,7 @@ export class ProfessoresService {
   }
 
   async inserir(professor: Professor) {
-    return this.prisma.professor.create({
+    return await this.prisma.professor.create({
       data: {
         nome: professor.nome,
         email: professor.email,
@@ -94,13 +101,13 @@ export class ProfessoresService {
   }
 
   async inserirMuitos(professores: any[]) {
-    return this.prisma.professor.createMany({
+    return await this.prisma.professor.createMany({
       data: professores
     });
   }
 
   async deletar(id: number) {
-    return this.prisma.professor.delete({
+    return await this.prisma.professor.delete({
       where: {
         id: id,
       },
@@ -108,11 +115,11 @@ export class ProfessoresService {
   }
 
   async deletarTodos() {
-    return this.prisma.professor.deleteMany({});
+    return await this.prisma.professor.deleteMany({});
   }
 
   async atualizar(id: number, professor: Professor) {
-    return this.prisma.professor.update({
+    return await this.prisma.professor.update({
       where: {
         id: id,
       },
@@ -293,7 +300,7 @@ export class ProfessoresService {
   }
 
   async deletarVotantes(id: number) {
-    return this.prisma.votante.delete({
+    return await this.prisma.votante.delete({
       where: {
         id: id,
       },
@@ -301,11 +308,11 @@ export class ProfessoresService {
   }
 
   async deletarTodosVotantes() {
-    return this.prisma.votante.deleteMany({});
+    return await this.prisma.votante.deleteMany({});
   }
 
   async atualizarFeedback(id: number, feedback: Feedback) {
-    return this.prisma.feedback.update({
+    return await this.prisma.feedback.update({
       where: {
         id: id,
       },
@@ -319,7 +326,7 @@ export class ProfessoresService {
   }
 
   async atualizarVotante(id: number, votante: { cpf?: string; professorId?: number }) {
-    return this.prisma.votante.update({
+    return await this.prisma.votante.update({
       where: {
         id: id,
       },
@@ -333,7 +340,7 @@ export class ProfessoresService {
   async buscar(filtro: string, parametro: string | number) {
     const isString = typeof parametro === 'string';
 
-    return this.prisma.professor.findMany({
+    return await this.prisma.professor.findMany({
       where: {
         [filtro]: isString
           ? {
@@ -348,7 +355,7 @@ export class ProfessoresService {
   async buscarFeedbacks(filtro: string, parametro: string | number) {
     const isString = typeof parametro === 'string';
 
-    return this.prisma.feedback.findMany({
+    return await this.prisma.feedback.findMany({
       where: {
         [filtro]: isString
           ? {
@@ -363,7 +370,7 @@ export class ProfessoresService {
   async buscarVotantes(filtro: string, parametro: string | number) {
     const isString = typeof parametro === 'string';
 
-    return this.prisma.votante.findMany({
+    return await this.prisma.votante.findMany({
       where: {
         [filtro]: isString
           ? {

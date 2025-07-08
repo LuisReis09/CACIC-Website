@@ -38,7 +38,7 @@ model Feedback {
   cordialidade Float
   qtdFeedbacks Int
   professorId  Int
-  professor    Professor @relation(fields: [professorId], references: [id])
+  professor    Professor @relation(fields: [professorId], references: [id], onDelete: Cascade)
 }
 
 // Guarda quem ja votou/deu feedback
@@ -46,7 +46,7 @@ model Votante {
   id          Int       @id @default(autoincrement())
   cpf         String
   professorId Int
-  professor   Professor @relation(fields: [professorId], references: [id])
+  professor   Professor @relation(fields: [professorId], references: [id], onDelete: Cascade)
 }
 
 model Monitoria {
@@ -98,9 +98,9 @@ model Cliente {
 model Aluguel {
   id         Int           @id @default(autoincrement())
   jogoId     Int
-  jogo       Jogo          @relation(fields: [jogoId], references: [id])
+  jogo       Jogo          @relation(fields: [jogoId], references: [id], onDelete: Cascade)
   clienteId  Int
-  cliente    Cliente       @relation(fields: [clienteId], references: [id])
+  cliente    Cliente       @relation(fields: [clienteId], references: [id], onDelete: Cascade)
   horaInicio Int
   horaFim    Int
   status     StatusAluguel @default(PENDENTE_APROVACAO)

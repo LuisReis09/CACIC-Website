@@ -166,7 +166,6 @@ const Jogo: React.FC = () => {
             fetch(`http://localhost:4000/aluguel/disponibilidade/${id}`)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data)
                     setHorarios([data]);
                 })
                 .catch(error => console.error('Erro ao buscar horários:', error));

@@ -6,7 +6,11 @@ export class LaboratoriosService {
     constructor(private readonly prisma: PrismaService) {}
 
     async listar(){
-        return await this.prisma.laboratorio.findMany({});
+        return await this.prisma.laboratorio.findMany({
+            orderBy: {
+                nome: 'asc' // Ordena os laboratórios pelo nome
+            }
+        });
     }
 
     async cadastrar(laboratorio: any){

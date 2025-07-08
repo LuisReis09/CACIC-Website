@@ -11,7 +11,7 @@ export class MonitoriasController {
     @Public()
     @Get("/listar")
     async listarMonitorias() {
-        return this.monitoriasService.listar();
+        return await this.monitoriasService.listar();
     }
 
     @Get("/colunas")
@@ -31,50 +31,50 @@ export class MonitoriasController {
     @Public()
     @Get("/listarAprovadas")
     async listarMonitoriasAprovadas() {
-        return this.monitoriasService.listarAprovadas();
+        return await this.monitoriasService.listarAprovadas();
     }
 
     @Get("/listarPendentes")
     async listarMonitoriasPendentes() {
-        return this.monitoriasService.listarPendentes();
+        return await this.monitoriasService.listarPendentes();
     }
 
     @Public()
     @Post("/cadastrar")
     async cadastrarMonitoria(@Body() monitoria: any) {
-        return this.monitoriasService.cadastrar(monitoria);
+        return await this.monitoriasService.cadastrar(monitoria);
     }
 
     @Post("/cadastrarMuitos")
     async cadastrarVariosMonitorias(@Body() monitorias: any[]) {
-        return this.monitoriasService.cadastrarVarios(monitorias);
+        return await this.monitoriasService.cadastrarVarios(monitorias);
     }
 
     @Get("/consultar/:id_monitoria")
     async consultarMonitoria(@Param('id_monitoria') id_monitoria: number) {
-        return this.monitoriasService.consultar(Number(id_monitoria));
+        return await this.monitoriasService.consultar(Number(id_monitoria));
     }
 
 
     @Patch("/atualizar/:id_monitoria")
     async atualizarMonitoria(@Param('id_monitoria') id_monitoria: number, @Body() monitoria: any) {
-        return this.monitoriasService.atualizar(Number(id_monitoria), monitoria);
+        return await this.monitoriasService.atualizar(Number(id_monitoria), monitoria);
     }
 
     @Delete("/deletar/:id_monitoria")
     async removerMonitoria(@Param('id_monitoria') id_monitoria: number) {
-        return this.monitoriasService.deletar(Number(id_monitoria));
+        return await this.monitoriasService.deletar(Number(id_monitoria));
     }
 
     @Delete("/deletar")
     async removerTodasMonitorias() {
-        return this.monitoriasService.deletarTodos();
+        return await this.monitoriasService.deletarTodos();
     }
 
     @Public()
     @Post("/SAC")
     async enviarEmailSAC(@Body() emailData: { email: string, assunto: string, mensagem: string }) {
-        return this.monitoriasService.SAC(emailData.email, emailData.assunto, emailData.mensagem);
+        return await this.monitoriasService.SAC(emailData.email, emailData.assunto, emailData.mensagem);
     }
 
     @Get("/buscar/:filtro/:parametro/:tipo")
@@ -82,6 +82,6 @@ export class MonitoriasController {
         if(tipo == 'number'){
             parametro = Number(parametro);
         }
-        return this.monitoriasService.buscar(filtro, parametro);
+        return await this.monitoriasService.buscar(filtro, parametro);
     }
 }

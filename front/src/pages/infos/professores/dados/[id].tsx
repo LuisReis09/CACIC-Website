@@ -13,20 +13,36 @@ const ProfessorScreen: React.FC = () => {
 
     useEffect(() => {
         if(!id) return;
-        
         fetch(`http://localhost:4000/professores/consultar/${id}`)
-            .then(response => response.json())
+            .then(
+                response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao buscar os dados do professor');
+                    }
+                    return response.json();
+                }
+            )
             .then(data => {
-                console.log(data);
                 setProf(data);
             })
             .catch(error => {
                 console.error('Erro ao buscar os dados do professor:', error);
             });
+        
         fetch(`http://localhost:4000/professores/feedbacks/consultar/${id}`)
-            .then(response => response.json())
+            .then(
+                response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao buscar os dados do professor');
+                    }
+                    return response.json();
+                }
+            )
             .then(data => {
-                console.log(data);
+                if (data && Object.keys(data).length === 0) {
+                    setFeedbacks(null);
+                    return;
+                }
                 setFeedbacks(data);
             })
             .catch(error => {
@@ -44,7 +60,7 @@ const ProfessorScreen: React.FC = () => {
             </div>
             <div className={styles.main_box + " scrollbar"}>
                 <div className={styles.first_section}>
-                    <img className={styles.img} src={prof.imagem ? prof.imagem : "/assets/professors/imagem_padrao.svg"}></img>
+                    <img className={styles.img} src={prof.imagem != "https://sigaa.ufpb.br/sigaa/img/no_picture.png"? prof.imagem : "/assets/professors/imagem_padrao.svg"}></img>
                     <div className={styles.info}>
                         <div className={styles.info_upper}>
                             <strong>{prof.nome}</strong>

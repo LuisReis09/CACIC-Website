@@ -39,7 +39,14 @@ const Votacao: React.FC = () => {
                 planejamento: planejamento,
                 avaliacoes: avaliacoes
             })
-        }).then(response => response.json())
+        }).then(
+            response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao enviar a avaliação');
+                }
+                return response.json();
+            }
+        )
         .then(data => {
 
             // INDEPENDENTE DO RETORNO, MOSTRAR A MENSAGEM PRO CLIENTE. PORÉM, MUDA A COR/SIMBOLO/ESTILO DA MENSAGEM.

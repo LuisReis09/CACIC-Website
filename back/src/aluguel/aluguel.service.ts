@@ -8,7 +8,7 @@ import * as nodemailer from 'nodemailer';
 import * as dotenv from 'dotenv';
 
 import { QrCodePix } from 'qrcode-pix';
-import QRCode from 'qrcode';
+import * as QRCode from 'qrcode';
 
 dotenv.config();
 
@@ -43,7 +43,7 @@ export class AluguelService {
         }
 
         // Verifica cliente
-        let clienteExistente = await this.prisma.cliente.findUnique({
+        let clienteExistente = await this.prisma.cliente.findFirst({
             where: { cpf: cliente.cpf },
         });
 
@@ -163,7 +163,7 @@ export class AluguelService {
 
 
     async listar(): Promise<any> {
-        return this.prisma.aluguel.findMany({
+        return await this.prisma.aluguel.findMany({
             include: {
                 jogo: true,
                 cliente: true,
@@ -172,7 +172,7 @@ export class AluguelService {
     }
 
     async listarClientes(): Promise<any> {
-        return this.prisma.cliente.findMany({});
+        return await this.prisma.cliente.findMany({});
     }
 
     async atualizarAluguel(
@@ -328,6 +328,8 @@ export class AluguelService {
         const aluguel = await this.prisma.aluguel.findUnique({
             where: { id: id_aluguel }
         });
+
+        return aluguel;
     }
 
     async consultarCliente(id_cliente: number): Promise<any> {
@@ -367,6 +369,17 @@ export class AluguelService {
                         📍 Compareça na sala do CA no horário de início do aluguel para utilizar seu jogo!
                     </div>
 
+                    <div style="margin-top: 30px; text-align: center;">
+                        <p style="font-size: 16px; color: #333;">
+                            💰 Para realizar o pagamento do aluguel, utilize o QR Code abaixo:
+                        </p>
+                        <img src="cid:qrcode" alt="QR Code Pix" style="width: 250px; height: 250px; margin-top: 10px;" />
+                        <p style="font-size: 14px; color: #555; margin-top: 10px;">
+                            Ou copie e cole o código Pix gerado na sua aplicação bancária. <br>
+                            <strong>Chave Pix:</strong> ${process.env.PIX_KEY}
+                        </p>
+                    </div>
+
                     <p style="margin-top: 20px; font-size: 15px; color: #333;">
                         <strong>Importante:</strong> Para confirmar a reserva, por favor, apresente o comprovante do pagamento via PIX ao retirar o jogo na sala do Centro Acadêmico.
                         Para a retirada, apresente-se na sala do CA entre ${Number(hora_inicio)-1}:55 e ${hora_inicio}:05.
@@ -376,7 +389,8 @@ export class AluguelService {
                         Este é um e-mail automático, não responda.
                     </p>
                 </div>
-            `
+            `,
+            await this.gerarQrCode(preco_aluguel, "Aluguel do Jogo " + nome_jogo)
         );
     }
 
@@ -401,15 +415,6 @@ export class AluguelService {
                         <strong>🔖 Status:</strong> <b style="color: #007bff;">INICIADO</b>
                     </p>
 
-                    <div style="margin-top: 30px; text-align: center;">
-                        <p style="font-size: 16px; color: #333;">
-                            💰 Para realizar o pagamento do aluguel, utilize o QR Code abaixo:
-                        </p>
-                        <img src="${this.gerarQrCode(preco_aluguel, "Aluguel do Jogo " + nome_jogo)}" alt="QR Code Pix" style="width: 250px; height: 250px; margin-top: 10px;" />
-                        <p style="font-size: 14px; color: #555; margin-top: 10px;">
-                            Ou copie e cole o código Pix gerado na sua aplicação bancária.
-                        </p>
-                    </div>
 
                     <div style="margin-top: 20px; background-color: #cce5ff; border: 1px solid #b8daff; padding: 15px; border-radius: 6px; color: #004085;">
                         🎮 Aproveite seu jogo!<br>
@@ -458,7 +463,7 @@ export class AluguelService {
         `);
     }
 
-    async enviar_email(email: string, assunto: string, mensagem: string): Promise<any> {
+    async enviar_email(email: string, assunto: string, mensagem: string, attachment?: string): Promise<any> {
         
         const transporter = nodemailer.createTransport({
             service: 'gmail', // ou outro serviço SMTP
@@ -473,6 +478,11 @@ export class AluguelService {
             to: email,
             subject: assunto,
             html: mensagem,
+            attachments: attachment ? [{ 
+                filename: 'qrcode.png',
+                content: attachment,
+                cid: 'qrcode' // para referenciar no HTML
+            }] : []
         };
 
         try {
@@ -549,7 +559,7 @@ export class AluguelService {
             };
         }
 
-        const clientes = await this.prisma.cliente.findMany({
+        let clientes = await this.prisma.cliente.findMany({
             where: { bloqueado: false },
         });
 
@@ -559,6 +569,9 @@ export class AluguelService {
                 message: 'Nenhum cliente cadastrado.',
             };
         }
+
+        // Remove duplicatas de clientes com mesmo email's
+        clientes = Array.from(new Map(clientes.map(cliente => [cliente.email, cliente])).values());
 
         // Monta tabela de jogos
         const tabelaJogos = `
@@ -675,10 +688,14 @@ export class AluguelService {
         })
     }
 
-    @Cron('0 17 * * * *')
+    @Cron('0 18 * * * *')
     async redefinirVariavel(): Promise<void> {
         this.hora_desativacao = '18:00:00';
         this.hora_ativacao = '08:00:00';
+
+        // Também remove do bd todas as reservas de jogos feitas no dia, a fim de evitar sobrecarregar o servidor com muitos dados.
+        await this.prisma.aluguel.deleteMany({});
+        this.logger.log('Variáveis redefinidas e aluguéis removidos.');
     }
 
     @Cron(CronExpression.EVERY_HOUR)
@@ -808,7 +825,7 @@ export class AluguelService {
         const payload = await qrCodePix.payload(); // string do código Pix Copia e Cola
 
         // Gera QR code em base64 (você pode salvar como imagem se preferir)
-        const qrCodeBase64 = await QRCode.toDataURL(payload);
+        const qrCodeBase64 = await QRCode.toBuffer(payload);
 
         return qrCodeBase64;
     }
@@ -869,8 +886,6 @@ export class AluguelService {
             where: {
                 jogoId: id_jogo,
                 status: { not: 'CANCELADO' }, // Ignora cancelados
-                horaInicio: { lte: Number(this.hora_ativacao.substring(0, 2)) },
-                horaFim: { gte: Number(this.hora_desativacao.substring(0, 2)) },
             },
         });
 
@@ -879,7 +894,7 @@ export class AluguelService {
         const hora_fim = Number(this.hora_desativacao.substring(0, 2)) - 1;
         for (let hora = Number(this.hora_ativacao.substring(0, 2)); hora <= hora_fim; hora++) {
             // Conta quantos alugueis pegam essa hora
-            const alugueisNaHora = alugueis.filter(a => a.horaInicio <= hora && a.horaFim >= hora);
+            const alugueisNaHora = alugueis.filter(a => a.horaInicio == hora);
 
             if (alugueisNaHora.length >= jogo.quantidade) {
                 resultado[hora] = 'ALUGADO';

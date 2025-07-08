@@ -7,7 +7,7 @@ interface ProfCardProps{
     prof_nome: string;
     professor_img: string | null;
     email: string | number;
-    onClick: Function;
+    onClick: any;
 }
 
 const ProfCard: React.FC<ProfCardProps> = ({prof_nome, professor_img, email, onClick}) => {

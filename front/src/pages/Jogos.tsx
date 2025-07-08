@@ -27,7 +27,6 @@ const Jogos: React.FC = () => {
         fetch(`http://localhost:4000/aluguel/servicoAtivo`)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
             if(!data){
                 setNotificacao({
                     tipo: NotificacaoTipo.ATENCAO,

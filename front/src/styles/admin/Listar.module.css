@@ -68,6 +68,7 @@
     flex-direction: column;
     width: 100%;
     max-height: max-content;
+    overflow-y: hidden;
     overflow-x: auto;
     padding-bottom: 8px;
 }

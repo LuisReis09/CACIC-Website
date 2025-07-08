@@ -86,6 +86,7 @@
     width: 100%;
     max-height: max-content;
     overflow-x: auto;
+    overflow-y: hidden;
     padding-bottom: 8px;
 }
 

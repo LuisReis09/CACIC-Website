@@ -21,7 +21,7 @@ export class AuthController {
     example: { access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' },
   })
   async login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto);
+    return await this.authService.login(loginDto);
   }
 
   @ApiBearerAuth()

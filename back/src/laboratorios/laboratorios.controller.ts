@@ -22,37 +22,37 @@ export class LaboratoriosController {
     @Public()
     @Get("/listar")
     async listar() {
-        return this.laboratoriosService.listar();
+        return await this.laboratoriosService.listar();
     }
 
     @Get("/consultar/:id")
     async consultar(@Param('id') id: string) {
-        return this.laboratoriosService.consultar(Number(id));
+        return await this.laboratoriosService.consultar(Number(id));
     }
 
     @Post("/cadastrar")
     async cadastrar(@Body() laboratorio: any) {
-        return this.laboratoriosService.cadastrar(laboratorio);
+        return await this.laboratoriosService.cadastrar(laboratorio);
     }
 
     @Post("/cadastrarMuitos")
     async cadastrarMuitos(@Body() laboratorios: any[]) {
-        return this.laboratoriosService.cadastrarMuitos(laboratorios);
+        return await this.laboratoriosService.cadastrarMuitos(laboratorios);
     }
 
     @Patch("/atualizar/:id")
     async atualizar(@Param('id') id: string, @Body() laboratorio: any){
-        return this.laboratoriosService.atualizar(Number(id), laboratorio);
+        return await this.laboratoriosService.atualizar(Number(id), laboratorio);
     }
 
     @Delete("/deletar/:id")
     async deletar(@Param('id') id: string) {
-        return this.laboratoriosService.deletar(Number(id));
+        return await this.laboratoriosService.deletar(Number(id));
     }
 
     @Delete("/deletar")
     async deletarTodos() {
-        return this.laboratoriosService.deletarTodos();
+        return await this.laboratoriosService.deletarTodos();
     }
 
     @Get("/buscar/:filtro/:valor/:type")
@@ -60,6 +60,6 @@ export class LaboratoriosController {
         if(type === "number") {
             valor = Number(valor);
         }
-        return this.laboratoriosService.buscar(filtro, valor);
+        return await this.laboratoriosService.buscar(filtro, valor);
     }
 }

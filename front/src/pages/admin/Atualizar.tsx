@@ -52,7 +52,7 @@ const Atualizar: React.FC = () => {
                     titulo: "Registro atualizado",
                     conteudo: "Registro atualizado com sucesso!"
                 });
-                setFormData({});
+                fetchDados(); // Atualiza os dados do formulário após a atualização
             })
             .catch(() => {
                 setNotificacao({

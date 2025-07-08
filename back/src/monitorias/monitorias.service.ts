@@ -25,17 +25,17 @@ export class MonitoriasService {
     constructor(private prisma: PrismaService) {}
 
     async listar(){
-        return this.prisma.monitoria.findMany({});
+        return await this.prisma.monitoria.findMany({});
     }
 
     async consultar(id_monitoria: number) {
-        return this.prisma.monitoria.findUnique({
+        return await this.prisma.monitoria.findUnique({
             where: { id: id_monitoria }
         });
     }
 
     async listarPendentes(){
-        return this.prisma.monitoria.findMany({
+        return await this.prisma.monitoria.findMany({
             where: {
                 status: 'PENDENTE',
             },
@@ -44,9 +44,12 @@ export class MonitoriasService {
 
 
     async listarAprovadas(){
-        return this.prisma.monitoria.findMany({
+        return await this.prisma.monitoria.findMany({
             where: {
                 status: 'APROVADA',
+            },
+            orderBy: {
+                disciplina: 'asc', // Ordena as monitorias aprovadas por disciplina
             },
         });
     }
@@ -133,14 +136,14 @@ export class MonitoriasService {
     }
 
     async deletar(id: number) {
-        return this.prisma.monitoria.delete({
+        return await this.prisma.monitoria.delete({
             where: { id },
         });
     }
 
     async deletarTodos() {
         // Deleta todas as monitorias do banco de dados:
-        return this.prisma.monitoria.deleteMany({});
+        return await this.prisma.monitoria.deleteMany({});
     }
 
     async aprovar(email_monitor: string) {
@@ -264,7 +267,7 @@ export class MonitoriasService {
         // Busca monitorias com base em um filtro e parâmetro:
         const isString = typeof parametro === 'string';
 
-        return this.prisma.monitoria.findMany({
+        return await this.prisma.monitoria.findMany({
             where: {
                 [filtro]: isString
                     ? {

@@ -43,11 +43,18 @@ export class JogosService {
     constructor(private readonly prisma: PrismaService) {}
 
     async listar(){
-      return this.prisma.jogo.findMany({});
+      return await this.prisma.jogo.findMany({
+        where: {
+            status: StatusJogo.DISPONIVEL // Filtra apenas jogos disponíveis
+        },
+        orderBy: {
+            nome: 'asc' // Ordena os jogos pelo nome
+        }
+      });
     }
 
     async consultar(id: number){
-        return this.prisma.jogo.findUnique({
+        return await this.prisma.jogo.findUnique({
             where: {
                 id: id
             }
@@ -55,7 +62,7 @@ export class JogosService {
     }
 
     async cadastrar(jogo: Jogo) {
-        return this.prisma.jogo.create({
+        return await this.prisma.jogo.create({
             data: {
                 nome: jogo.nome,
                 precoPorHora: jogo.precoPorHora,
@@ -67,13 +74,13 @@ export class JogosService {
     }
 
     async cadastrarVarios(jogos: any[]) {
-        return this.prisma.jogo.createMany({
+        return await this.prisma.jogo.createMany({
             data: jogos
         });
     }
 
     async atualizar(id: number, jogo: Jogo) {
-        return this.prisma.jogo.update({
+        return await this.prisma.jogo.update({
             where: {
                 id: id
             },
@@ -82,7 +89,7 @@ export class JogosService {
     }
 
     async deletar(id: number) {
-        return this.prisma.jogo.delete({
+        return await this.prisma.jogo.delete({
             where: {
                 id: id
             }
@@ -90,13 +97,13 @@ export class JogosService {
     }
 
     async deletarTodos() {
-        return this.prisma.jogo.deleteMany({});
+        return await this.prisma.jogo.deleteMany({});
     }
 
     async buscar(filtro: string, parametro: string | number) {
         const isString = typeof parametro === 'string';
 
-        return this.prisma.jogo.findMany({
+        return await this.prisma.jogo.findMany({
             where: {
                 [filtro]: isString ? { contains: parametro as string, mode: 'insensitive' } : parametro
             }
@@ -104,7 +111,7 @@ export class JogosService {
     }
 
     async indisponibilizar(id: number) {
-        return this.prisma.jogo.update({
+        return await this.prisma.jogo.update({
             where: {
                 id: id
             },
@@ -115,7 +122,7 @@ export class JogosService {
     }
 
     async disponibilizar(id: number) {
-        return this.prisma.jogo.update({
+        return await this.prisma.jogo.update({
             where: {
                 id: id
             },

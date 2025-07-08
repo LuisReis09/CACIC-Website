@@ -39,9 +39,10 @@
     align-items: start; */
     gap: 25px;
     height: 75%;
-    max-height: 75%;
+    min-height: max-content;
     width: 90%;
     margin: 0 auto;
+    padding-bottom: 20px;
     justify-content: center;
 
     overflow-y: auto;

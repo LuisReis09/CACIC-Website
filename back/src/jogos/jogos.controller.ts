@@ -11,7 +11,7 @@ export class JogosController {
     @Public()
     @Get("/listar")
     async listarJogos() {
-        return this.jogosService.listar();
+        return await this.jogosService.listar();
     }
 
     @Get("/colunas")
@@ -29,32 +29,32 @@ export class JogosController {
     @Public()
     @Get("/consultar/:id")
     async consultarJogo(@Param('id') id: number) {
-        return this.jogosService.consultar(Number(id));
+        return await this.jogosService.consultar(Number(id));
     }
 
     @Post("/cadastrar")
     async cadastrarJogo(@Body() jogo: Jogo) {
-        return this.jogosService.cadastrar(jogo);
+        return await this.jogosService.cadastrar(jogo);
     }
 
     @Post("/cadastrarMuitos")
     async cadastrarVariosJogos(@Body() jogos: Jogo[]) {
-        return this.jogosService.cadastrarVarios(jogos);
+        return await this.jogosService.cadastrarVarios(jogos);
     }
 
     @Patch("/atualizar/:id")
     async atualizarJogo(@Param('id') id: number, @Body() jogo: Jogo) {
-        return this.jogosService.atualizar(Number(id), jogo);
+        return await this.jogosService.atualizar(Number(id), jogo);
     }
 
     @Delete("/deletar/:id")
     async deletarJogo(@Param('id') id: number) {
-        return this.jogosService.deletar(Number(id));
+        return await this.jogosService.deletar(Number(id));
     }
 
     @Delete("/deletar")
     async deletarTodosJogos() {
-        return this.jogosService.deletarTodos();
+        return await this.jogosService.deletarTodos();
     }
 
     @Public()
@@ -63,17 +63,17 @@ export class JogosController {
         if(tipo == 'number'){
             parametro = Number(parametro);
         }
-        return this.jogosService.buscar(filtro, parametro);
+        return await this.jogosService.buscar(filtro, parametro);
     }
 
     @Get("/indisponibilizar/:id")
     async indisponibilizarJogo(@Param('id') id: number) {
-        return this.jogosService.indisponibilizar(Number(id));
+        return await this.jogosService.indisponibilizar(Number(id));
     }
 
     @Get("/disponibilizar/:id")
     async disponibilizarJogo(@Param('id') id: number) {
-        return this.jogosService.disponibilizar(Number(id));
+        return await this.jogosService.disponibilizar(Number(id));
     }
 
 }
