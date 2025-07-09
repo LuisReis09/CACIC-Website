@@ -109,11 +109,15 @@ body {
 
 ::placeholder{
     font-family: var(--font-family-2);
-    font-weight: 500;
+    font-weight: 400;
 }
 input{
     font-family: var(--font-family-2);
-    font-weight: 600;
+    font-weight: 500;
+}
+textarea{
+    font-family: var(--font-family-2);
+    font-weight: 500;
 }
 ::selection {
     background: var(--text-color-3);

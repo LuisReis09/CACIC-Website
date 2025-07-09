@@ -11,10 +11,10 @@ const Contato: React.FC = () => {
     const [mensagem, setMensagem] = React.useState('');
 
     const [notificacao, setNotificacao] = React.useState<{
-    tipo: NotificacaoTipo;
-    titulo: string;
-    conteudo: string;
-} | null>(null);
+        tipo: NotificacaoTipo;
+        titulo: string;
+        conteudo: string;
+    } | null>(null);
 
 
     const handleEnviarEmail = async () => {
@@ -35,7 +35,7 @@ const Contato: React.FC = () => {
                 setNotificacao({
                 tipo: NotificacaoTipo.SUCESSO,
                 titulo: "E-mail Enviado!",
-                conteudo: "Seu e-mail foi enviado com sucesso!"
+                conteudo: "Seu e-mail foi enviado com sucesso!\nAguarde resposta."
             });
             } else {
                 setNotificacao({
@@ -53,6 +53,15 @@ const Contato: React.FC = () => {
 
     return (
         <div className={"main_container " + styles.contato_container}>
+            {notificacao && (
+                <Notificacao 
+                    tipo={notificacao.tipo} 
+                    titulo={notificacao.titulo} 
+                    conteudo={notificacao.conteudo} 
+                    onRemover={() => setNotificacao(null)} 
+                />
+            )}
+
             <div className={styles.main_content}>
             <h1>Contate-nos por <span>E-mail</span>!</h1>
 
