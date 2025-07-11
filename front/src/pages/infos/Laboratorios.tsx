@@ -4,10 +4,16 @@ import { useRouter } from 'next/router';
 import styles_back_button from '../../styles/infos/ProfessorList.module.css'
 import styles from '@/styles/infos/Laboratorios.module.css';
 import LabCard from '@/utils/LabCard';
+import { NotificacaoTipo, Notificacao } from '@/utils/Notificacao';
 
 const Laboratorios: React.FC = () => {
     const router = useRouter();
     const [laboratorios, setLaboratorios] = React.useState<any[]>([]);
+    const [notificacao, setNotificacao] = React.useState<{
+        tipo: NotificacaoTipo;
+        titulo: string;
+        conteudo: string;
+    } | null>(null);
 
     const fetchLaboratorios = async () => {
         fetch('http://localhost:4000/laboratorios/listar')
@@ -16,7 +22,11 @@ const Laboratorios: React.FC = () => {
                 setLaboratorios(data);
             })
             .catch(error => {
-                console.error('Erro ao buscar laboratórios:', error);
+                setNotificacao({
+                    tipo: NotificacaoTipo.ERRO,
+                    titulo: 'Erro ao carregar laboratórios',
+                    conteudo: 'Ocorreu um erro ao carregar os laboratórios. Por favor, tente novamente mais tarde.'
+                });
             });
     }
 
@@ -26,6 +36,14 @@ const Laboratorios: React.FC = () => {
 
     return (
         <div className={"main_container"}>
+            {
+                notificacao && 
+                <Notificacao 
+                    tipo={notificacao.tipo} 
+                    titulo={notificacao.titulo} 
+                    conteudo={notificacao.conteudo} 
+                    onRemover={() => setNotificacao(null)} />
+            }
             
                 <div className={styles_back_button.header}>
                 <div className={styles_back_button.back_button} onClick={() => router.push("/Infos")}>

@@ -76,7 +76,12 @@ const Jogo: React.FC = () => {
         }
 
         if(cliente.nome == "" || cliente.cpf == "" || cliente.email == "" || cliente.contato == "") {
-            alert("Por favor, preencha todos os campos do formulário.");
+            setNotificacao({
+                tipo: NotificacaoTipo.ERRO,
+                titulo: "Campos obrigatórios",
+                conteudo: "Por favor, preencha todos os campos obrigatórios."
+            });
+            return;
         }
 
         
@@ -95,15 +100,27 @@ const Jogo: React.FC = () => {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert("Aluguel solicitado com sucesso!");
                 router.push("/Jogos");
+                setNotificacao({
+                    tipo: NotificacaoTipo.SUCESSO,
+                    titulo: "Aluguel solicitado com sucesso!",
+                    conteudo: "Sua solicitação de aluguel foi enviada e está sujeita à aprovação dos moderadores."
+                });
             } else {
-                alert("Erro ao solicitar aluguel: " + data.message);
+                setNotificacao({
+                    tipo: NotificacaoTipo.ERRO,
+                    titulo: "Erro ao solicitar aluguel",
+                    conteudo: data.message || "Ocorreu um erro ao solicitar o aluguel. Por favor, tente novamente mais tarde."
+                });
             }
         })
         .catch(error => {
-            console.error('Erro ao solicitar aluguel:', error);
-            alert("Erro ao solicitar aluguel. Tente novamente mais tarde.");
+            router.push("/Jogos");
+            setNotificacao({
+                tipo: NotificacaoTipo.ERRO,
+                titulo: "Erro ao solicitar aluguel",
+                conteudo: "Ocorreu um erro ao solicitar o aluguel. Por favor, tente novamente mais tarde."
+            });
         });
 
     }
@@ -160,7 +177,13 @@ const Jogo: React.FC = () => {
             fetch(`http://localhost:4000/jogos/consultar/${id}`)
                 .then(response => response.json())
                 .then(data => setJogo(data))
-                .catch(error => console.error('Erro ao buscar jogo:', error));
+                .catch(error => 
+                    setNotificacao({
+                        tipo: NotificacaoTipo.ERRO,
+                        titulo: 'Erro ao carregar jogo',
+                        conteudo: 'Ocorreu um erro ao carregar os dados do jogo. Por favor, tente novamente mais tarde.'
+                    })
+                );
                 
 
             fetch(`http://localhost:4000/aluguel/disponibilidade/${id}`)
@@ -168,7 +191,13 @@ const Jogo: React.FC = () => {
                 .then(data => {
                     setHorarios([data]);
                 })
-                .catch(error => console.error('Erro ao buscar horários:', error));
+                .catch(error => 
+                    setNotificacao({
+                        tipo: NotificacaoTipo.ERRO,
+                        titulo: 'Erro ao carregar horários',
+                        conteudo: 'Ocorreu um erro ao carregar os horários disponíveis. Por favor, tente novamente mais tarde.'
+                    })
+                );
         }
     }, []);
 

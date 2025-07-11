@@ -34,7 +34,7 @@ export class AluguelService {
         id_jogo: number,
         cliente: Cliente,
         horas: number[] // array de inícios
-    ): Promise<any> {
+    ) {
         if((await this.servicoAtivo()) == false) {
             return {
                 success: false,

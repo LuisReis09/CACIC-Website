@@ -4,12 +4,19 @@ import { useRouter } from 'next/router';
 // Styles Imports
 import styles from '@/styles/infos/ProfessorScreen.module.css'
 import ProfFeedbacks from '@/utils/ProfFeedbacks';
+import { Notificacao, NotificacaoTipo } from '@/utils/Notificacao';
 
 const ProfessorScreen: React.FC = () => {
     const router = useRouter();
     const { id } = router.query;
     const [prof, setProf] = React.useState<any>({});
     const [feedbacks, setFeedbacks] = React.useState<any>(null);
+
+    const [notificacao, setNotificacao] = React.useState<{
+        tipo: NotificacaoTipo;
+        titulo: string;
+        conteudo: string;
+    } | null>(null);
 
     useEffect(() => {
         if(!id) return;
@@ -26,7 +33,11 @@ const ProfessorScreen: React.FC = () => {
                 setProf(data);
             })
             .catch(error => {
-                console.error('Erro ao buscar os dados do professor:', error);
+                setNotificacao({
+                    tipo: NotificacaoTipo.ERRO,
+                    titulo: 'Erro ao carregar professor',
+                    conteudo: 'Ocorreu um erro ao carregar os dados do professor. Por favor, tente novamente mais tarde.'
+                });
             });
         
         fetch(`http://localhost:4000/professores/feedbacks/consultar/${id}`)
@@ -46,12 +57,25 @@ const ProfessorScreen: React.FC = () => {
                 setFeedbacks(data);
             })
             .catch(error => {
-                console.error('Erro ao buscar os feedbacks do professor:', error);
+                setNotificacao({
+                    tipo: NotificacaoTipo.ERRO,
+                    titulo: 'Erro ao carregar feedbacks',
+                    conteudo: 'Ocorreu um erro ao carregar os feedbacks do professor. Por favor, tente novamente mais tarde.'
+                });
             });
     }, [id]);
     
     return (
         <div className={"main_container"}>
+            {
+                notificacao && 
+                <Notificacao 
+                    tipo={notificacao.tipo} 
+                    titulo={notificacao.titulo} 
+                    conteudo={notificacao.conteudo} 
+                    onRemover={() => setNotificacao(null)} />
+            }
+
             <div className={styles.header}>
                 <div className={styles.back_button} onClick={() => router.push("/infos/Professores")}>
                 <i className={"fa fa-caret-left" + " " + styles.i} />

@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 
 import styles from '@/styles/infos/ProfessorEvaluation.module.css';
+import { Notificacao, NotificacaoTipo } from '@/utils/Notificacao';
 
 const Votacao: React.FC = () => {
     const router = useRouter();
@@ -16,6 +17,12 @@ const Votacao: React.FC = () => {
     const [avaliacoes, setAvaliacoes] = React.useState(0);
     const [cordialidade, setCordialidade] = React.useState(0);
 
+    const [notificacao, setNotificacao] = React.useState<{
+        tipo: NotificacaoTipo;
+        titulo: string;
+        conteudo: string;
+    } | null>(null);
+
     const formatCPF = (value: string) => {
         value = value.replace(/\D/g, "");
         value = value.replace(/(\d{3})(\d)/, "$1.$2");
@@ -25,6 +32,27 @@ const Votacao: React.FC = () => {
     };
 
     const handleVotacao = () => {
+        // Verifica se a matrícula tem exatamente 11 NÚMEROS e se o CPF está no formato correto e com números completos
+        if (matricula.length !== 11 || !/^\d+$/.test(matricula)) {
+            setNotificacao({
+                tipo: NotificacaoTipo.ERRO,
+                titulo: "Erro na matrícula",
+                conteudo: "A matrícula deve conter exatamente 11 números."
+            });
+            return;
+        }
+
+        if (cpf.length !== 14 || !/^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf)) {
+            setNotificacao({
+                tipo: NotificacaoTipo.ERRO,
+                titulo: "Erro no CPF",
+                conteudo: "O CPF deve estar no formato XXX.XXX.XXX-XX."
+            });
+            return;
+        }
+
+        
+
         fetch('http://localhost:4000/professores/feedbacks/cadastrar', {
             method: 'POST',
             headers: {
@@ -42,7 +70,11 @@ const Votacao: React.FC = () => {
         }).then(
             response => {
                 if (!response.ok) {
-                    throw new Error('Erro ao enviar a avaliação');
+                    setNotificacao({
+                        tipo: NotificacaoTipo.ERRO,
+                        titulo: "Erro ao enviar feedback",
+                        conteudo: "Ocorreu um erro ao enviar seu feedback. Por favor, tente novamente mais tarde."
+                    });
                 }
                 return response.json();
             }
@@ -51,10 +83,18 @@ const Votacao: React.FC = () => {
 
             // INDEPENDENTE DO RETORNO, MOSTRAR A MENSAGEM PRO CLIENTE. PORÉM, MUDA A COR/SIMBOLO/ESTILO DA MENSAGEM.
             if(!data.success){
-                console.error(data.message);
+                setNotificacao({
+                    tipo: NotificacaoTipo.ERRO,
+                    titulo: "Erro ao enviar feedback",
+                    conteudo: data.message || "Ocorreu um erro ao enviar seu feedback. Por favor, tente novamente mais tarde."
+                });
             }else{
-                console.log(data.message);
                 router.push("/infos/professores/dados/" + id);
+                setNotificacao({
+                    tipo: NotificacaoTipo.SUCESSO,
+                    titulo: "Feedback enviado com sucesso!",
+                    conteudo: "Obrigado por compartilhar sua opinião. Seu feedback é muito importante para nós."
+                });
             }
         })
     }
@@ -69,13 +109,27 @@ const Votacao: React.FC = () => {
                 setProfessor(data);
             })
             .catch(error => {
-                console.error('Erro ao buscar os dados do professor:', error);
+                router.push("/infos/professores");
+                setNotificacao({
+                    tipo: NotificacaoTipo.ERRO,
+                    titulo: "Erro ao carregar professor",
+                    conteudo: "Ocorreu um erro ao carregar os dados do professor. Por favor, tente novamente mais tarde."
+                });
             });
         
     }, [id]);
 
     return (
         <div className={"main_container"}>
+            {
+                notificacao && 
+                <Notificacao 
+                    tipo={notificacao.tipo} 
+                    titulo={notificacao.titulo} 
+                    conteudo={notificacao.conteudo} 
+                    onRemover={() => setNotificacao(null)} />
+            }
+
             <div className={styles.header}>
                 <div className={styles.back_button} onClick={() => router.push("/infos/professores/dados/" + id)}>
                 <i className={"fa fa-caret-left" + " " + styles.i} />

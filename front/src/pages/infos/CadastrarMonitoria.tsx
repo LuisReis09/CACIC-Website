@@ -2,10 +2,17 @@ import React from 'react';
 import { useRouter } from 'next/router';
 
 import styles from '@/styles/infos/CadastrarMonitoria.module.css';
+import { Notificacao, NotificacaoTipo } from '@/utils/Notificacao';
 
 const CadastrarMonitoria: React.FC = () => {
     const router = useRouter();
     const [qtd_monitores, setQtdMonitores] = React.useState(1);
+
+    const [notificacao, setNotificacao] = React.useState<{
+            tipo: NotificacaoTipo;
+            titulo: string;
+            conteudo: string;
+        } | null>(null);
 
     // useStates dos inputs:
     const [nomeProfessor, setNomeProfessor] = React.useState('');
@@ -15,6 +22,16 @@ const CadastrarMonitoria: React.FC = () => {
     const [monitores, setMonitores] = React.useState([{ nome: '', email: '' }]);
 
     const handleCadastrarMonitoria = async () => {
+        // Verifica se todos os campos obrigatórios estão preenchidos
+        if(!nomeProfessor || !nomeDisciplina || !monitores[0].nome || !monitores[0].email) {
+            setNotificacao({
+                tipo: NotificacaoTipo.ERRO,
+                titulo: 'Erro ao cadastrar monitoria',
+                conteudo: 'Por favor, preencha todos os campos obrigatórios.'
+            });
+            return;
+        }
+
         fetch(`http://localhost:4000/monitorias/cadastrar`, {
             method: 'POST',
             headers: {
@@ -31,18 +48,35 @@ const CadastrarMonitoria: React.FC = () => {
             }),
         })
         .then(response => {
-            console.log(response)
-            alert('Monitoria cadastrada com sucesso!');
             router.push('/infos/Monitorias');
+            setNotificacao({
+                tipo: NotificacaoTipo.SUCESSO,
+                titulo: 'Monitoria cadastrada com sucesso!',
+                conteudo: 'Sua monitoria será analisada e publicada em breve.'
+            });
         })
         .catch(error => {
-            console.error('Erro ao cadastrar monitoria:', error);
-            alert('Erro ao cadastrar monitoria. Tente novamente.');
+            setNotificacao({
+                tipo: NotificacaoTipo.ERRO,
+                titulo: 'Erro ao cadastrar monitoria',
+                conteudo: 'Ocorreu um erro ao cadastrar a monitoria. Por favor, tente novamente mais tarde.'
+            });
         });
     }
 
     return (
         <div className={"main_container"}>
+
+            {notificacao && (
+                <Notificacao 
+                    tipo={notificacao.tipo} 
+                    titulo={notificacao.titulo} 
+                    conteudo={notificacao.conteudo} 
+                    onRemover={() => setNotificacao(null)} 
+                />
+            )}
+
+
             <div className={styles.header}>
                 <div className={styles.back_button} onClick={() => router.push('/infos/Monitorias')}>
                 <i className={"fa fa-caret-left" + " " + styles.i} />

@@ -6,137 +6,47 @@ import styles from '../../styles/infos/Monitorias.module.css';
 
 // Component Imports
 import MonitoriaCard from '../../utils/MonitoriaCard';
+import { Notificacao, NotificacaoTipo } from '../../utils/Notificacao';
 
 const Monitorias: React.FC = () => {
     const [monitorias, setMonitorias] = React.useState<any>(null);
     const router = useRouter();
+    const [notificacao, setNotificacao] = React.useState<{
+        tipo: NotificacaoTipo;
+        titulo: string;
+        conteudo: string;
+    } | null>(null);
 
     const fetchMonitorias = async () => {
         fetch(`http://localhost:4000/monitorias/listarAprovadas`)
             .then(response => response.json())
             .then(data => {
                 setMonitorias(data);
-                console.log("Monitorias:", monitorias);
             })
             .catch(error => {
-                console.error("Erro ao buscar monitorias:", error);
+                setNotificacao({
+                    tipo: NotificacaoTipo.ERRO,
+                    titulo: 'Erro ao carregar monitorias',
+                    conteudo: 'Ocorreu um erro ao carregar as monitorias. Por favor, tente novamente mais tarde.'
+                });
             });
     }
 
     React.useEffect(() => {
         fetchMonitorias();
-
-        // setMonitorias([
-        //     {
-        //         disciplina: "Algoritmos e Estruturas de Dados",
-        //         professor: "Prof. João Silva",
-        //         monitores: "Maria Oliveira; João Pereira",
-        //         emailMonitor: "maria@gmail.com; joao@gmail.com",
-        //         linkDiscord: "https://discord.gg/algoritmos",
-        //         linkWhatsapp: "https://wa.me/1234567890",
-        //     },
-        //     {
-        //         disciplina: "Algoritmos e Estruturas de Dados",
-        //         professor: "Prof. João Silva",
-        //         monitores: "Maria Oliveira; João Pereira",
-        //         emailMonitor: "maria@gmail.com; joao@gmail.com",
-        //         linkDiscord: "https://discord.gg/algoritmos",
-        //         linkWhatsapp: "https://wa.me/1234567890",
-        //     },
-        //     {
-        //         disciplina: "Algoritmos e Estruturas de Dados",
-        //         professor: "Prof. João Silva",
-        //         monitores: "Maria Oliveira; João Pereira",
-        //         emailMonitor: "maria@gmail.com; joao@gmail.com",
-        //         linkDiscord: "https://discord.gg/algoritmos",
-        //         linkWhatsapp: "https://wa.me/1234567890",
-        //     },
-        //     {
-        //         disciplina: "Algoritmos e Estruturas de Dados",
-        //         professor: "Prof. João Silva",
-        //         monitores: "Maria Oliveira; João Pereira",
-        //         emailMonitor: "maria@gmail.com; joao@gmail.com",
-        //         linkDiscord: "https://discord.gg/algoritmos",
-        //         linkWhatsapp: "https://wa.me/1234567890",
-        //     },
-        //     {
-        //         disciplina: "Algoritmos e Estruturas de Dados",
-        //         professor: "Prof. João Silva",
-        //         monitores: "Maria Oliveira; João Pereira",
-        //         emailMonitor: "maria@gmail.com; joao@gmail.com",
-        //         linkDiscord: "https://discord.gg/algoritmos",
-        //         linkWhatsapp: "https://wa.me/1234567890",
-        //     },
-        //     {
-        //         disciplina: "Algoritmos e Estruturas de Dados",
-        //         professor: "Prof. João Silva",
-        //         monitores: "Maria Oliveira; João Pereira",
-        //         emailMonitor: "maria@gmail.com; joao@gmail.com",
-        //         linkDiscord: "https://discord.gg/algoritmos",
-        //         linkWhatsapp: "https://wa.me/1234567890",
-        //     },
-        //     {
-        //         disciplina: "Algoritmos e Estruturas de Dados",
-        //         professor: "Prof. João Silva",
-        //         monitores: "Maria Oliveira; João Pereira",
-        //         emailMonitor: "maria@gmail.com; joao@gmail.com",
-        //         linkDiscord: "https://discord.gg/algoritmos",
-        //         linkWhatsapp: "https://wa.me/1234567890",
-        //     },
-        //     {
-        //         disciplina: "Algoritmos e Estruturas de Dados",
-        //         professor: "Prof. João Silva",
-        //         monitores: "Maria Oliveira; João Pereira",
-        //         emailMonitor: "maria@gmail.com; joao@gmail.com",
-        //         linkDiscord: "https://discord.gg/algoritmos",
-        //         linkWhatsapp: "https://wa.me/1234567890",
-        //     },
-        //     {
-        //         disciplina: "Algoritmos e Estruturas de Dados",
-        //         professor: "Prof. João Silva",
-        //         monitores: "Maria Oliveira; João Pereira",
-        //         emailMonitor: "maria@gmail.com; joao@gmail.com",
-        //         linkDiscord: "https://discord.gg/algoritmos",
-        //         linkWhatsapp: "https://wa.me/1234567890",
-        //     },
-        //     {
-        //         disciplina: "Algoritmos e Estruturas de Dados",
-        //         professor: "Prof. João Silva",
-        //         monitores: "Maria Oliveira; João Pereira",
-        //         emailMonitor: "maria@gmail.com; joao@gmail.com",
-        //         linkDiscord: "https://discord.gg/algoritmos",
-        //         linkWhatsapp: "https://wa.me/1234567890",
-        //     },
-        //     {
-        //         disciplina: "Algoritmos e Estruturas de Dados",
-        //         professor: "Prof. João Silva",
-        //         monitores: "Maria Oliveira; João Pereira",
-        //         emailMonitor: "maria@gmail.com; joao@gmail.com",
-        //         linkDiscord: "https://discord.gg/algoritmos",
-        //         linkWhatsapp: "https://wa.me/1234567890",
-        //     },
-        //     {
-        //         disciplina: "Algoritmos e Estruturas de Dados",
-        //         professor: "Prof. João Silva",
-        //         monitores: "Maria Oliveira; João Pereira",
-        //         emailMonitor: "maria@gmail.com; joao@gmail.com",
-        //         linkDiscord: "https://discord.gg/algoritmos",
-        //         linkWhatsapp: "https://wa.me/1234567890",
-        //     },
-        //     {
-        //         disciplina: "Algoritmos e Estruturas de Dados",
-        //         professor: "Prof. João Silva",
-        //         monitores: "Maria Oliveira; João Pereira",
-        //         emailMonitor: "maria@gmail.com; joao@gmail.com",
-        //         linkDiscord: "https://discord.gg/algoritmos",
-        //         linkWhatsapp: "https://wa.me/1234567890",
-        //     },
-
-        // ]);
     }, []);
 
     return (
         <div className={"main_container " + styles.monitorias_container}>
+            {
+                notificacao && 
+                <Notificacao 
+                    tipo={notificacao.tipo} 
+                    titulo={notificacao.titulo} 
+                    conteudo={notificacao.conteudo} 
+                    onRemover={() => setNotificacao(null)} />
+            }
+
             <div className={styles.header}>
                 <div className={styles.back_button} onClick={() => router.push('/Infos')}>
                 <i className={"fa fa-caret-left" + " " + styles.i} />

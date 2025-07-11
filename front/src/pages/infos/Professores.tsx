@@ -7,11 +7,18 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import ProfCard from '@/utils/ProfCard'
 // Styles Imports
 import styles from '@/styles/infos/ProfessorList.module.css'
+import { Notificacao, NotificacaoTipo } from '@/utils/Notificacao';
 
 
 const ProfessorList: React.FC = () => {
   const router = useRouter();
   const [professores, setProfessores] = React.useState<any[]>();
+
+  const [notificacao, setNotificacao] = React.useState<{
+    tipo: NotificacaoTipo;
+    titulo: string;
+    conteudo: string;
+  } | null>(null);
 
   useEffect(() => {
     fetch("http://localhost:4000/professores/listar")
@@ -20,7 +27,11 @@ const ProfessorList: React.FC = () => {
         setProfessores(data);
       })
       .catch((error) => {
-        console.error("Erro ao buscar professores:", error);
+        setNotificacao({
+          tipo: NotificacaoTipo.ERRO,
+          titulo: "Erro ao carregar professores",
+          conteudo: "Ocorreu um erro ao carregar os professores. Por favor, tente novamente mais tarde.",
+        });
         setProfessores([]);
       });
   }, []);
@@ -28,6 +39,15 @@ const ProfessorList: React.FC = () => {
 
   return (
     <div className="main_container">
+      {
+        notificacao && 
+        <Notificacao 
+            tipo={notificacao.tipo} 
+            titulo={notificacao.titulo} 
+            conteudo={notificacao.conteudo} 
+            onRemover={() => setNotificacao(null)} />
+      }
+
       <div className={styles.header}>
         <div className={styles.back_button} onClick={() => router.push("/Infos")}>
           <i className={"fa fa-caret-left" + " " + styles.i} />
