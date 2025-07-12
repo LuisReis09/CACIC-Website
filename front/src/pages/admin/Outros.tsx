@@ -27,6 +27,9 @@ const Outros: React.FC = () => {
             },
         })
             .then(async response => {
+                if(!response.ok) {
+                    throw new Error('Erro ao buscar colunas');
+                }
                 const text = await response.text();
                 return text ? JSON.parse(text) : null;
             })
@@ -34,13 +37,13 @@ const Outros: React.FC = () => {
                 setEmprestimosLigados(data);
             })
             .catch(error => {
+                window.location.reload();
                 useNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 })
                 // Recarrega a página:
-                window.location.reload();
             });
     }
 
@@ -53,6 +56,9 @@ const Outros: React.FC = () => {
             },
         })
             .then(async response => {
+                if(!response.ok) {
+                    throw new Error('Erro ao buscar colunas');
+                }
                 const text = await response.text();
                 return text ? JSON.parse(text) : null;
             })
@@ -60,13 +66,13 @@ const Outros: React.FC = () => {
                 setHorarios(data);
             })
             .catch(error => {
+                window.location.reload();
                 useNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 });
                 // Recarrega a página:
-                window.location.reload();
             });
     }
 
@@ -79,6 +85,9 @@ const Outros: React.FC = () => {
             },
         })
             .then(async response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao alterar status do serviço de empréstimos');
+                }
                 const text = await response.text();
                 return text ? JSON.parse(text) : null;
             })
@@ -86,13 +95,13 @@ const Outros: React.FC = () => {
                 setEmprestimosLigados(!emprestimosLigados);
             })
             .catch(error => {
+                window.location.reload();
                 useNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 });
                 // Recarrega a página:
-                window.location.reload();
             });
     }
 
@@ -108,6 +117,9 @@ const Outros: React.FC = () => {
             },
         })
             .then(async response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao agendar ativação do serviço de jogos');
+                }
                 const text = await response.text();
                 return text ? JSON.parse(text) : null;
             })
@@ -120,13 +132,13 @@ const Outros: React.FC = () => {
                 fetchHorarios(); // Atualiza os horários após o agendamento
             })
             .catch(error => {
+                window.location.reload();
                 useNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 })
                 // Recarrega a página:
-                window.location.reload();
             });
     }
 
@@ -147,6 +159,9 @@ const Outros: React.FC = () => {
             },
         })
             .then(async response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao agendar desativação do serviço de jogos');
+                }
                 const text = await response.text();
                 return text ? JSON.parse(text) : null;
             })
@@ -159,13 +174,13 @@ const Outros: React.FC = () => {
                 fetchHorarios(); // Atualiza os horários após o agendamento
             })
             .catch(error => {
+                window.location.reload();
                 useNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 })
                 // Recarrega a página:
-                window.location.reload();
             });
     }
 
@@ -178,6 +193,9 @@ const Outros: React.FC = () => {
             },
         })
             .then(async response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao enviar e-mails de propaganda');
+                }
                 const text = await response.text();
                 return text ? JSON.parse(text) : null;
             })
@@ -189,13 +207,13 @@ const Outros: React.FC = () => {
                 })
             })
             .catch(error => {
+                window.location.reload();
                 useNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 })
                 // Recarrega a página:
-                window.location.reload();
             });
     }
 

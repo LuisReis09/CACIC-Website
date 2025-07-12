@@ -293,7 +293,10 @@ export class AluguelService {
 
         const clienteAtualizado = await this.prisma.cliente.update({
             where: { id: id },
-            data: cliente as any,
+            data: {
+                ...cliente,
+                dataBloqueio: cliente.dataBloqueio ? new Date(cliente.dataBloqueio) : null,
+            },
         });
 
         // Verifica se o cliente foi bloqueado ou desbloqueado
@@ -333,21 +336,9 @@ export class AluguelService {
     }
 
     async consultarCliente(id_cliente: number): Promise<any> {
-        const cliente = await this.prisma.cliente.findUnique({
+        return await this.prisma.cliente.findUnique({
             where: { id: id_cliente },
         });
-
-        if (!cliente) {
-            return {
-                success: false,
-                message: 'Cliente não encontrado.',
-            };
-        }
-
-        return {
-            success: true,
-            cliente: cliente,
-        };
     }
 
     async aprovarAluguel(email_cliente: string, nome_jogo: string, hora_inicio: string | number, hora_fim: string | number, preco_aluguel: string): Promise<any> {
@@ -665,7 +656,7 @@ export class AluguelService {
                     <h2 style="color: #000;">🔓 Sua Conta foi <span style="color: #28a745;">Desbloqueada</span> com Sucesso!</h2>
 
                     <p style="font-size: 16px; color: #555;">
-                        ✅ Você já pode <b>alugar jogos novamente</b> normalmente.<br><br>
+                        ✅ Você já pode <b>alugar jogos</b> normalmente.<br><br>
                         🙌 Obrigado por sua compreensão e paciência.
                     </p>
 

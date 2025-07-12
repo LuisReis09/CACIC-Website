@@ -59,6 +59,7 @@ const ProfessorList: React.FC = () => {
         {
           professores?.map((prof: any, index: number) => (
             <ProfCard
+              id={prof.id}
               key={index}
               prof_nome={prof.nome}
               professor_img={prof.imagem == "https://sigaa.ufpb.br/sigaa/img/no_picture.png" ? null : prof.imagem}

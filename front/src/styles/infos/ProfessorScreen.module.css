@@ -35,8 +35,9 @@
     flex-direction: column;
     width: 80%;
     height: 75%;
+    min-height: max-content;
+    padding-bottom: 20px;
     margin: 0 auto;
-    overflow-y: auto;
     gap: 50px;
     padding-right: 10px;
 }
@@ -62,6 +63,22 @@
 
 .first_section > .info > .info_upper > strong{
     font-size: 30px;
+    color: var(--text-color-2);
+}
+
+.info_upper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.info_upper > a{
+    color: var(--text-color-1);
+    font-size: 25px;
+    text-decoration: none;
+
+    transition: all 0.3s ease;
+}
+.info_upper > a:hover{
     color: var(--text-color-2);
 }
 

@@ -99,6 +99,10 @@
     text-overflow: ellipsis;
 }
 
+.not_bold{
+    font-weight: normal;
+}
+
 .tabela > tbody > tr:nth-child(odd){
     background-color: #0F579A;
 }

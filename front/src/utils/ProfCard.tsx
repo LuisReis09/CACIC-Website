@@ -4,17 +4,18 @@ import React from 'react';
 import styles from '../styles/utils/ProfCard.module.css'
 
 interface ProfCardProps{
+    id: number;
     prof_nome: string;
     professor_img: string | null;
     email: string | number;
     onClick: any;
 }
 
-const ProfCard: React.FC<ProfCardProps> = ({prof_nome, professor_img, email, onClick}) => {
+const ProfCard: React.FC<ProfCardProps> = ({id, prof_nome, professor_img, email, onClick}) => {
 
     return (
         <div className={styles.prof_card_box} onClick={onClick}>
-            <img className={styles.img} src={professor_img ? professor_img : "/assets/professors/imagem_padrao.svg"}></img>
+            <img className={styles.img} src={`http://localhost:4000/professores/imagem/${id}`}></img>
             
             <div className={styles.prof_card_info}>
                 <p className={styles.prof_name} >{prof_nome}</p>

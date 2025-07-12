@@ -38,15 +38,21 @@ const Criar: React.FC = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             })
-                .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
+                .then(async response => { 
+                    if(!response.ok) {
+                        throw new Error('Erro ao buscar colunas');
+                    }
+                    const text = await response.text(); 
+                    return text ? JSON.parse(text) : null;
+                })
                 .then(data => setColunas(data))
                 .catch(() => {
+                    window.location.reload();
                     setNotificacao({
                         tipo: NotificacaoTipo.ERRO,
                         titulo: "Erro",
                         conteudo: "Perdeu acesso ao servidor. Tente relogar."
                     });
-                    window.location.reload();
                 });
         }
     }
@@ -69,7 +75,13 @@ const Criar: React.FC = () => {
             },
             body: JSON.stringify(formData),
         })
-            .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
+            .then(async response => { 
+                if(!response.ok) {
+                    throw new Error('Erro ao buscar colunas');
+                }
+                const text = await response.text(); 
+                return text ? JSON.parse(text) : null;
+            })
             .then(() => {
                 setNotificacao({
                     tipo: NotificacaoTipo.SUCESSO,
@@ -79,12 +91,12 @@ const Criar: React.FC = () => {
                 setFormData({});
             })
             .catch(() => {
+                window.location.reload();
                 setNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: "Erro",
                     conteudo: "Perdeu acesso ao servidor. Tente relogar."
                 });
-                window.location.reload();
             });
     };
 
@@ -112,7 +124,13 @@ const Criar: React.FC = () => {
                         },
                         body: JSON.stringify(data),
                     })
-                        .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
+                        .then(async response => { 
+                            if (!response.ok) {
+                                throw new Error('Erro ao cadastrar muitos registros');
+                            }
+                            const text = await response.text();
+                            return text ? JSON.parse(text) : null;
+                        })
                         .then(() => {
                             setNotificacao({
                                 tipo: NotificacaoTipo.SUCESSO,
@@ -121,12 +139,12 @@ const Criar: React.FC = () => {
                             });
                         })
                         .catch(() => {
+                            window.location.reload();
                             setNotificacao({
                                 tipo: NotificacaoTipo.ERRO,
                                 titulo: "Erro ao cadastrar",
                                 conteudo: "Perdeu acesso ao servidor. Tente relogar."
                             });
-                            window.location.reload();
                         });
                 } catch (error) {
                     setNotificacao({

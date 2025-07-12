@@ -34,18 +34,23 @@ const Listar: React.FC = () => {
                 'Authorization': 'Bearer ' + token
             }
         })
-            .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
+            .then(async response => { 
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar dados');
+                }
+                const text = await response.text();
+                return text ? JSON.parse(text) : null;
+            })
             .then(data => {
                 setDados(data);
             })
             .catch(error => {
+                window.location.reload();
                 setNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: "Erro",
                     conteudo: "Perdeu acesso ao servidor. Tente relogar."
                 });                
-                // Recarrega a página:
-                window.location.reload();
             });
     }
 
@@ -57,19 +62,25 @@ const Listar: React.FC = () => {
                 'Authorization': 'Bearer ' + token
             }
         })
-            .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
+            .then(async response => { 
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar colunas');
+                }
+                const text = await response.text(); 
+                return text ? JSON.parse(text) : null;
+            })
             .then(data => {
                 setColunas(data);
                 setFiltro(data[0].column); // Define o filtro inicial como a primeira coluna
             })
             .catch(error => {
+                window.location.reload();
                 setNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: "Erro",
                     conteudo: "Perdeu acesso ao servidor. Tente relogar."
                 });                
                 // Recarrega a página:
-                window.location.reload();
             });
     }
 
@@ -81,18 +92,24 @@ const Listar: React.FC = () => {
                 'Authorization': 'Bearer ' + token
             },
         })
-            .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
+            .then(async response => { 
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar dados');
+                }
+                const text = await response.text();
+                return text ? JSON.parse(text) : null;
+            })
             .then(data => {
                 setDados(data);
             })
             .catch(error => {
+                window.location.reload();
                 setNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: "Erro",
                     conteudo: "Perdeu acesso ao servidor. Tente relogar."
                 });
                 // Recarrega a página:
-                window.location.reload();
             });
     }
 
@@ -166,7 +183,7 @@ const Listar: React.FC = () => {
                             dados.map((item, index) => (
                                 <tr key={index}>
                                     {colunas.map((coluna, colIndex) => (
-                                        <td key={colIndex}>{item[coluna.column]}</td>
+                                        <td key={colIndex} className={coluna.column != "id" ? styles.not_bold : ''}>{item[coluna.column]}</td>
                                     ))}
                                 </tr>
                             ))}

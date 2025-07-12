@@ -45,7 +45,13 @@ const Atualizar: React.FC = () => {
             },
             body: JSON.stringify(formData),
         })
-            .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null; })
+            .then(async response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao atualizar registro');
+                }
+                const text = await response.text(); 
+                return text ? JSON.parse(text) : null; 
+            })
             .then(data => {
                 setNotificacao({
                     tipo: NotificacaoTipo.SUCESSO,
@@ -55,14 +61,27 @@ const Atualizar: React.FC = () => {
                 fetchDados(); // Atualiza os dados do formulário após a atualização
             })
             .catch(() => {
+                window.location.reload();
                 setNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: "Erro ao atualizar registro",
                     conteudo: "Perdeu acesso ao servidor. Tente novamente mais tarde."
                 });
-                window.location.reload();
             });
     };
+
+    React.useEffect(() => {
+        if (formData['bloqueado'] == true) {
+            const now = new Date();
+            
+            // Ajusta para o horário de Brasília:
+            now.setHours(now.getHours() - 3);
+            handleChange('dataBloqueio', now.toISOString().slice(0, 19));
+        }else if (formData['bloqueado'] == false) {
+            handleChange('dataBloqueio', '');
+            handleChange('motivoBloqueio', '');
+        }
+    }, [formData['bloqueado']]);
 
     const fetchColunas = async () => {
         if (tabela) {
@@ -74,17 +93,20 @@ const Atualizar: React.FC = () => {
                 },
             })
                 .then(async response => {
+                    if(!response.ok) {
+                        throw new Error('Erro ao buscar colunas');
+                    }
                     const text = await response.text();
                     return text ? JSON.parse(text) : null;
                 })
                 .then(data => setColunas(data))
                 .catch(() => {
+                    window.location.reload();
                     setNotificacao({
                         tipo: NotificacaoTipo.ERRO,
                         titulo: "Erro",
                         conteudo: "Perdeu acesso ao servidor. Tente relogar."
                     });
-                    window.location.reload();
                 });
         }
     };
@@ -99,6 +121,9 @@ const Atualizar: React.FC = () => {
                 },
             })
                 .then(async response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao buscar dados');
+                    }
                     const text = await response.text();
                     return text ? JSON.parse(text) : null;
                 })
@@ -112,12 +137,12 @@ const Atualizar: React.FC = () => {
                     }
                 })
                 .catch(() => {
+                    window.location.reload();
                     setNotificacao({
                         tipo: NotificacaoTipo.ERRO,
                         titulo: "Erro ao buscar dados",
                         conteudo: "Perdeu acesso ao servidor. Tente relogar."
                     });
-                    window.location.reload();
                 });
         }
     };

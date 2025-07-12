@@ -31,17 +31,23 @@ const Deletar: React.FC = () => {
                 'Authorization': 'Bearer ' + token
             }
         })
-            .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
+            .then(async response => { 
+                if(!response.ok) {
+                    throw new Error('Erro ao buscar colunas');
+                }
+                const text = await response.text(); 
+                return text ? JSON.parse(text) : null;
+            })
             .then(data => {
                 setDados(data);
             })
             .catch(error => {
+                window.location.reload();
                 setNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: "Erro",
                     conteudo: "Perdeu acesso ao servidor. Tente relogar."
                 });
-                window.location.reload();
             });
     }
 
@@ -53,7 +59,13 @@ const Deletar: React.FC = () => {
                 'Authorization': 'Bearer ' + token
             }
         })
-            .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
+            .then(async response => { 
+                if (!response.ok) {
+                    throw new Error('Erro ao deletar registro');
+                }
+                const text = await response.text(); 
+                return text ? JSON.parse(text) : null;
+            })
             .then(data => {
                 setDados(dados.filter(dado => dado.id !== id));
                 setNotificacao({
@@ -63,12 +75,12 @@ const Deletar: React.FC = () => {
                 });
             })
             .catch(error => {
+                window.location.reload();
                 setNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: "Erro ao deletar",
                     conteudo: "Perdeu acesso ao servidor. Tente relogar."
                 });
-                window.location.reload();
             });
     }
 
@@ -81,7 +93,13 @@ const Deletar: React.FC = () => {
                     'Authorization': 'Bearer ' + token
                 }
             })
-            .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
+            .then(async response => { 
+                if (!response.ok) {
+                    throw new Error('Erro ao deletar todos os registros');
+                }
+                const text = await response.text(); 
+                return text ? JSON.parse(text) : null;
+            })
             .then(data => { 
                 setDados([]);
                 setNotificacao({
@@ -92,12 +110,12 @@ const Deletar: React.FC = () => {
             }
             )
             .catch(error => {
+                window.location.reload();
                 setNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: "Erro ao deletar",
                     conteudo: "Perdeu acesso ao servidor. Tente relogar."
                 });
-                window.location.reload();
             });
     }
 
@@ -109,18 +127,24 @@ const Deletar: React.FC = () => {
                 'Authorization': 'Bearer ' + token
             }
         })
-            .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
+            .then(async response => { 
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar colunas');
+                }
+                const text = await response.text(); 
+                return text ? JSON.parse(text) : null;
+            })
             .then(data => {
                 setColunas(data);
                 setFiltro(data[0].column); // Define o filtro inicial como a primeira coluna
             })
             .catch(error => {
+                window.location.reload();
                 setNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: "Erro",
                     conteudo: "Perdeu acesso ao servidor. Tente relogar."
                 });
-                window.location.reload();
             });
     }
 
@@ -132,17 +156,23 @@ const Deletar: React.FC = () => {
                 'Authorization': 'Bearer ' + token
             },
         })
-            .then(async response => { const text = await response.text(); return text ? JSON.parse(text) : null;})
+            .then(async response => { 
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar dados');
+                }
+                const text = await response.text(); 
+                return text ? JSON.parse(text) : null;
+            })
             .then(data => {
                 setDados(data);
             })
             .catch(error => {
+                window.location.reload();
                 setNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: "Erro",
                     conteudo: "Perdeu acesso ao servidor. Tente relogar."
                 });
-                window.location.reload();
             });
     }
 
@@ -223,7 +253,7 @@ const Deletar: React.FC = () => {
                                         <td
                                             key={colIndex}
                                             onClick={coluna.column === 'id' ? () => handleOneDelete(item["id"]) : undefined}
-                                            style={coluna.column === 'id' ? { cursor: "pointer" } : undefined}
+                                            style={coluna.column === 'id' ? { cursor: "pointer" } : { fontWeight: "normal" }}
                                         >
                                         {item[coluna.column]}
                                         </td>

@@ -60,6 +60,30 @@ export class ProfessoresService {
     return professor;
   }
 
+  async obterImagem(id: number, res: any): Promise<any> {
+    const prof = await this.prisma.professor.findUnique({
+      where: { id: Number(id) },
+      select: { imagem: true },
+    });
+
+    if (!prof?.imagem || prof.imagem == "https://sigaa.ufpb.br/sigaa/img/no_picture.png") {
+      return res.redirect('http://localhost:3000/assets/professors/imagem_padrao.svg');
+    }
+
+    try {
+      const response = await fetch(prof.imagem);
+      if (!response.ok) {
+        return res.redirect('http://localhost:3000/assets/professors/imagem_padrao.svg');
+      }
+
+      const buffer = await response.arrayBuffer();
+      res.setHeader('Content-Type', 'image/jpeg');
+      res.send(Buffer.from(buffer));
+    } catch {
+      return res.redirect('http://localhost:3000/assets/professors/imagem_padrao.svg');
+    }
+  }
+
   async consultarFeedback(id: number) {
     const feedback = await this.prisma.feedback.findFirst({
       where: {

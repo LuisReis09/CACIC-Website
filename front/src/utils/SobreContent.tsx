@@ -12,7 +12,7 @@ const membros = [
   {
     nome: 'Michel',
     cargo: 'Vice-Presidente',
-    avatar: 'https://media.licdn.com/dms/image/v2/D5603AQE8om5owNf_KQ/profile-displayphoto-shrink_200_200/B56ZQzggWfG8Ac-/0/1736030947632?e=1757548800&v=beta&t=mjDrOTD5HiqVizUMxO7pCe0paGDMKSmrCYISOkYDW9g',
+    avatar: 'https://avatars.githubusercontent.com/u/119738123?v=4',
     github: 'https://github.com/Alquimas',
     linkedin: 'https://www.linkedin.com/in/michel-medeiros-815b53344/'
   },
@@ -40,7 +40,7 @@ const membros = [
   {
     nome: 'Rauana',
     cargo: 'Mídias',
-    avatar: 'https://media.licdn.com/dms/image/v2/D4D03AQFdgfH0ZnBynw/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1718223112046?e=1757548800&v=beta&t=J3A8qAMGfoPH3TpI7RmXapajMucZQZQ5Jk5DlFm6r2U', 
+    avatar: 'https://avatars.githubusercontent.com/u/136634083?s=130&v=4', 
     github: 'https://github.com/rauana-carvalho',
     linkedin: 'https://www.linkedin.com/in/rauana-carvalho-8a61241b9/',
   },
@@ -54,7 +54,7 @@ const membros = [
   {
     nome: 'Pedro Luca',
     cargo: 'Arquivos',
-    avatar: 'https://media.licdn.com/dms/image/v2/D4D03AQGohGZSjgvxcw/profile-displayphoto-shrink_200_200/B4DZUzvg20GcAc-/0/1740329848640?e=1757548800&v=beta&t=BXtXrFOhxH4vS2iAKrtvUQsOEQfk2v98oju5uJ5aCBU',
+    avatar: 'https://avatars.githubusercontent.com/u/65235669?s=130&v=4',
     github: 'https://github.com/PucaVaz',
     linkedin: 'https://www.linkedin.com/in/pucavaz/',
   }
@@ -71,7 +71,7 @@ const devs = [
   {
     nome: 'Kaique',
     cargo: 'Frontend',
-    avatar: 'https://media.licdn.com/dms/image/v2/D4E03AQH_47isgDHNSg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1729345424936?e=1757548800&v=beta&t=o_09EJ0You9vOjjzE14P3AV4TgrtxHg__dpX_GIq1bU',
+    avatar: 'https://avatars.githubusercontent.com/u/90767791?s=130&v=4',
     github: 'https://github.com/KaiqueSantos2004',
     linkedin: 'https://www.linkedin.com/in/kaique-santos-b25664331/',
   },

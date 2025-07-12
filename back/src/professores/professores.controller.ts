@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Res } from '@nestjs/common';
 import { ProfessoresService } from './professores.service';
 import { Get, Post, Param, Delete, Body, Patch } from '@nestjs/common';
 import { Professor, Feedback } from './professores.service';
@@ -12,6 +12,12 @@ export class ProfessoresController {
   @Get('/listar')
   async listar() {
     return await this.professoresService.listar();
+  }
+
+  @Public()
+  @Get('/imagem/:id')
+  async obterImagem(@Param('id') id: number, @Res() res) {
+    return await this.professoresService.obterImagem(Number(id), res);
   }
 
   @Get('/feedbacks/listar')
@@ -28,13 +34,14 @@ export class ProfessoresController {
   async obterColunas() {
     return [
       { column: 'id', type: 'number' },
-      { column: 'nome', type: 'string', maxLength: 200 },
-      { column: 'email', type: 'string', maxLength: 200 },
-      { column: 'sala', type: 'string', maxLength: 30 },
-      { column: 'departamento', type: 'string', maxLength: 500},
-      { column: 'areasDeInteresse', type: 'string', maxLength: 500 },
-      { column: 'laboratorios', type: 'string', maxLength: 500 },
-      { column: 'disciplinas', type: 'string', maxLength: 500 },
+      { column: 'nome', type: 'string' },
+      { column: 'email', type: 'string'},
+      { column: 'sala', type: 'string' },
+      { column: 'departamento', type: 'string'},
+      { column: 'areasDeInteresse', type: 'string' },
+      { column: 'laboratorios', type: 'string' },
+      { column: 'disciplinas', type: 'string' },
+      { column: 'linkedin', type: 'string' },
       { column: 'imagem', type: 'string'}
     ];
   }

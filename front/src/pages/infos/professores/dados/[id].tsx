@@ -5,6 +5,9 @@ import { useRouter } from 'next/router';
 import styles from '@/styles/infos/ProfessorScreen.module.css'
 import ProfFeedbacks from '@/utils/ProfFeedbacks';
 import { Notificacao, NotificacaoTipo } from '@/utils/Notificacao';
+import { get } from 'http';
+
+
 
 const ProfessorScreen: React.FC = () => {
     const router = useRouter();
@@ -82,13 +85,20 @@ const ProfessorScreen: React.FC = () => {
                 </div>
                 <p>Informações dos Professores</p>
             </div>
-            <div className={styles.main_box + " scrollbar"}>
+            <div className={styles.main_box}>
                 <div className={styles.first_section}>
-                    <img className={styles.img} src={prof.imagem != "https://sigaa.ufpb.br/sigaa/img/no_picture.png"? prof.imagem : "/assets/professors/imagem_padrao.svg"}></img>
+                    <img 
+                        className={styles.img} 
+                        src={`http://localhost:4000/professores/imagem/${prof.id}`}
+                    ></img>
                     <div className={styles.info}>
                         <div className={styles.info_upper}>
                             <strong>{prof.nome}</strong>
                             <p>{prof.email}</p>
+                            {   prof.linkedin != "" &&
+                                <a href={prof.linkedin} target='blank'><i className='fa-brands fa-linkedin'></i></a>
+                                
+                            }
                         </div>
 
                         <div className={styles.info_lower}>
