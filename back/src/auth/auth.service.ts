@@ -77,4 +77,18 @@ export class AuthService {
       admin: { id: newAdmin.id, login: newAdmin.login },
     };
   }
+
+  async validarToken(req: any) {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      throw new UnauthorizedException('Token não fornecido');
+    }
+
+    try {
+      const decoded = this.jwtService.verify(token);
+      return { valid: true, user: decoded };
+    } catch (error) {
+      throw new UnauthorizedException('Token inválido');
+    }
+  }
 }

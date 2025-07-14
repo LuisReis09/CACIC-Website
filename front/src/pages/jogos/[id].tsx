@@ -100,7 +100,6 @@ const Jogo: React.FC = () => {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                router.push("/Jogos");
                 setNotificacao({
                     tipo: NotificacaoTipo.SUCESSO,
                     titulo: "Aluguel solicitado com sucesso!",

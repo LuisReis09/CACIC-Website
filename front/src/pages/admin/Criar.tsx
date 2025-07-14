@@ -13,7 +13,6 @@ const Criar: React.FC = () => {
     const [tabela, setTabela]   = React.useState<string>('professores');
     const [columnRoute, setColumnRoute] = React.useState<string>('/professores');
     const [jsonFile, setJsonFile] = React.useState<File | null>(null);
-    const { token } = useAdminContext();
 
     const [formData, setFormData] = React.useState<{ [key: string]: any }>({});
     const [notificacao, setNotificacao] = React.useState<{
@@ -35,7 +34,7 @@ const Criar: React.FC = () => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
                 },
             })
                 .then(async response => { 
@@ -47,12 +46,15 @@ const Criar: React.FC = () => {
                 })
                 .then(data => setColunas(data))
                 .catch(() => {
-                    window.location.reload();
                     setNotificacao({
                         tipo: NotificacaoTipo.ERRO,
                         titulo: "Erro",
                         conteudo: "Perdeu acesso ao servidor. Tente relogar."
                     });
+
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
                 });
         }
     }
@@ -71,7 +73,7 @@ const Criar: React.FC = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
             },
             body: JSON.stringify(formData),
         })
@@ -91,12 +93,15 @@ const Criar: React.FC = () => {
                 setFormData({});
             })
             .catch(() => {
-                window.location.reload();
                 setNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: "Erro",
                     conteudo: "Perdeu acesso ao servidor. Tente relogar."
                 });
+
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             });
     };
 
@@ -120,7 +125,7 @@ const Criar: React.FC = () => {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`,
+                            'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
                         },
                         body: JSON.stringify(data),
                     })
@@ -139,12 +144,15 @@ const Criar: React.FC = () => {
                             });
                         })
                         .catch(() => {
-                            window.location.reload();
                             setNotificacao({
                                 tipo: NotificacaoTipo.ERRO,
                                 titulo: "Erro ao cadastrar",
                                 conteudo: "Perdeu acesso ao servidor. Tente relogar."
                             });
+
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 2000);
                         });
                 } catch (error) {
                     setNotificacao({

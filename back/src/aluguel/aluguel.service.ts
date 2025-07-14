@@ -78,39 +78,6 @@ export class AluguelService {
             };
         }
 
-        // Checa conflitos para cada hora
-        const conflitos: any[] = [];
-
-        for (const horaInicio of horas) {
-            const horaFim = horaInicio + 1;
-
-            const conflitosEncontrados = await this.prisma.aluguel.findMany({
-                where: {
-                    jogoId: id_jogo,
-                    horaInicio: { lte: horaFim },
-                    horaFim: { gte: horaInicio },
-                },
-            });
-
-            if (conflitosEncontrados.length >= qtd_jogo.quantidade) {
-                conflitos.push({
-                    hora: horaInicio,
-                    conflitos: conflitosEncontrados.map(a => ({
-                        de: a.horaInicio,
-                        ate: a.horaFim,
-                    })),
-                });
-            }
-        }
-
-        if (conflitos.length > 0) {
-            return {
-                success: false,
-                message: 'Existem conflitos em alguns horários.',
-                conflitos,
-            };
-        }
-
         // Cria os aluguéis
         const alugueisCriados: any = [];
 
@@ -138,7 +105,7 @@ export class AluguelService {
             cliente.email,
             'Aluguel de Jogo',
             `
-                <div style="max-width:700px; margin:auto; font-family:Arial,sans-serif;">
+                <div style="max-width:700px; margin:auto; font-family:Arial,sans-serif; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: #f9f9f9;">
                     <h2>✅ Pedido de Aluguel Realizado com Sucesso!</h2>
                     <p><strong>🎮 Jogo:</strong> ${qtd_jogo.nome}</p>
                     <p><strong>Horários reservados:</strong></p>

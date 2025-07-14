@@ -11,7 +11,6 @@ const Atualizar: React.FC = () => {
     const [tabela, setTabela] = React.useState<string>('professores');
     const [columnRoute, setColumnRoute] = React.useState<string>('/professores');
     const [id, setId] = React.useState<number>(1);
-    const { token } = useAdminContext();
 
     const [formData, setFormData] = React.useState<{ [key: string]: any }>({});
     const [notificacao, setNotificacao] = React.useState<{
@@ -41,7 +40,7 @@ const Atualizar: React.FC = () => {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
             },
             body: JSON.stringify(formData),
         })
@@ -61,12 +60,15 @@ const Atualizar: React.FC = () => {
                 fetchDados(); // Atualiza os dados do formulário após a atualização
             })
             .catch(() => {
-                window.location.reload();
                 setNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: "Erro ao atualizar registro",
                     conteudo: "Perdeu acesso ao servidor. Tente novamente mais tarde."
-                });
+                })
+                
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);;
             });
     };
 
@@ -89,7 +91,7 @@ const Atualizar: React.FC = () => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
                 },
             })
                 .then(async response => {
@@ -101,12 +103,15 @@ const Atualizar: React.FC = () => {
                 })
                 .then(data => setColunas(data))
                 .catch(() => {
-                    window.location.reload();
                     setNotificacao({
                         tipo: NotificacaoTipo.ERRO,
                         titulo: "Erro",
                         conteudo: "Perdeu acesso ao servidor. Tente relogar."
                     });
+
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);;
                 });
         }
     };
@@ -117,7 +122,7 @@ const Atualizar: React.FC = () => {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
                 },
             })
                 .then(async response => {
@@ -137,12 +142,15 @@ const Atualizar: React.FC = () => {
                     }
                 })
                 .catch(() => {
-                    window.location.reload();
                     setNotificacao({
                         tipo: NotificacaoTipo.ERRO,
                         titulo: "Erro ao buscar dados",
                         conteudo: "Perdeu acesso ao servidor. Tente relogar."
                     });
+
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);;
                 });
         }
     };

@@ -10,7 +10,7 @@ import { Notificacao, NotificacaoTipo } from '../../utils/Notificacao';
 const Login: React.FC = () => {
     const [login, setLogin]       = React.useState('');
     const [password, setPassword] = React.useState('');
-    const { setScreen, setToken } = useAdminContext();
+    const { setScreen } = useAdminContext();
 
     const [notificacao, setNotificacao] = React.useState<{
         tipo: NotificacaoTipo;
@@ -37,9 +37,8 @@ const Login: React.FC = () => {
         .then(data => {
             // Se data tiver campo 'acess_token', significa que o login foi bem-sucedido
             if (data.access_token) {
-                // Armazena o token no contexto
-                setToken(data.access_token);
-                // Muda a tela para 'listar'
+                // Armazena o token no localStorage
+                localStorage.setItem('adminToken', data.access_token); // Armazena o token no localStorage
                 setScreen('listar');
             }else{
                 // Se não, exibe uma mensagem de erro
@@ -51,6 +50,32 @@ const Login: React.FC = () => {
             }
         })
     }
+
+    React.useEffect(() => {
+        // Verifica se já existe um token no localStorage, se existe, testa se ainda é válido
+        const token = localStorage.getItem('adminToken');
+        if (token) {
+            fetch('http://localhost:4000/auth/validar', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Se a resposta for ok, significa que o token é válido
+                    setScreen('listar');
+                } else {
+                    // Se não, limpa o token do localStorage
+                    localStorage.removeItem('adminToken');
+                }
+            })
+            .catch(error => {
+                localStorage.removeItem('adminToken'); // Limpa o token em caso de erro
+            });
+        }
+    }, []);
 
     return (
         <div className={styles.admin_login_container}>

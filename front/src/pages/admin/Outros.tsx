@@ -11,7 +11,6 @@ const Outros: React.FC = () => {
     const [emprestimosLigados, setEmprestimosLigados] = React.useState<boolean>(false);
     const [horarios, setHorarios] = React.useState<{ativacao: string, desativacao: string} | null>(null);
     const [agendamento, setAgendamento] = React.useState<number>(8);
-    const { token } = useAdminContext();
     const [notificacao, useNotificacao] = React.useState<{
         tipo: NotificacaoTipo;
         titulo: string;
@@ -23,7 +22,7 @@ const Outros: React.FC = () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('adminToken')}` // Use localStorage to get the token,
             },
         })
             .then(async response => {
@@ -37,13 +36,16 @@ const Outros: React.FC = () => {
                 setEmprestimosLigados(data);
             })
             .catch(error => {
-                window.location.reload();
                 useNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 })
+                
                 // Recarrega a página:
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);   
             });
     }
 
@@ -52,7 +54,7 @@ const Outros: React.FC = () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('adminToken')}`, // Use localStorage to get the token
             },
         })
             .then(async response => {
@@ -66,13 +68,15 @@ const Outros: React.FC = () => {
                 setHorarios(data);
             })
             .catch(error => {
-                window.location.reload();
                 useNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 });
                 // Recarrega a página:
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             });
     }
 
@@ -81,7 +85,7 @@ const Outros: React.FC = () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
             },
         })
             .then(async response => {
@@ -95,13 +99,15 @@ const Outros: React.FC = () => {
                 setEmprestimosLigados(!emprestimosLigados);
             })
             .catch(error => {
-                window.location.reload();
                 useNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 });
                 // Recarrega a página:
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             });
     }
 
@@ -113,7 +119,7 @@ const Outros: React.FC = () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
             },
         })
             .then(async response => {
@@ -132,13 +138,15 @@ const Outros: React.FC = () => {
                 fetchHorarios(); // Atualiza os horários após o agendamento
             })
             .catch(error => {
-                window.location.reload();
                 useNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 })
                 // Recarrega a página:
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             });
     }
 
@@ -155,7 +163,7 @@ const Outros: React.FC = () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
             },
         })
             .then(async response => {
@@ -174,13 +182,15 @@ const Outros: React.FC = () => {
                 fetchHorarios(); // Atualiza os horários após o agendamento
             })
             .catch(error => {
-                window.location.reload();
                 useNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 })
                 // Recarrega a página:
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             });
     }
 
@@ -189,7 +199,7 @@ const Outros: React.FC = () => {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
             },
         })
             .then(async response => {
@@ -207,13 +217,15 @@ const Outros: React.FC = () => {
                 })
             })
             .catch(error => {
-                window.location.reload();
                 useNotificacao({
                     tipo: NotificacaoTipo.ERRO,
                     titulo: 'Erro',
                     conteudo: 'Perdeu acesso ao servidor. Tente relogar.',
                 })
                 // Recarrega a página:
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             });
     }
 

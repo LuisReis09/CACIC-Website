@@ -30,4 +30,14 @@ export class AuthController {
   getProfile(@Request() req) {
     return req.user;
   }
+
+  // Rota para testar se o token advindo do Authorization, no Header, é válido
+  @Public()
+  @Get('validar')
+  @ApiBearerAuth()
+  @ApiResponse({ status: 200, description: 'Token válido' })
+  async validarToken(@Request() req) {
+    return await this.authService.validarToken(req);
+  }
+
 }

@@ -6,19 +6,16 @@ import { useRouter } from 'next/router';
 interface AdminContextType {
     screen: string;
     setScreen: (screen: string) => void;
-    token: string | null;
-    setToken: (token: string | null) => void;
 }
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
 export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [screen, setScreen] = useState<string>('login');
-    const [token, setToken] = useState<string | null>(null);
     const router = useRouter();
 
     return (
-        <AdminContext.Provider value={{ screen, setScreen, token, setToken }}>
+        <AdminContext.Provider value={{ screen, setScreen}}>
             {children}
         </AdminContext.Provider>
     );
