@@ -20,7 +20,7 @@ const Infos: React.FC = () => {
                 <TopicCard  className= {styles.topic_card} topico="Laboratórios"          
                             onClick={() => router.push("/infos/Laboratorios")}                    img='whatsapp_card.svg'/>
                 <TopicCard  className= {styles.topic_card} topico="Fluxograma das Cadeiras"  
-                            onClick={() => console.log("Baixando arquivo...")}              img='flowchart_card.svg'/>
+                            onClick={() => window.open('/disciplinas_cc.pdf', '_blank')}              img='flowchart_card.svg'/>
             </div>
         </div>
     );
