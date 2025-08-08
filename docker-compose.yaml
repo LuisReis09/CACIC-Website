@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  back:
+    build: ./back
+    container_name: nest-back
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./back:/app
+      - /app/node_modules
+    env_file:
+      - ./back/.env
+    depends_on:
+      - db
+
+  front:
+    build: ./front
+    container_name: next-front
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./front:/app
+      - /app/node_modules
+    depends_on:
+      - back
+
+  db:
+    image: postgres:16
+    container_name: postgres-db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

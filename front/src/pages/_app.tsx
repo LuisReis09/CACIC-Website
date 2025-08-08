@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { AdminProvider } from '../utils/AdminContext';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 // Components Imports
 import Header from './components/Header';
@@ -28,6 +29,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   }else{
     return (
+      <AdminProvider>
       <div className={styles.App}>
         <Header />
         <div className={styles.content}>
@@ -38,6 +40,7 @@ export default function App({ Component, pageProps }: AppProps) {
           {/* <Aside /> */}
         </div>
       </div>
+      </AdminProvider>
     );
   }
 
