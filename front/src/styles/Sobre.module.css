@@ -1,7 +1,7 @@
 .container {
   display: flex;
   height: 85%;
-  min-height: max-content;
+  min-height: fit-content;
   border-radius: 8px;
   flex-direction: row;
   gap: 2rem;
@@ -30,7 +30,7 @@
   display: flex;
   align-items: center;
   
-  min-height: max-content;
+  min-height: fit-content;
   color: var(--text-color-1);
 }
 

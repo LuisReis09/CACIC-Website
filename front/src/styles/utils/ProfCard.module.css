@@ -52,7 +52,7 @@
     transition: 0.2s ease-in-out;       
     width: 280px; 
     height: 90px; 
-    min-height: max-content;
+    min-height: fit-content;
     text-align: center;
     color: white; 
     background-color: var(--background-color-3);

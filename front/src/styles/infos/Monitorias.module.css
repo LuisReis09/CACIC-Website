@@ -26,7 +26,7 @@
 }
 
 .monitorias_container{
-    min-height: max-content;
+    min-height: fit-content;
     padding-bottom: 20px;
 }
 
@@ -42,7 +42,7 @@
     width: 90%;
     height: 400px;
     margin: 0 auto;
-    min-height: max-content;
+    min-height: fit-content;
 }
 
 .cadastrar_button{

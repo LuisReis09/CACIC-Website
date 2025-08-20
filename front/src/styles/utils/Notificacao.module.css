@@ -5,7 +5,7 @@
     z-index: 9999;
 
     height: 70px;
-    min-height: max-content;
+    min-height: fit-content;
     /* width: 350px; */
     max-width: 500px;
 

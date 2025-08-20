@@ -9,7 +9,7 @@
 
 .container{
     width: 90%;
-    min-height: max-content;
+    min-height: fit-content;
     height: 400px;
     display: flex;
     flex-direction: column;

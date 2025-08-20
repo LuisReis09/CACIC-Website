@@ -10,7 +10,7 @@
     display: flex;
     gap: 20px;
     flex-direction: column;
-    min-height: max-content;
+    min-height: fit-content;
     justify-content: space-around;
     align-items: center;
     padding: 20px 0;

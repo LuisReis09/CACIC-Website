@@ -4,13 +4,13 @@
     flex-direction: column;
     align-items: space-around;
     justify-content: space-around;
-    min-height: max-content;
+    min-height: fit-content;
 }
 
 .content{
     display: flex;
     height: calc(100% - 200px); /* Adjust for header height */
-    min-height: max-content;
+    min-height: fit-content;
     width: 90%;
     margin: 0 auto;
     justify-content: space-around;
@@ -18,7 +18,7 @@
 
 .main_frame{
     width: 80%;
-    min-height: max-content;
+    min-height: fit-content;
     margin-bottom: 20px;
 }
 
@@ -27,7 +27,7 @@
 }
 
 .admin_App{
-    min-height: max-content;
+    min-height: fit-content;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -42,7 +42,7 @@
 
 .admin_App > div{
     padding: 20px;
-    min-height: max-content;
+    min-height: fit-content;
     margin-bottom: 20px;
     border-radius: 15px;
 }
@@ -58,11 +58,11 @@
         align-items: center;
         justify-content: start;
         gap: 40px;
-        min-height: max-content;
+        min-height: fit-content;
     }
     .main_frame{
         width: 100%;
-        min-height: max-content;
+        min-height: fit-content;
         gap: 20px;
     }
     .content > Aside{

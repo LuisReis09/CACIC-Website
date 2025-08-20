@@ -35,7 +35,7 @@
     flex-direction: column;
     width: 80%;
     height: 75%;
-    min-height: max-content;
+    min-height: fit-content;
     padding-bottom: 20px;
     margin: 0 auto;
     gap: 50px;
@@ -193,7 +193,7 @@
         flex-direction: column;
         gap: 20px;
         width: 100%;
-        min-height: max-content;
+        min-height: fit-content;
         align-items: first baseline;
     }
 

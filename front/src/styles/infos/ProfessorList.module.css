@@ -39,7 +39,7 @@
     align-items: start; */
     gap: 25px;
     height: 75%;
-    min-height: max-content;
+    min-height: fit-content;
     width: 90%;
     margin: 0 auto;
     padding-bottom: 20px;

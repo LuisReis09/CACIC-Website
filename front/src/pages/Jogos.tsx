@@ -21,11 +21,18 @@ const Jogos: React.FC = () => {
         .then(data => {
             setJogos_list(data);
         })
+        .catch(error => {
+            setNotificacao({
+                tipo: NotificacaoTipo.ERRO,
+                titulo: "Erro de Conexão",
+                conteudo: "Não foi possível carregar a lista de jogos. Tente novamente mais tarde."
+            });
+        });
     }, []) 
 
     const handleTrocarTela = (id: number) => {
         fetch(`http://localhost:4000/aluguel/servicoAtivo`)
-        .then(response => response.json())
+        .then(response => response.ok ? response.json() : Promise.reject())
         .then(data => {
             if(!data){
                 setNotificacao({
