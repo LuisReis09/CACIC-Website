@@ -23,7 +23,7 @@ const Login: React.FC = () => {
 
 
     const handleLogin = () => {
-        fetch('http://localhost:4000/auth/login', {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ const Login: React.FC = () => {
         // Verifica se já existe um token no localStorage, se existe, testa se ainda é válido
         const token = localStorage.getItem('adminToken');
         if (token) {
-            fetch('http://localhost:4000/auth/validar', {
+            fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/validar`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

@@ -87,7 +87,7 @@ const Jogo: React.FC = () => {
         
         const horaInicio = parseHorarios();
 
-        fetch(`http://localhost:4000/aluguel/requisitar/${id}`, {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/aluguel/requisitar/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -173,7 +173,7 @@ const Jogo: React.FC = () => {
 
     React.useEffect(() => {
         if (id) {
-            fetch(`http://localhost:4000/jogos/consultar/${id}`)
+            fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/jogos/consultar/${id}`)
                 .then(response => response.json())
                 .then(data => setJogo(data))
                 .catch(error => 
@@ -185,7 +185,7 @@ const Jogo: React.FC = () => {
                 );
                 
 
-            fetch(`http://localhost:4000/aluguel/disponibilidade/${id}`)
+            fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/aluguel/disponibilidade/${id}`)
                 .then(response => response.json())
                 .then(data => {
                     setHorarios([data]);

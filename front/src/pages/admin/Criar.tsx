@@ -30,7 +30,7 @@ const Criar: React.FC = () => {
 
     const fetchColunas = async () => {
         if(tabela) {
-            fetch(`http://localhost:4000${columnRoute}/colunas`, {
+            fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${columnRoute}/colunas`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ const Criar: React.FC = () => {
             return;
         }
 
-        fetch(`http://localhost:4000${columnRoute}/cadastrar`, {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${columnRoute}/cadastrar`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ const Criar: React.FC = () => {
                         return;
                     }
 
-                    fetch(`http://localhost:4000${columnRoute}/cadastrarMuitos`, {
+                    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${columnRoute}/cadastrarMuitos`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

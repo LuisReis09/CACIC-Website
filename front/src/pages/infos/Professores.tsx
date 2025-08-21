@@ -21,7 +21,7 @@ const ProfessorList: React.FC = () => {
   } | null>(null);
 
   useEffect(() => {
-    fetch("http://localhost:4000/professores/listar")
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/professores/listar`)
       .then((response) => response.json())
       .then((data) => {
         setProfessores(data);

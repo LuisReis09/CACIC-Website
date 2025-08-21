@@ -23,7 +23,7 @@ const ProfessorScreen: React.FC = () => {
 
     useEffect(() => {
         if(!id) return;
-        fetch(`http://localhost:4000/professores/consultar/${id}`)
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/professores/consultar/${id}`)
             .then(
                 response => {
                     if (!response.ok) {
@@ -43,7 +43,7 @@ const ProfessorScreen: React.FC = () => {
                 });
             });
         
-        fetch(`http://localhost:4000/professores/feedbacks/consultar/${id}`)
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/professores/feedbacks/consultar/${id}`)
             .then(
                 response => {
                     if (!response.ok) {
@@ -89,7 +89,7 @@ const ProfessorScreen: React.FC = () => {
                 <div className={styles.first_section}>
                     <img 
                         className={styles.img} 
-                        src={`http://localhost:4000/professores/imagem/${prof.id}`}
+                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/professores/imagem/${prof.id}`}
                     ></img>
                     <div className={styles.info}>
                         <div className={styles.info_upper}>

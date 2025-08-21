@@ -18,7 +18,7 @@ const Monitorias: React.FC = () => {
     } | null>(null);
 
     const fetchMonitorias = async () => {
-        fetch(`http://localhost:4000/monitorias/listarAprovadas`)
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/monitorias/listarAprovadas`)
             .then(response => response.json())
             .then(data => {
                 setMonitorias(data);

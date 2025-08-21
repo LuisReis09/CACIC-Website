@@ -16,7 +16,7 @@ const Laboratorios: React.FC = () => {
     } | null>(null);
 
     const fetchLaboratorios = async () => {
-        fetch('http://localhost:4000/laboratorios/listar')
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/laboratorios/listar`)
             .then(response => response.json())
             .then(data => {
                 setLaboratorios(data);

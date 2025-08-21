@@ -23,7 +23,7 @@ const Deletar: React.FC = () => {
 
 
     const fetchDados = async () => {
-        fetch('http://localhost:4000' + columnRoute + '/listar', {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${columnRoute}/listar`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ const Deletar: React.FC = () => {
     }
 
     const handleOneDelete = (id: any) => {
-        fetch('http://localhost:4000' + columnRoute + `/deletar/${id}`, {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}` + columnRoute + `/deletar/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ const Deletar: React.FC = () => {
     }
 
     const handleDeleteAll = () => {
-        fetch('http://localhost:4000' + columnRoute + '/deletar',
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}` + columnRoute + '/deletar',
             {
                 method: 'DELETE',
                 headers: {
@@ -128,7 +128,7 @@ const Deletar: React.FC = () => {
     }
 
     const fetchColunas = async () => {
-        fetch('http://localhost:4000' + columnRoute + '/colunas', {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}` + columnRoute + '/colunas', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -160,7 +160,7 @@ const Deletar: React.FC = () => {
     }
 
     const fetchBusca = async () => {
-        fetch('http://localhost:4000' + columnRoute + `/buscar/${filtro}/${filtroValue}/${getTipo(filtro)}`, {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}` + columnRoute + `/buscar/${filtro}/${filtroValue}/${getTipo(filtro)}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

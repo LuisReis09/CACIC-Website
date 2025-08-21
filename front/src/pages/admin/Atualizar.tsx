@@ -36,7 +36,7 @@ const Atualizar: React.FC = () => {
             return;
         }
 
-        fetch(`http://localhost:4000${columnRoute}/atualizar/${id}`, {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${columnRoute}/atualizar/${id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ const Atualizar: React.FC = () => {
 
     const fetchColunas = async () => {
         if (tabela) {
-            fetch(`http://localhost:4000${columnRoute}/colunas`, {
+            fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${columnRoute}/colunas`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ const Atualizar: React.FC = () => {
 
     const fetchDados = async () => {
         if (tabela) {
-            fetch(`http://localhost:4000${columnRoute}/consultar/${id}`, {
+            fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}${columnRoute}/consultar/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

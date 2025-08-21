@@ -16,7 +16,7 @@ const Jogos: React.FC = () => {
     const router = useRouter();
 
     useEffect( () => {
-        fetch('http://localhost:4000/jogos/listar')
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/jogos/listar`)
         .then(response => response.json())
         .then(data => {
             setJogos_list(data);
@@ -31,7 +31,7 @@ const Jogos: React.FC = () => {
     }, []) 
 
     const handleTrocarTela = (id: number) => {
-        fetch(`http://localhost:4000/aluguel/servicoAtivo`)
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/aluguel/servicoAtivo`)
         .then(response => response.ok ? response.json() : Promise.reject())
         .then(data => {
             if(!data){

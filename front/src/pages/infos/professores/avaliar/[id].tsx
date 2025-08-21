@@ -53,7 +53,7 @@ const Votacao: React.FC = () => {
 
         
 
-        fetch('http://localhost:4000/professores/feedbacks/cadastrar', {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/professores/feedbacks/cadastrar`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ const Votacao: React.FC = () => {
         if (!id) return;
 
 
-        fetch(`http://localhost:4000/professores/consultar/${id}`)
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/professores/consultar/${id}`)
             .then(response => response.json())
             .then(data => {
                 setProfessor(data);

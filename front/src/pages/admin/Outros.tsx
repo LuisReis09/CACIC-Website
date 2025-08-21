@@ -18,7 +18,7 @@ const Outros: React.FC = () => {
     } | null>(null);
 
     const fetchEmprestimosStatus = async () => {
-        fetch('http://localhost:4000/aluguel/servicoAtivo', {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/aluguel/servicoAtivo`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ const Outros: React.FC = () => {
     }
 
     const fetchHorarios = async () => {
-        fetch('http://localhost:4000/aluguel/horariosHoje', {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/aluguel/horariosHoje`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ const Outros: React.FC = () => {
     }
 
     const powerEmprestimos = async () => {
-        fetch(`http://localhost:4000/aluguel/${emprestimosLigados? "desativarServicoJogos" : "ativarServicoJogos"}`, {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/aluguel/${emprestimosLigados? "desativarServicoJogos" : "ativarServicoJogos"}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ const Outros: React.FC = () => {
         // if (agendamento < 8 || agendamento > 18) {
         //     return;
         // }
-        fetch(`http://localhost:4000/aluguel/agendarAtivacaoServicoJogos/${agendamento}`, {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/aluguel/agendarAtivacaoServicoJogos/${agendamento}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -159,7 +159,7 @@ const Outros: React.FC = () => {
             })
             return;
         }
-        fetch(`http://localhost:4000/aluguel/agendarDesativacaoServicoJogos/${agendamento}`, {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/aluguel/agendarDesativacaoServicoJogos/${agendamento}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -195,7 +195,7 @@ const Outros: React.FC = () => {
     }
 
     const handlePropaganda = async () => {
-        fetch('http://localhost:4000/aluguel/enviarEmailJogos', {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/aluguel/enviarEmailJogos`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

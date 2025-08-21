@@ -18,7 +18,7 @@ const Contato: React.FC = () => {
 
 
     const handleEnviarEmail = async () => {
-        fetch('http://localhost:4000/monitorias/SAC', {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/monitorias/SAC`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -32,7 +32,7 @@ const CadastrarMonitoria: React.FC = () => {
             return;
         }
 
-        fetch(`http://localhost:4000/monitorias/cadastrar`, {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/monitorias/cadastrar`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
