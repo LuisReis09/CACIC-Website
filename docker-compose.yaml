@@ -18,9 +18,6 @@ services:
     container_name: next-front
     ports:
       - "3000:3000"
-    volumes:
-      - ./front:/app
-      - /app/node_modules
     depends_on:
       - back
 
